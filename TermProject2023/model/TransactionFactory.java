@@ -26,9 +26,9 @@ public class TransactionFactory
 			retValue = new InsertBookTransaction();
 		}
 		else
-		if (transType.equals("InsertNewPatron") == true)
+		if (transType.equals("RegisterNewScout") == true)
 		{
-			retValue = new InsertPatronTransaction();
+			retValue = new RegisterScoutTransaction();
 		}
 		else
 		if (transType.equals("SearchBooks") == true)
