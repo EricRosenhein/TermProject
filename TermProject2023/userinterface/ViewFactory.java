@@ -3,15 +3,20 @@ package userinterface;
 import impresario.IModel;
 
 //==============================================================================
-public class ViewFactory {
-
+public class ViewFactory 
+{
 	public static View createView(String viewName, IModel model)
 	{
+		if (viewName.equals("TransactionMenu"))
+		{
+			return new TransactionMenuView(model);
+		}
+		/* 
 		// DEBUG System.out.println("View Factory: creating view: " + viewName);
 		if(viewName.equals("LibrarianView") == true)
 		{
 			return new LibrarianView(model);
-		}
+		}	 
 		else if(viewName.equals("BookView") == true)
 		{
 			return new BookView(model);
@@ -36,7 +41,7 @@ public class ViewFactory {
 		{
 			return new PatronCollectionView(model);
 		}
-		
+		*/
 		else
 			return null;
 	}

@@ -30,9 +30,7 @@ public class MainStageContainer
 	
 	// class constructor
 	//----------------------------------------------------------
-	private MainStageContainer ()
-	{
-	}
+	private MainStageContainer (){}
 
 	//----------------------------------------------------------
 	public static Stage getInstance()
