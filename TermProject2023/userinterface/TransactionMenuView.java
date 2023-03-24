@@ -2,6 +2,7 @@ package userinterface;
 
 import event.Event;
 import impresario.IModel;
+import userinterface.View;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,14 +26,11 @@ import javafx.stage.Stage;
 public class TransactionMenuView extends View
 {
     private VBox container;
-    //private Stage myStage;
 
     // ----------------------------------------------------------------------
     public TransactionMenuView(IModel transactionMenu) 
     {
         super(transactionMenu, "TransactionMenuView");
-        
-        //myStage = MainStageContainer.getInstance();
        
         // create a container for showing the contents
 		container = new VBox(10);
@@ -53,15 +51,15 @@ public class TransactionMenuView extends View
     }
 
      //----------------------------------------------------------------------------
-     private Node createTitle() 
-     {
-         Text titleText = new Text("       Choose Transaction       ");
-         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
-         titleText.setTextAlignment(TextAlignment.CENTER);
-         titleText.setFill(Color.BLACK);
+    private Node createTitle() 
+    {
+        Text titleText = new Text("       Choose Transaction       ");
+        titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
+        titleText.setTextAlignment(TextAlignment.CENTER);
+        titleText.setFill(Color.BLACK);
              
-         return titleText;
-     }
+        return titleText;
+    }
 
       //----------------------------------------------------------------------------
     private Node createFormContents() 

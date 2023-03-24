@@ -11,6 +11,10 @@ public class ViewFactory
 		{
 			return new TransactionMenuView(model);
 		}
+		else if (viewName.equals("RegisterScout"))
+		{
+			return new RegisterScoutView(model);
+		}
 		/* 
 		// DEBUG System.out.println("View Factory: creating view: " + viewName);
 		if(viewName.equals("LibrarianView") == true)
