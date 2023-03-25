@@ -1,0 +1,65 @@
+package userinterface;
+
+import java.util.Vector;
+
+import javafx.beans.property.SimpleStringProperty;
+
+//==============================================================================
+
+public class TreeTypeTableModel
+{
+    private final SimpleStringProperty type;
+    private final SimpleStringProperty description;
+    private final SimpleStringProperty cost;
+    private final SimpleStringProperty barcodePrefix;
+
+    //----------------------------------------------------------------------------
+	public ScoutTableModel(Vector<String> treeTypeData)
+	{
+		type =  new SimpleStringProperty(treeTypeData.elementAt(0));
+        description =  new SimpleStringProperty(treeTypeData.elementAt(1));
+        cost =  new SimpleStringProperty(treeTypeData.elementAt(2));
+        barcodePrefix =  new SimpleStringProperty(treeTypeData.elementAt(3));
+	}
+
+    //----------------------------------------------------------------------------
+    public String getType() {
+        return type.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public String setType(String type) {
+        type.set(type);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getDescription() {
+        return description.get();
+    }
+    
+    //----------------------------------------------------------------------------
+    public String setDescription(String description) {
+        description.set(description);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getCost() {
+        return cost.get();
+    }
+        
+    //----------------------------------------------------------------------------
+    public String setCost(String cost) {
+        cost.set(cost);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getBarcodePrefix() {
+        return barcodePrefix.get();
+    }
+            
+    //----------------------------------------------------------------------------
+    public String setBarcodePrefix(String barcodePrefix) {
+        barcodePrefix.set(barcodePrefix);
+    }
+
+}

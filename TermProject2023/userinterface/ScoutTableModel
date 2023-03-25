@@ -1,0 +1,101 @@
+package userinterface;
+
+import java.util.Vector;
+
+import javafx.beans.property.SimpleStringProperty;
+
+//==============================================================================
+
+public class ScoutTableModel
+{
+    private final SimpleStringProperty firstName;
+    private final SimpleStringProperty lastName;
+    private final SimpleStringProperty middleName;
+    private final SimpleStringProperty dateOfBirth;
+    private final SimpleStringProperty phoneNumber;
+    private final SimpleStringProperty email;
+    private final SimpleStringProperty troopID;
+
+    //----------------------------------------------------------------------------
+	public ScoutTableModel(Vector<String> scoutData)
+	{
+		firstName =  new SimpleStringProperty(scoutData.elementAt(0));
+        lastName =  new SimpleStringProperty(scoutData.elementAt(1));
+        middleName =  new SimpleStringProperty(scoutData.elementAt(2));
+        dateOfBirth =  new SimpleStringProperty(scoutData.elementAt(3));
+        phoneNumber =  new SimpleStringProperty(scoutData.elementAt(4));
+        email =  new SimpleStringProperty(scoutData.elementAt(5));
+        troopID =  new SimpleStringProperty(scoutData.elementAt(6));
+	}
+
+    //----------------------------------------------------------------------------
+    public String getFirstName() {
+        return firstName.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public String setFirstName(String firstName) {
+        fistName.set(firstName);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getLastName() {
+        return lastName.get();
+    }
+    
+    //----------------------------------------------------------------------------
+    public String setLastName(String lastName) {
+        lastName.set(lastName);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getMiddleName() {
+        return middleName.get();
+    }
+        
+    //----------------------------------------------------------------------------
+    public String setMiddleName(String middleName) {
+        middleName.set(middleName);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getDateOfBirth() {
+        return dateOfBirth.get();
+    }
+            
+    //----------------------------------------------------------------------------
+    public String setDateOfBirth(String dateOfBirth) {
+        dateOfBirth.set(dateOfBirth);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getPhoneNumber() {
+        return phoneNumber.get();
+    }
+        
+    //----------------------------------------------------------------------------
+    public String setPhoneNumber(String phoneNumber) {
+        phoneNumber.set(phoneNumber);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getEmail() {
+        return email.get();
+    }
+            
+    //----------------------------------------------------------------------------
+    public String setEmail (String email) {
+        email.set(email);
+    }
+
+    //----------------------------------------------------------------------------
+    public String getTroopID() {
+        return troopID.get();
+    }
+        
+    //----------------------------------------------------------------------------
+    public String setTroopID(String troopID) {
+        troopID.set(troopID);
+    }
+
+}
