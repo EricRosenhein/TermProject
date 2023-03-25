@@ -114,7 +114,7 @@ abstract public class Transaction implements IView, IModel
 		
 		if (newScene == null)
 		{
-			System.out.println("Transaction.swapToView(): Missing view for display");
+			System.out.println("Transaction : swapToView() - Missing view for display");
 			new Event(Event.getLeafLevelClassName(this), "swapToView",
 				"Missing view for display ", Event.ERROR);
 			return;
@@ -129,6 +129,5 @@ abstract public class Transaction implements IView, IModel
 		WindowPosition.placeCenter(myStage);
 
 	}
-
 }
 
