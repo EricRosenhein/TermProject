@@ -21,25 +21,14 @@ public class TransactionFactory
 	{
 		Transaction retValue = null;
 
-		if (transType.equals("InsertNewBook") == true)
+		if (transType.equals("AddTreeType") == true)
 		{
-			retValue = new InsertBookTransaction();
+			retValue = new AddTreeTypeTransaction();
 		}
-		else
-		if (transType.equals("InsertNewPatron") == true)
+		else if (transType.equals("UpdateTreeType") == true)
 		{
-			retValue = new InsertPatronTransaction();
+			//retValue = new UpdateTreeTypeTransaction();
 		}
-		else
-		if (transType.equals("SearchBooks") == true)
-		{
-			retValue = new SearchBookTransaction();
-		}
-		else
-		if (transType.equals("SearchPatrons") == true)
-		{
-			retValue = new SearchPatronTransaction();
-		} 
 
 		return retValue;
 	}

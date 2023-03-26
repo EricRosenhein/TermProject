@@ -197,6 +197,7 @@ public class TreeType extends EntityBase implements IView
 		}
 	}
 
+	//---------------------------------------------------------------------
 	public String toString()
 	{
 		return "Id: " + persistentState.getProperty("treeTypeId") +
@@ -204,6 +205,8 @@ public class TreeType extends EntityBase implements IView
 				"; Cost: " + persistentState.getProperty("cost") +
 				"; Barcode Prefix: " + persistentState.getProperty("barcodePrefix") + "\n";
 	}
+
+	//---------------------------------------------------------------------
 	public void createAndShowTreeTypeView()
 	{
 		Scene currentScene = (Scene)myViews.get("TreeTypeView");
@@ -228,6 +231,8 @@ public class TreeType extends EntityBase implements IView
 		update();
 	}
 
+	// Set methods
+	//---------------------------------------------------------------------
 	public void setTypeDescription(String typeDescription)
 	{
 		persistentState.setProperty("typeDescription", typeDescription);
@@ -243,6 +248,8 @@ public class TreeType extends EntityBase implements IView
 		persistentState.setProperty("barcodePrefix", barcodePrefix);
 	}
 
+	// Get methods
+	//---------------------------------------------------------------------
 	public String getTreeTypeId()
 	{
 		return persistentState.getProperty("treeTypeId");
