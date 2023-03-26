@@ -1,12 +1,16 @@
 package userinterface;
 
 import impresario.IModel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -28,13 +32,19 @@ public class RegisterScoutView extends View
     {
         super(registerScout, "RegisterScoutView");
 
+        // TEST 
+        System.out.println("In RegisterScoutView constructor");
+
         VBox container = new VBox(10);
 
         container.setPadding(new Insets(15, 5, 5, 5));
+        container.setAlignment(Pos.CENTER);
 
         container.getChildren().add(createTitle());
 
         container.getChildren().add(createFormContents());
+
+        getChildren().add(container);
     }
 
     // ----------------------------------------------------------------------
@@ -86,6 +96,80 @@ public class RegisterScoutView extends View
         middleName = new TextField();
         middleName.setEditable(true);
         grid.add(middleName, 1, 2);
+
+        Text lastNameLabel = new Text("Last Name: ");
+		lastNameLabel.setFont(font);
+		lastNameLabel.setWrappingWidth(150);
+		lastNameLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(lastNameLabel, 0, 3);
+
+        lastName = new TextField();
+        lastName.setEditable(true);
+        grid.add(lastName, 1, 3);
+
+        // Needs validation method
+        Text dateOfBirthLabel = new Text("Date of Birth: ");
+		dateOfBirthLabel.setFont(font);
+		dateOfBirthLabel.setWrappingWidth(150);
+		dateOfBirthLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(dateOfBirthLabel, 0, 4);
+
+        dateOfBirth = new TextField();
+        dateOfBirth.setEditable(true);
+        grid.add(dateOfBirth, 1, 4);
+
+        // Needs validation method
+        Text phoneNumberLabel = new Text("Phone Number: ");
+		phoneNumberLabel.setFont(font);
+		phoneNumberLabel.setWrappingWidth(150);
+		phoneNumberLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(phoneNumberLabel, 0, 5);
+
+        phoneNumber = new TextField();
+        phoneNumber.setEditable(true);
+        grid.add(phoneNumber, 1, 5);
+
+        Text emailLabel = new Text("Email: ");
+		emailLabel.setFont(font);
+		emailLabel.setWrappingWidth(150);
+		emailLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(emailLabel, 0, 6);
+
+        email = new TextField();
+        email.setEditable(true);
+        grid.add(email, 1, 6);
+
+        // Troop ID will be auto generated, so we may not need an editable text field. Maybe call the auto generate method as a parameter into the setText() 
+        Text troopIDLabel = new Text("Troop ID: ");
+		troopIDLabel.setFont(font);
+		troopIDLabel.setWrappingWidth(150);
+		troopIDLabel.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(troopIDLabel, 0, 7);
+
+        troopID = new TextField();
+        troopID.setEditable(true);
+        grid.add(troopID, 1, 7);
+
+        // Cancel and submit buttons
+        Button cancelButton = new Button("Cancel");
+        Button submitButton = new Button("Submit");
+
+        // Handle events for regular buttons
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+               // DEBUG - This should take us back to the TransactionMenu
+               myModel.stateChangeRequest("CancelTransaction", "");
+            }
+        });
+
+        HBox buttonContainer = new HBox(10);
+        buttonContainer.setAlignment(Pos.BOTTOM_RIGHT);
+        buttonContainer.getChildren().add(cancelButton);
+        buttonContainer.getChildren().add(submitButton);
+        grid.add(buttonContainer, 0, 9);
 
         return grid;
     }

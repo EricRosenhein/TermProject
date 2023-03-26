@@ -7,11 +7,14 @@ public class ViewFactory
 {
 	public static View createView(String viewName, IModel model)
 	{
-		if (viewName.equals("TransactionMenu"))
+		// DEBUG
+		System.out.println("In View : createView(), view name: " + viewName);
+		
+		if (viewName.equals("TransactionMenuView"))
 		{
 			return new TransactionMenuView(model);
 		}
-		else if (viewName.equals("RegisterScout"))
+		else if (viewName.equals("RegisterScoutView"))
 		{
 			return new RegisterScoutView(model);
 		}

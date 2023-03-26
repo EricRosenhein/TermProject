@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 public class TransactionMenuView extends View
 {
     private VBox container;
+    private MessageView statusLog;
 
     // ----------------------------------------------------------------------
     public TransactionMenuView(IModel transactionMenu) 
@@ -47,7 +48,7 @@ public class TransactionMenuView extends View
 		container.getChildren().add(createFormContents());
 
 		// Error message area
-		//container.getChildren().add(createStatusLog("                          "));
+		container.getChildren().add(createStatusLog(" "));
 
 		getChildren().add(container);
 
@@ -122,28 +123,6 @@ public class TransactionMenuView extends View
         Button cancelButton = new Button("Cancel");
         Button submitButton = new Button("Submit");
 
-        /* 
-        // TEST
-        // Add change listener to Radio buttons
-         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() 
-         {
-             public void changed(ObservableValue<? extends Toggle> ob, 
-                                                     Toggle o, Toggle n)
-            { 
-                 if (toggleGroup.getSelectedToggle() != null) 
-                 {
-                     // Should return the text description of the selected radio button
-                     RadioButton selected = (RadioButton)toggleGroup.getSelectedToggle();
-                     String str = selected.getText();
-   
-                     // TEST
-                     System.out.println("Selected button: " + str);
-                 
-                 }
-             }
-         });
-        */
-
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>() 
         {
@@ -161,8 +140,8 @@ public class TransactionMenuView extends View
             @Override
             public void handle(ActionEvent e) 
             {
-               // TEST 
-               System.out.println("You clicked the Submit button!");
+               // DEBUG
+               System.out.println("\nYou clicked the Submit button!\n");
 
                // Check which radio button the user chose
                if (toggleGroup.getSelectedToggle() != null) 
@@ -171,21 +150,25 @@ public class TransactionMenuView extends View
                     RadioButton selected = (RadioButton)toggleGroup.getSelectedToggle();
                     String str = selected.getText();
    
-                    // TEST
+                    // DEBUG
                     System.out.println("Selected button: " + str);
 
-                    if (str.equals("Register a Scout"))
+                    if (selected == registerScoutButton)
                     {
-                        myModel.stateChangeRequest("RegisterScout", "");  
+                        myModel.stateChangeRequest("RegisterScout", ""); 
                     }
-                    else if (str.equals("Add a Tree"))
+                    else if (selected == addTreeButton)
                     {
                         myModel.stateChangeRequest("AddTree", "");
                     }
-                    else if (str.equals("Add Tree Type"))
+                    else if (selected == addTreeTypeButton)
                     {
                         myModel.stateChangeRequest("AddTreeType", "");
                     }
+                }
+                else
+                {
+                    displayErrorMessage("Please select an option.");
                 }
             }
         });
@@ -207,6 +190,32 @@ public class TransactionMenuView extends View
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateState'");
     }
+
+    // ----------------------------------------------------------------------
+    protected MessageView createStatusLog(String initialMessage)
+	{
+		statusLog = new MessageView(initialMessage);
+
+		return statusLog;
+	}
+
+    // ----------------------------------------------------------------------
+     /**
+	 * Display error message
+	 */
+	public void displayErrorMessage(String message)
+	{
+		statusLog.displayErrorMessage(message);
+	}
+
+	/**
+	 * Clear error message
+	 */
+	//----------------------------------------------------------
+	public void clearErrorMessage()
+	{
+		statusLog.clearErrorMessage();
+	}
 
 }
 

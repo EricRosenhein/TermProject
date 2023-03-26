@@ -17,10 +17,13 @@ public class TransactionFactory
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transactionType) throws Exception
 	{
+		// DEBUG
+		System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		
 		Transaction returnValue = null;
 
 		if (transactionType.equals("RegisterScout"))
-		{
+		{			
 			returnValue = new RegisterScoutTransaction();
 		}
 		/* 
@@ -40,6 +43,9 @@ public class TransactionFactory
 			returnValue = new SearchPatronTransaction();
 		} 
 		*/
+
+		// DEBUG
+		System.out.println("Return value is: " + returnValue.toString());
 
 		return returnValue;
 	}

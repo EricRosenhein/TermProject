@@ -16,6 +16,9 @@ public class RegisterScoutTransaction extends Transaction
     public RegisterScoutTransaction() throws Exception
     {
         super();
+
+        // DEBUG - program isn't getting to this point 03/26/2023 -SW
+        System.out.println("In RegisterScoutTransaction constructor");
     }
 
     /**
@@ -52,14 +55,14 @@ public class RegisterScoutTransaction extends Transaction
     //-----------------------------------------------------------
 	public void stateChangeRequest(String key, Object value)
 	{
-		// DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
+		// DEBUG 
+        System.out.println("RegisterScoutTransaction : stateChangeRequest() key is: " + key);
 
 		if (key.equals("DoYourJob"))
 		{
 			doYourJob();
 		}
-		else
-		if (key.equals("RegisterScout"))
+		else if (key.equals("RegisterScoutData"))
 		{
 			processScoutData((Properties)value);
 		}
@@ -79,6 +82,9 @@ public class RegisterScoutTransaction extends Transaction
     @Override
     protected Scene createView() 
     {
+        // DEBUG 
+        System.out.println("In RegisterScoutTransaction : createView()");
+
         Scene currentScene = myViews.get("RegisterScoutView");
 
         // Create scene if its null
@@ -90,7 +96,5 @@ public class RegisterScoutTransaction extends Transaction
         }
 
         return currentScene;
-    }
-
-   
+    }  
 }
