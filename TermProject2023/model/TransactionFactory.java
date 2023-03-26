@@ -11,36 +11,42 @@ import javax.swing.JFrame;
 //==============================================================
 public class TransactionFactory
 {
-
-	/**
-	 *
-	 */
+	//----------------------------------------------------------s
+	public TransactionFactory() {}
+	
 	//----------------------------------------------------------
-	public static Transaction createTransaction(String transType)
-		throws Exception
+	public static Transaction createTransaction(String transactionType) throws Exception
 	{
-		Transaction retValue = null;
+		// DEBUG
+		System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		
+		Transaction returnValue = null;
 
-		if (transType.equals("InsertNewBook") == true)
+		if (transactionType.equals("RegisterScout"))
+		{			
+			returnValue = new RegisterScoutTransaction();
+		}
+		/* 
+		else
+		if (transactionType.equals("InsertNewPatron") == true)
 		{
-			retValue = new InsertBookTransaction();
+			returnValue = new InsertPatronTransaction();
 		}
 		else
-		if (transType.equals("InsertNewPatron") == true)
+		if (transactionType.equals("SearchBooks") == true)
 		{
-			retValue = new InsertPatronTransaction();
+			returnValue = new SearchBookTransaction();
 		}
 		else
-		if (transType.equals("SearchBooks") == true)
+		if (transactionType.equals("SearchPatrons") == true)
 		{
-			retValue = new SearchBookTransaction();
-		}
-		else
-		if (transType.equals("SearchPatrons") == true)
-		{
-			retValue = new SearchPatronTransaction();
+			returnValue = new SearchPatronTransaction();
 		} 
+		*/
 
-		return retValue;
+		// DEBUG
+		System.out.println("Return value is: " + returnValue.toString());
+
+		return returnValue;
 	}
 }
