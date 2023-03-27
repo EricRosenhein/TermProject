@@ -8,28 +8,29 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class TreeTypeTableModel
 {
-    private final SimpleStringProperty type;
-    private final SimpleStringProperty description;
+    private final SimpleStringProperty id;
+    private final SimpleStringProperty typeDescription;
     private final SimpleStringProperty cost;
     private final SimpleStringProperty barcodePrefix;
 
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> treeTypeData)
 	{
-		type =  new SimpleStringProperty(treeTypeData.elementAt(0));
-        description =  new SimpleStringProperty(treeTypeData.elementAt(1));
-        cost =  new SimpleStringProperty(treeTypeData.elementAt(2));
-        barcodePrefix =  new SimpleStringProperty(treeTypeData.elementAt(3));
+		
+		id =  new SimpleStringProperty(treeTypeData.elementAt(0));
+        	typeDescription =  new SimpleStringProperty(treeTypeData.elementAt(1));
+        	cost =  new SimpleStringProperty(treeTypeData.elementAt(2));
+        	barcodePrefix =  new SimpleStringProperty(treeTypeData.elementAt(3));
 	}
 
     //----------------------------------------------------------------------------
-    public String getType() {
+    public String getID() {
         return type.get();
     }
 
     //----------------------------------------------------------------------------
-    public String setType(String type) {
-        type.set(type);
+    public String setType(String i) {
+        id.set(i);
     }
 
     //----------------------------------------------------------------------------
@@ -38,8 +39,8 @@ public class TreeTypeTableModel
     }
     
     //----------------------------------------------------------------------------
-    public String setDescription(String description) {
-        description.set(description);
+    public String setDescription(String d) {
+        typeDescription.set(d);
     }
 
     //----------------------------------------------------------------------------
@@ -48,8 +49,8 @@ public class TreeTypeTableModel
     }
         
     //----------------------------------------------------------------------------
-    public String setCost(String cost) {
-        cost.set(cost);
+    public String setCost(String c) {
+        cost.set(c);
     }
 
     //----------------------------------------------------------------------------
@@ -58,8 +59,8 @@ public class TreeTypeTableModel
     }
             
     //----------------------------------------------------------------------------
-    public String setBarcodePrefix(String barcodePrefix) {
-        barcodePrefix.set(barcodePrefix);
+    public String setBarcodePrefix(String p) {
+        barcodePrefix.set(p);
     }
 
 }
