@@ -8,8 +8,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class ScoutTableModel
 {
-    private final SimpleStringProperty firstName;
+    private final SimpleStringProperty id;
     private final SimpleStringProperty lastName;
+    private final SimpleStringProperty firstName;
     private final SimpleStringProperty middleName;
     private final SimpleStringProperty dateOfBirth;
     private final SimpleStringProperty phoneNumber;
@@ -19,23 +20,35 @@ public class ScoutTableModel
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> scoutData)
 	{
-		firstName =  new SimpleStringProperty(scoutData.elementAt(0));
+	id =  new SimpleStringProperty(scoutData.elementAt(0));
         lastName =  new SimpleStringProperty(scoutData.elementAt(1));
-        middleName =  new SimpleStringProperty(scoutData.elementAt(2));
-        dateOfBirth =  new SimpleStringProperty(scoutData.elementAt(3));
-        phoneNumber =  new SimpleStringProperty(scoutData.elementAt(4));
-        email =  new SimpleStringProperty(scoutData.elementAt(5));
-        troopID =  new SimpleStringProperty(scoutData.elementAt(6));
+	firstName =  new SimpleStringProperty(scoutData.elementAt(2));
+        middleName =  new SimpleStringProperty(scoutData.elementAt(3));
+        dateOfBirth =  new SimpleStringProperty(scoutData.elementAt(4));
+        phoneNumber =  new SimpleStringProperty(scoutData.elementAt(5));
+        email =  new SimpleStringProperty(scoutData.elementAt(6));
+        troopID =  new SimpleStringProperty(scoutData.elementAt(7));
+	status =  new SimpleStringProperty(scoutData.elementAt(8));
+	dateStatusUpdated =  new SimpleStringProperty(scoutData.elementAt(9));
 	}
 
+    //----------------------------------------------------------------------------
+    public String getid() {
+        return id.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public String setid(String i) {
+        id.set(i);
+    }
     //----------------------------------------------------------------------------
     public String getFirstName() {
         return firstName.get();
     }
 
     //----------------------------------------------------------------------------
-    public String setFirstName(String firstName) {
-        fistName.set(firstName);
+    public String setFirstName(String fn) {
+        firstName.set(fn);
     }
 
     //----------------------------------------------------------------------------
@@ -44,8 +57,8 @@ public class ScoutTableModel
     }
     
     //----------------------------------------------------------------------------
-    public String setLastName(String lastName) {
-        lastName.set(lastName);
+    public String setLastName(String ln) {
+        lastName.set(ln);
     }
 
     //----------------------------------------------------------------------------
@@ -54,8 +67,8 @@ public class ScoutTableModel
     }
         
     //----------------------------------------------------------------------------
-    public String setMiddleName(String middleName) {
-        middleName.set(middleName);
+    public String setMiddleName(String mN) {
+        middleName.set(mN);
     }
 
     //----------------------------------------------------------------------------
@@ -64,8 +77,8 @@ public class ScoutTableModel
     }
             
     //----------------------------------------------------------------------------
-    public String setDateOfBirth(String dateOfBirth) {
-        dateOfBirth.set(dateOfBirth);
+    public String setDateOfBirth(String d) {
+        dateOfBirth.set(d);
     }
 
     //----------------------------------------------------------------------------
@@ -74,8 +87,8 @@ public class ScoutTableModel
     }
         
     //----------------------------------------------------------------------------
-    public String setPhoneNumber(String phoneNumber) {
-        phoneNumber.set(phoneNumber);
+    public String setPhoneNumber(String p) {
+        phoneNumber.set(p);
     }
 
     //----------------------------------------------------------------------------
@@ -84,8 +97,8 @@ public class ScoutTableModel
     }
             
     //----------------------------------------------------------------------------
-    public String setEmail (String email) {
-        email.set(email);
+    public String setEmail (String e) {
+        email.set(e);
     }
 
     //----------------------------------------------------------------------------
@@ -94,8 +107,26 @@ public class ScoutTableModel
     }
         
     //----------------------------------------------------------------------------
-    public String setTroopID(String troopID) {
-        troopID.set(troopID);
+    public String setTroopID(String t) {
+        troopID.set(t);
+    }
+    //----------------------------------------------------------------------------
+    public String getStatus() {
+        return status.get();
     }
 
+    //----------------------------------------------------------------------------
+    public String setStatus(String s) {
+        status.set(s);
+    }
+        }
+    //----------------------------------------------------------------------------
+    public String getDateStatusUpdated() {
+        return dateStatusUpdated.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public String setDateStatusUpdated(String u) {
+        dateStatusUpdated.set(u);
+    }
 }
