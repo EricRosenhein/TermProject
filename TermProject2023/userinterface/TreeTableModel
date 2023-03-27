@@ -70,6 +70,6 @@ public class TreeTableModel
     
     //----------------------------------------------------------------------------
     public String setDateStatusUpdated(String d) {
-        notes.set(d);
+        dateStatusUpdated.set(d);
     }
 }
