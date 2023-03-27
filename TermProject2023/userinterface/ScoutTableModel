@@ -33,12 +33,12 @@ public class ScoutTableModel
 	}
 
     //----------------------------------------------------------------------------
-    public String getid() {
+    public String getID() {
         return id.get();
     }
 
     //----------------------------------------------------------------------------
-    public String setid(String i) {
+    public String setID(String i) {
         id.set(i);
     }
     //----------------------------------------------------------------------------
