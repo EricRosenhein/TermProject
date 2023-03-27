@@ -67,8 +67,8 @@ public class ScoutTableModel
     }
         
     //----------------------------------------------------------------------------
-    public String setMiddleName(String mN) {
-        middleName.set(mN);
+    public String setMiddleName(String mn) {
+        middleName.set(mn);
     }
 
     //----------------------------------------------------------------------------
