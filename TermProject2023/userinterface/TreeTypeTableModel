@@ -25,17 +25,17 @@ public class TreeTypeTableModel
 
     //----------------------------------------------------------------------------
     public String getID() {
-        return type.get();
+        return id.get();
     }
 
     //----------------------------------------------------------------------------
-    public String setType(String i) {
+    public String setID(String i) {
         id.set(i);
     }
 
     //----------------------------------------------------------------------------
     public String getDescription() {
-        return description.get();
+        return typeDescription.get();
     }
     
     //----------------------------------------------------------------------------
