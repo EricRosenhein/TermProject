@@ -8,14 +8,20 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class TreeTableModel
 {
-    private final SimpleStringProperty barcode;
-    private final SimpleStringProperty notes;
+        private final SimpleStringProperty barcode;
+        private final SimpleStringProperty treeType;
+        private final SimpleStringProperty notes;
+        private final SimpleStringProperty status;
+	private final SimpleStringProperty dateStatusUpdated;
 
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> treeData)
 	{
 		barcode =  new SimpleStringProperty(treeData.elementAt(0));
-        notes =  new SimpleStringProperty(notesData.elementAt(1));
+                treeType =  new SimpleStringProperty(notesData.elementAt(1));
+		notes =  new SimpleStringProperty(notesData.elementAt(2));
+		status =  new SimpleStringProperty(notesData.elementAt(3));
+		dateStatusUpdated =  new SimpleStringProperty(notesData.elementAt(4));
 	}
 
     //----------------------------------------------------------------------------
@@ -24,18 +30,46 @@ public class TreeTableModel
     }
 
     //----------------------------------------------------------------------------
-    public String setBarcode(String barcode) {
-        barcode.set(barcode);
+    public String setBarcode(String b) {
+        barcode.set(b);
     }
-
+    
+    //----------------------------------------------------------------------------
+    public String getTreeType() {
+        return treeType.get();
+    }
+    
+    //----------------------------------------------------------------------------
+    public String setTreeType(String tt) {
+        treeType.set(tt);
+    }
     //----------------------------------------------------------------------------
     public String getNotes() {
         return notes.get();
     }
     
     //----------------------------------------------------------------------------
-    public String setNotes(String notes) {
-        notes.set(notes);
+    public String setNotes(String n) {
+        notes.set(n);
+    }
+    
+     //----------------------------------------------------------------------------
+    public String getStatus() {
+        return status.get();
+    }
+    
+    //----------------------------------------------------------------------------
+    public String setStatus(String s) {
+        status.set(s);
     }
 
+    //----------------------------------------------------------------------------
+    public String getDateStatusUpdated() {
+        return dateStatusUpdated.get();
+    }
+    
+    //----------------------------------------------------------------------------
+    public String setDateStatusUpdated(String d) {
+        notes.set(d);
+    }
 }
