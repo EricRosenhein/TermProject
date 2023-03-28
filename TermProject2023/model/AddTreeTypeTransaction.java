@@ -25,13 +25,13 @@ public class AddTreeTypeTransaction extends Transaction
     //---------------------------------------------------------------------
     public AddTreeTypeTransaction() throws Exception
     {
-        
+        super();
     }
 
     protected void setDependencies()
 	{
 		dependencies = new Properties();
-		dependencies.setProperty("DoAddTreeType", "TransactionError");
+		dependencies.setProperty("InsertTreeTypeData", "UpdateStatusMessage");
 		dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
 		dependencies.setProperty("OK", "CancelTransaction");
 
@@ -46,7 +46,8 @@ public class AddTreeTypeTransaction extends Transaction
 		// String barcodePrefix = props.getProperty("barcodePrefix");
 
 		newTreeType = new TreeType(props);
-        newTreeType.update();
+        	newTreeType.update();
+		updateStatusMessage = (String)newTreeType.getState("UpdateStatusMessage");
 	}
 
     //-----------------------------------------------------------
@@ -72,7 +73,7 @@ public class AddTreeTypeTransaction extends Transaction
 			doYourJob();
 		}
 		else
-		if (key.equals("DoAddTreeType") == true)
+		if (key.equals("InsertTreeTypeData") == true)
 		{
 			processTransaction((Properties)value);
 		}
