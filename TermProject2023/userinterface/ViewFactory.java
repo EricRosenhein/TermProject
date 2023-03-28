@@ -3,15 +3,27 @@ package userinterface;
 import impresario.IModel;
 
 //==============================================================================
-public class ViewFactory {
-
+public class ViewFactory 
+{
 	public static View createView(String viewName, IModel model)
 	{
+		// DEBUG
+		System.out.println("In View : createView(), view name: " + viewName);
+		
+		if (viewName.equals("TransactionMenuView"))
+		{
+			return new TransactionMenuView(model);
+		}
+		else if (viewName.equals("RegisterScoutView"))
+		{
+			return new RegisterScoutView(model);
+		}
+		/* 
 		// DEBUG System.out.println("View Factory: creating view: " + viewName);
 		if(viewName.equals("LibrarianView") == true)
 		{
 			return new LibrarianView(model);
-		}
+		}	 
 		else if(viewName.equals("BookView") == true)
 		{
 			return new BookView(model);
@@ -36,7 +48,7 @@ public class ViewFactory {
 		{
 			return new PatronCollectionView(model);
 		}
-		
+		*/
 		else
 			return null;
 	}

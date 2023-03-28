@@ -25,14 +25,12 @@ import javafx.stage.Screen;
 public class WindowPosition 
 {
 	 private static Rectangle2D primaryScreenBounds = 
-		Screen.getPrimary().getVisualBounds();
-
-	
+		Screen.getPrimary().getVisualBounds();	
 
 	/**
 	* Used to place the stage in the center of the screen
 	*
-	* @param	s	Stage to place at the center of the screen
+	* @param s	Stage to place at the center of the screen
 	*
 	*/
 	//--------------------------------------------------------------------------
@@ -47,7 +45,7 @@ public class WindowPosition
 	/**
 	* Used to place a stage at the top left corner of te screen
 	*
-	* @param	s	Stage to place at the top left corner of the screen
+	* @param s	Stage to place at the top left corner of the screen
 	*
 	*/
 	//--------------------------------------------------------------------------
@@ -63,7 +61,7 @@ public class WindowPosition
 	/**
 	* Used to place a stage at the top right corner of the screen
 	*
-	* @param	s	Stage to place at the top right corner of the screen
+	* @param s	Stage to place at the top right corner of the screen
 	*
 	*/
 	//--------------------------------------------------------------------------
@@ -80,7 +78,7 @@ public class WindowPosition
 	/**
 	* Used to place a stage at the bottom left corner of te screen
 	*
-	* @param	s	Stage to place at the bottom left corner of the screen
+	* @param s	Stage to place at the bottom left corner of the screen
 	*
 	*/
 	//--------------------------------------------------------------------------
@@ -98,7 +96,7 @@ public class WindowPosition
 	/**
 	* Used to place a stage at the bottom right corner of the screen
 	*
-	* @param	s	Stage to place at the bottom right corner of the screen
+	* @param s	Stage to place at the bottom right corner of the screen
 	*
 	*/
 	//--------------------------------------------------------------------------
