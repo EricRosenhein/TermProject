@@ -7,48 +7,46 @@ public class ViewFactory
 {
 	public static View createView(String viewName, IModel model)
 	{
+		
 		// DEBUG
 		System.out.println("In View : createView(), view name: " + viewName);
 		
-		if (viewName.equals("TransactionMenuView"))
+		if (viewName.equals("TLCView"))
 		{
-			return new TransactionMenuView(model);
+			return new TLCView(model);
 		}
 		else if (viewName.equals("RegisterScoutView"))
 		{
 			return new RegisterScoutView(model);
 		}
-		/* 
-		// DEBUG System.out.println("View Factory: creating view: " + viewName);
-		if(viewName.equals("LibrarianView") == true)
+		else if (viewName.equals("AddTreeView"))
 		{
-			return new LibrarianView(model);
-		}	 
-		else if(viewName.equals("BookView") == true)
-		{
-			return new BookView(model);
+			return new AddTreeView(model);
 		}
-		else if(viewName.equals("PatronView") == true)
+		else if (viewName.equals("AddTreeTypeView"))
 		{
-			return new PatronView(model);
+			return new AddTreeTypeView(model);
 		}
-		else if(viewName.equals("BookSearchView") == true)
+		else if (viewName.equals("UpdateScoutView"))
 		{
-			return new BookSearchView(model);
+			return new UpdateScoutView(model);
 		}
-		else if(viewName.equals("PatronSearchView") == true)
+		else if (viewName.equals("UpdateTreeView"))
 		{
-			return new PatronSearchView(model);
+			return new UpdateTreeView(model);
 		}
-		else if(viewName.equals("BookCollectionView") == true)
+		else if (viewName.equals("UpdateTreeTypeView"))
 		{
-			return new BookCollectionView(model);
+			return new UpdateTreeTypeView(model);
 		}
-		else if(viewName.equals("PatronCollectionView") == true)
+		else if (viewName.equals("RemoveScoutView"))
 		{
-			return new PatronCollectionView(model);
+			return new RemoveScoutView(model);
 		}
-		*/
+		else if (viewName.equals("RemoveTreeView"))
+		{
+			return new RemoveTreeView(model);
+		}
 		else
 			return null;
 	}
