@@ -26,26 +26,44 @@ public class TransactionFactory
 		{			
 			returnValue = new RegisterScoutTransaction();
 		}
-		/* 
 		else
-		if (transactionType.equals("InsertNewPatron") == true)
+		if (transactionType.equals("AddTree") == true)
 		{
-			returnValue = new InsertPatronTransaction();
+			returnValue = new AddTreeTransaction();
 		}
 		else
-		if (transactionType.equals("SearchBooks") == true)
+		if (transactionType.equals("AddTreeType") == true)
 		{
-			returnValue = new SearchBookTransaction();
+			returnValue = new AddTreeTypeTransaction();
 		}
 		else
-		if (transactionType.equals("SearchPatrons") == true)
+		if (transactionType.equals("UpdateScout") == true)
 		{
-			returnValue = new SearchPatronTransaction();
+			returnValue = new UpdateScoutTransaction();
 		} 
-		*/
+		else
+		if (transactionType.equals("UpdateTree") == true)
+		{
+			returnValue = new UpdateTreeTransaction();
+		} 
+		else
+		if (transactionType.equals("UpdateTreeType") == true)
+		{
+			returnValue = new UpdateTreeTypeTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveScout") == true)
+		{
+			returnValue = new RemoveScoutTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveTree") == true)
+		{
+			returnValue = new RemoveTreeTransaction();
+		} 
 
 		// DEBUG
-		System.out.println("Return value is: " + returnValue.toString());
+		//System.out.println("Return value is: " + returnValue.toString());
 
 		return returnValue;
 	}
