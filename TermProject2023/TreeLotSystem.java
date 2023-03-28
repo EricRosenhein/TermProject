@@ -3,7 +3,7 @@ import event.Event;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import model.TransactionMenu;
+import model.TreeLotCoordinator;
 import userinterface.MainStageContainer;
 import userinterface.WindowPosition;
 
@@ -11,7 +11,7 @@ import userinterface.WindowPosition;
 
 public class TreeLotSystem extends Application
 {
-    private TransactionMenu transactionMenu;
+    private TeeLotCoordinator tLC;
     private Stage mainStage;
 
     public void start(Stage primaryStage)
