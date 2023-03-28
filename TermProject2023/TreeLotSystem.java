@@ -9,7 +9,7 @@ import userinterface.WindowPosition;
 
 /* Test driver classs */
 
-public class Test extends Application
+public class TreeLotSystem extends Application
 {
     private TransactionMenu transactionMenu;
     private Stage mainStage;
@@ -18,7 +18,7 @@ public class Test extends Application
     {
         // Change later
         System.out.println("Boy Scout Troop 209 App v1.00");
-        System.out.println("Copyright 2023 Sebastian Whyte, Eric Rosenhein, Dominic, Nathan, Shain");
+        System.out.println("Copyright 2023 Sebastian Whyte, Eric Rosenhein, Dominic Laure, Nathan Cummings, Shain Krutz");
 
         MainStageContainer.setStage(primaryStage, "Boy Scout Troop 209 v1.0");
         mainStage = MainStageContainer.getInstance();
@@ -34,12 +34,12 @@ public class Test extends Application
 
         try
         {
-            transactionMenu = new TransactionMenu();
+            tLC = new TreeLotCoordinator();
         }
         catch(Exception ex)
         {
-            System.err.println("Test:start() - could not load TransactionMenu!");
-            new Event(Event.getLeafLevelClassName(this), "Test.<init>", "Unable to create Test object", Event.ERROR);
+            System.err.println("TreeLotSystem:start() - could not load TreeLotCoordinator!");
+            new Event(Event.getLeafLevelClassName(this), "TreeLotSystem.<init>", "Unable to create TreeLotSystem object", Event.ERROR);
             
             ex.printStackTrace();
         }
