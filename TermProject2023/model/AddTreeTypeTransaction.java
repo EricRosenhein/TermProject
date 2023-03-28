@@ -33,7 +33,6 @@ public class AddTreeTypeTransaction extends Transaction
 		dependencies = new Properties();
 		dependencies.setProperty("InsertTreeTypeData", "UpdateStatusMessage");
 		dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
-		dependencies.setProperty("OK", "CancelTransaction");
 
 		myRegistry.setDependencies(dependencies);
 	}

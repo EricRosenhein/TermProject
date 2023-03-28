@@ -1,5 +1,6 @@
 package model;
 
+import java.security.InvalidKeyException;
 // system imports
 import java.sql.SQLException;
 import java.util.Enumeration;
@@ -26,7 +27,7 @@ public class TreeType extends EntityBase implements IView
 	private String updateStatusMessage = "";
 
 
-	// Constructor for existing tree type
+	// Constructor for existing tree type using treeTypeId
 	//---------------------------------------------------------------------
 	public TreeType(int treeTypeId) throws InvalidPrimaryKeyException
 	{
@@ -77,6 +78,56 @@ public class TreeType extends EntityBase implements IView
 		}
 	}
 	
+	// Constructor for existing tree type using barcodePrefix
+	//---------------------------------------------------------------------
+	public TreeType(String barcodePrefix) throws InvalidPrimaryKeyException
+	{
+		super(myTableName);
+		
+		setDependencies();
+		String query = "SELECT * FROM " + myTableName + " WHERE (barcodePrefix = " + barcodePrefix + ")";
+		
+		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+		
+		// You must get one tree type at least
+		if (allDataRetrieved != null)
+		{
+			int size = allDataRetrieved.size();
+
+			// There should be EXACTLY one tree type. More than that is an error
+			if (size != 1)
+			{
+				throw new InvalidPrimaryKeyException("Multiple tree types matching barcode prefix : "
+					+ barcodePrefix + " found.");
+			}
+			else
+			{
+				// copy all the retrieved data into persistent state
+				Properties retrievedBookData = allDataRetrieved.elementAt(0);
+				persistentState = new Properties();
+
+				Enumeration allKeys = retrievedBookData.propertyNames();
+				while (allKeys.hasMoreElements() == true)
+				{
+					String nextKey = (String)allKeys.nextElement();
+					String nextValue = retrievedBookData.getProperty(nextKey);
+
+					if (nextValue != null)
+					{
+						persistentState.setProperty(nextKey, nextValue);
+					}
+				}
+
+			}
+		}
+		// If no tree type found for this tree type barcode prefix, throw an exception
+		else
+		{
+			throw new InvalidPrimaryKeyException("No tree type matching barcode prefix : "
+				+ barcodePrefix + " found.");
+		}
+	}
+
 	// Constructor for new tree type
 	//---------------------------------------------------------------------
 	public TreeType(Properties props)
@@ -205,6 +256,13 @@ public class TreeType extends EntityBase implements IView
 				"; Cost: " + persistentState.getProperty("cost") +
 				"; Barcode Prefix: " + persistentState.getProperty("barcodePrefix") + "\n";
 	}
+
+	// Invokes the toString() method to display info about the chosen book
+	// -------------------------------------------------------
+    public void display()
+    {
+        System.out.println(toString());
+    }
 
 	//---------------------------------------------------------------------
 	public void createAndShowTreeTypeView()
