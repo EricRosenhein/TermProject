@@ -14,7 +14,7 @@ import userinterface.ViewFactory;
 import userinterface.WindowPosition;
 
 
-public class TransactionMenu implements IView, IModel
+public class TreeLotCoordinator implements IView, IModel
 {
     // GUI Components
 	//private HashMap<String, Scene> myViews;
@@ -29,31 +29,31 @@ public class TransactionMenu implements IView, IModel
         myViews = new HashMap<String, Scene>();
 
         /* 
-        myRegistry = new ModelRegistry("TransactionMenu");
+        myRegistry = new ModelRegistry("TreeLotCoordinator");
 
         if(myRegistry == null)
         {
-            new Event(Event.getLeafLevelClassName(this), "TransactionMenu", "could not instantiate Registry", Event.ERROR);
+            new Event(Event.getLeafLevelClassName(this), "TreeLotCoordinator", "could not instantiate Registry", Event.ERROR);
         }
 
         setDependencies();
         */
 
-        createAndShowTransactionMenuView();
+        createAndShowTLCView();
     }
 
     // ----------------------------------------------------------------
-    private void createAndShowTransactionMenuView() 
+    private void createAndShowTLCView() 
     {
-        Scene currentScene = (Scene)myViews.get("TransactionMenuView");
+        Scene currentScene = (Scene)myViews.get("TLCView");
 
         if (currentScene == null)
         {
-            View newView = ViewFactory.createView("TransactionMenuView", this);
+            View newView = ViewFactory.createView("TLCView", this);
             
             currentScene = new Scene(newView);
 
-            myViews.put("TransactionMenuView", currentScene);
+            myViews.put("TLCView", currentScene);
         }
 
         swapToView(currentScene);             
@@ -64,7 +64,7 @@ public class TransactionMenu implements IView, IModel
     {
         if (newScene == null)
         {
-            System.out.println("TransactionMenu : swapToView() - Missing view to display!");
+            System.out.println("TreeLotCoordinator : swapToView() - Missing view to display!");
             new Event(Event.getLeafLevelClassName(this), "swaptoView", "Missing view to display", Event.ERROR);
             
             return;
@@ -108,9 +108,10 @@ public class TransactionMenu implements IView, IModel
         // Check the transaction
         if ((key.equals("Done")) || key.equals("CancelTransaction"))
         {
-            createAndShowTransactionMenuView();
+            createAndShowTLCView();
         }
-        else if (key.equals("RegisterScout") || key.equals("AddTree") || key.equals("AddTreeType"))
+        else if (key.equals("RegisterScout") || key.equals("AddTree") || key.equals("AddTreeType") || key.equals("UpdateScout") ||
+		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree"))
         {
             String transactionType = key;
             doTransaction(transactionType);
