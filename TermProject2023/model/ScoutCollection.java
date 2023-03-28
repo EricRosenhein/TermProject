@@ -30,19 +30,24 @@ public class ScoutCollection extends EntityBase implements IView{
 		scoutList = new Vector<>(); // new Vector<Scout>();
 	}
 
-    public Vector findScoutsOlderThan(String date) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth < " + date + ") ORDER BY name ASC;";
+    public Vector findScoutsOlderThan(String DateOfBirth) {
+        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth < " + DateOfBirth + ") ORDER BY name ASC;";
         return doQuery(query);
     }
 
-    public Vector findScoutsYoungerThan(String date) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth > " + date + ") ORDER BY name ASC;";
+    public Vector findScoutsYoungerThan(String DateOfBirth) {
+        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth > " + DateOfBirth + ") ORDER BY name ASC;";
         return doQuery(query);
     }
 
     public Vector findAllScouts() {
 
         String query = "SELECT * FROM " + myTableName + " ORDER BY name ASC;";
+        return doQuery(query);
+    }
+
+    public Vector findPatronsWithNameLike(String LastName) {
+        String query = "SELECT * FROM " + myTableName + " WHERE (author LIKE '%" + LastName + "%')";
         return doQuery(query);
     }
 
@@ -73,15 +78,15 @@ public class ScoutCollection extends EntityBase implements IView{
     }
 
     // ----------------------------------------------------------
+    @Override
     public Object getState(String key) {
         if (key.equals("scouts"))
             return scoutList;
-        else if (key.equals("scoutList"))
-            return this;
         return null;
     }
 
     // ----------------------------------------------------------------
+    @Override
     public void stateChangeRequest(String key, Object value) {
 
         myRegistry.updateSubscribers(key, this);

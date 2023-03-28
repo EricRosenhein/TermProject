@@ -69,7 +69,6 @@ public class Scout extends EntityBase implements IView {
 
     private void setDependencies() {
         dependencies = new Properties();
-        dependencies.setProperty("CancelRegisterScout", "CancelTransaction");
         myRegistry.setDependencies(dependencies);
     }
 
@@ -83,10 +82,7 @@ public class Scout extends EntityBase implements IView {
 
     // ----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value) {
-        if (key.equals("RegisterScout")) {
-            processNewScout((Properties) value);
-        }
-        myRegistry.updateSubscribers(key, this);
+       
     }
 
     /** Called via the IView relationship */
@@ -123,28 +119,6 @@ public class Scout extends EntityBase implements IView {
         }
     }
 
-    protected void createAndShowScoutView() {
-        // create our new view
-        View newView = ViewFactory.createView("ScoutView", this);
-        Scene newScene = new Scene(newView);
-
-        // make the view visible by installing it into the frame
-        swapToView(newScene);
-    }
-
-    private void processNewScout(Properties scoutInfo) {
-        persistentState = new Properties();
-        Enumeration allKeys = scoutInfo.propertyNames();
-        while (allKeys.hasMoreElements()) {
-            String nextKey = (String) allKeys.nextElement();
-            String nextValue = scoutInfo.getProperty(nextKey);
-
-            if (nextValue != null) {
-                persistentState.setProperty(nextKey, nextValue);
-            }
-        }
-        updateStateInDatabase();
-    }
 
     /**
      * This method is needed solely to enable the Scout information to be
@@ -154,7 +128,7 @@ public class Scout extends EntityBase implements IView {
     public Vector<String> getEntryListView() {
         Vector<String> v = new Vector<String>();
 
-        v.addElement(persistentState.getProperty("ScoutId"));
+        v.addElement(persistentState.getProperty("ID"));
         v.addElement(persistentState.getProperty("LastName"));
         v.addElement(persistentState.getProperty("FirstName"));
         v.addElement(persistentState.getProperty("MiddleName"));
@@ -173,5 +147,30 @@ public class Scout extends EntityBase implements IView {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);
         }
+    }
+    
+    // Prints out a description of the chosen book
+    public String toString() {
+        return "FirstName: " + persistentState.getProperty("FirstName") + "; LastName: "
+                + persistentState.getProperty("LastName") + "; MiddleName: " + persistentState.getProperty("LastName")
+                + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Eamil: "
+                + persistentState.getProperty("Email")
+                + "; TroopId: " + persistentState.getProperty("TroopId") + "; Status: "
+                + persistentState.getProperty("Status") + "; DateStatusUpdated: "
+                + persistentState.getProperty("DateStatusUpdated") + "\n";
+    }
+
+    // -------------------------------------------------------
+    @Override
+    public void subscribe(String key, IView subscriber) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // -------------------------------------------------------
+    @Override
+    public void unSubscribe(String key, IView subscriber) {
+        // TODO Auto-generated method stub
+
     }
 }
