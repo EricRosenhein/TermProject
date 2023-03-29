@@ -7,7 +7,7 @@ import userinterface.ViewFactory;
 
 public class RegisterScoutTransaction extends Transaction
 {
-    //private Scout scout;
+    private Scout scout;
 
     // GUI Components
 	private String transactionErrorMessage = "";
@@ -71,15 +71,16 @@ public class RegisterScoutTransaction extends Transaction
 	}
 
     //-----------------------------------------------------------
-    @Override
     protected void setDependencies() 
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDependencies'");
+        dependencies = new Properties();
+        dependencies.setProperty("CancelScout", "CancelTransaction");
+        dependencies.setProperty("InsertScoutData", "ScoutUpdateStatusMessage");
+
+        myRegistry.setDependencies(dependencies);
     }
 
     //-----------------------------------------------------------
-    @Override
     protected Scene createView() 
     {
         // DEBUG 
@@ -97,4 +98,3 @@ public class RegisterScoutTransaction extends Transaction
 
         return currentScene;
     }  
-}
