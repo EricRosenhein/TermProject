@@ -16,6 +16,8 @@ public class ScoutTableModel
     private final SimpleStringProperty phoneNumber;
     private final SimpleStringProperty email;
     private final SimpleStringProperty troopID;
+    private final SimpleStringProperty status;
+    private final SimpleStringProperty dateStatusUpdated;
 
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> scoutData)
@@ -33,12 +35,12 @@ public class ScoutTableModel
 	}
 
     //----------------------------------------------------------------------------
-    public String getID() {
+    public String getId() {
         return id.get();
     }
 
     //----------------------------------------------------------------------------
-    public String setID(String i) {
+    public String setId(String i) {
         id.set(i);
     }
     //----------------------------------------------------------------------------
