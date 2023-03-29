@@ -18,7 +18,9 @@ public class Scout extends EntityBase implements IView {
     private String updateStatusMessage = "";
 
     // constructor
-    public Scout(String scoutId) throws InvalidPrimaryKeyException{
+    public Scout(String scoutId) throws  NotFoundException {
+        
+    }{
 		super(myTableName);
 		setDependencies();
 		String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
@@ -89,6 +91,11 @@ public class Scout extends EntityBase implements IView {
     // ----------------------------------------------------------
     public void updateState(String key, Object value) {
         stateChangeRequest(key, value);
+    }
+
+    public FindOldScout(String scoutId) throws NotFoundException {
+        
+        // DEBUG sytem.out.println("Scout: FindOldScout");
     }
 
     // -----------------------------------------------------------------------------------

@@ -42,6 +42,7 @@ public class RegisterScoutTransaction extends Transaction {
      */
     // ----------------------------------------------------------
     public void processScoutData(Properties p) {
+        Scout oldScout = new Scout(p); // Look up scoutID if query returns matching ID then display error message else no matching new scout is created
         Scout scout = new Scout(p);
         scout.update();
         scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");

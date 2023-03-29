@@ -1,3 +1,5 @@
 .vscode
 .classpath
 *.class
+.gitignore
+lib
