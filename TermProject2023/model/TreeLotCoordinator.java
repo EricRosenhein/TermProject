@@ -16,28 +16,28 @@ import userinterface.WindowPosition;
 
 public class TreeLotCoordinator implements IView, IModel
 {
+    // For Impresario
+    private Properties dependencies;
+    private ModelRegistry myRegistry;
+
     // GUI Components
-	//private HashMap<String, Scene> myViews;
+    //private HashMap<String, Scene> myViews;
     private Map<String, Scene> myViews;
-	private Stage stage;
+    private Stage stage;
     private String transactionErrorMessage = "";
 
     // ----------------------------------------------------------------
-    public TransactionMenu()
+    public TreeLotCoordinator()
     {
         stage = MainStageContainer.getInstance();
         myViews = new HashMap<String, Scene>();
-
-        /* 
+ 
         myRegistry = new ModelRegistry("TreeLotCoordinator");
-
         if(myRegistry == null)
         {
             new Event(Event.getLeafLevelClassName(this), "TreeLotCoordinator", "could not instantiate Registry", Event.ERROR);
         }
-
         setDependencies();
-        */
 
         createAndShowTLCView();
     }
@@ -80,25 +80,25 @@ public class TreeLotCoordinator implements IView, IModel
     @Override
     public Object getState(String key) 
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getState'");
+       return "";
     }
 
-    // ----------------------------------------------------------------
-    @Override
-    public void subscribe(String key, IView subscriber) 
-    {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'subscribe'");
+   //---------------------------------------------------------------------
+   public void subscribe(String key, IView subscriber)
+   {
+	// DEBUG: System.out.println("Cager[" + myTableName + "].subscribe");
+	// forward to our registry
+	myRegistry.subscribe(key, subscriber);
     }
 
-    // ----------------------------------------------------------------
-    @Override
-    public void unSubscribe(String key, IView subscriber) 
+    /** Unregister previously registered objects. */
+    //----------------------------------------------------------
+    public void unSubscribe(String key, IView subscriber)
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'unSubscribe'");
-    }
+	// DEBUG: System.out.println("Cager.unSubscribe");
+	// forward to our registry
+	myRegistry.unSubscribe(key, subscriber);
+     }
 
     // ----------------------------------------------------------------
     // Changes the current state we are in depending on the current transaction
@@ -124,21 +124,20 @@ public class TreeLotCoordinator implements IView, IModel
         // DEBUG 
 		System.out.println("Handling transaction type: " + transactionType);
 		
-        try
-		{
-			Transaction transaction = TransactionFactory.createTransaction(
-				transactionType);
+            try
+	    {
+		Transaction transaction = TransactionFactory.createTransaction(transactionType);
 
-			transaction.subscribe("CancelTransaction", this);
-			transaction.stateChangeRequest("DoYourJob", "");
-		}
-		catch (Exception ex)
-		{
-			transactionErrorMessage = "TransactionMenu : doTransaction() - TRANSACTION FAILURE: Unrecognized transaction!!";
-			new Event(Event.getLeafLevelClassName(this), "createTransaction",
-					"Transaction Creation Failure: Unrecognized transaction " + ex.toString(),
-					Event.ERROR);
-		}
+		transaction.subscribe("CancelTransaction", this);
+		transaction.stateChangeRequest("DoYourJob", "");
+	     }
+	     catch (Exception ex)
+	     {
+		transactionErrorMessage = "TransactionMenu : doTransaction() - TRANSACTION FAILURE: Unrecognized transaction!!";
+		new Event(Event.getLeafLevelClassName(this), "createTransaction",
+		   "Transaction Creation Failure: Unrecognized transaction " + ex.toString(),
+		    Event.ERROR);
+	      }
 	}
 
     // ----------------------------------------------------------------
