@@ -11,17 +11,23 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
-public class Scout extends EntityBase implements IView {
+import exception.InvalidPrimaryKeyException;
+
+/** This is the Scout class for the Application - interfaces with database table 'Scout'*/
+//===========================================================================
+public class Scout extends EntityBase {
+
     private static final String myTableName = "Scout";
     protected Properties dependencies;
     // gui
     private String updateStatusMessage = "";
 
     // constructor
-    public Scout(String scoutId) throws InvalidPrimaryKeyException{
+    public Scout(String scoutId) throws InvalidPrimaryKeyException {
+        
 		super(myTableName);
 		setDependencies();
-		String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
+		String query = "SELECT * FROM " + myTableName + " WHERE (ID = " + scoutId + ")";
 		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 		if (allDataRetrieved != null){
 			int size = allDataRetrieved.size();
@@ -34,7 +40,7 @@ public class Scout extends EntityBase implements IView {
 				while (allKeys.hasMoreElements() == true){
 					String nextKey = (String)allKeys.nextElement();
 					String nextValue = retrievedScoutData.getProperty(nextKey);
-					// scoutId = Integer.parseInt(retrievedScoutData.getProperty("scoutId"));
+				
 					if (nextValue != null){
 						persistentState.setProperty(nextKey, nextValue);
 					}
@@ -47,6 +53,8 @@ public class Scout extends EntityBase implements IView {
 		}
 	}
 
+    /** This is the second constructor - takes in a Properties object to populate the Scout object with */
+    //---------------------------------------------------------------------
     public Scout(Properties scoutInfo){
 		super(myTableName);
 		setDependencies();
@@ -61,12 +69,15 @@ public class Scout extends EntityBase implements IView {
 		}
 	}
 
+    /** Empty (default) constructor */
+    //------------------------------------------------------------------------
     public Scout() {
 		super(myTableName);
 		setDependencies();
 		persistentState = new Properties();
-	}
+    }
 
+    //----------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
@@ -83,6 +94,7 @@ public class Scout extends EntityBase implements IView {
     // ----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value) {
        
+	persistentState.setProperty(key, (String)value);
     }
 
     /** Called via the IView relationship */
@@ -90,6 +102,8 @@ public class Scout extends EntityBase implements IView {
     public void updateState(String key, Object value) {
         stateChangeRequest(key, value);
     }
+
+    
 
     // -----------------------------------------------------------------------------------
     public void update() {
@@ -99,19 +113,21 @@ public class Scout extends EntityBase implements IView {
     // -----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
         try {
-            if (persistentState.getProperty("scoutId") != null) {
+            if (persistentState.getProperty("ID") != null) {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutId",
-                        persistentState.getProperty("scoutId"));
+                whereClause.setProperty("ID",
+                        persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Scout data for scoutId : "
-                        + persistentState.getProperty("ScoutId")
+                updateStatusMessage = "Scout data for scout : "
+                 	+ persistentState.getProperty("LastName") + ", " 
+			+ persistentState.getProperty("FirstName") 
                         + " updated successfully in database!";
             } else {
                 Integer scoutId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("ScoutId", "" + scoutId);
+                persistentState.setProperty("ID", "" + scoutId);
                 updateStatusMessage = "Scout data for new scout : "
-                        + persistentState.getProperty("ScoutId")
+                        + persistentState.getProperty("LastName") + ", " 
+			+ persistentState.getProperty("FirstName") 
                         + "installed successfully in database!";
             }
         } catch (SQLException ex) {
@@ -160,17 +176,5 @@ public class Scout extends EntityBase implements IView {
                 + persistentState.getProperty("DateStatusUpdated") + "\n";
     }
 
-    // -------------------------------------------------------
-    @Override
-    public void subscribe(String key, IView subscriber) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // -------------------------------------------------------
-    @Override
-    public void unSubscribe(String key, IView subscriber) {
-        // TODO Auto-generated method stub
-
-    }
+    
 }
