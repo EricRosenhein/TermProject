@@ -52,15 +52,15 @@ public class TreeType extends EntityBase implements IView
 			else
 			{
 				// copy all the retrieved data into persistent state
-				Properties retrievedBookData = allDataRetrieved.elementAt(0);
+				Properties retrievedTreeTypeData = allDataRetrieved.elementAt(0);
 				persistentState = new Properties();
 
-				Enumeration allKeys = retrievedBookData.propertyNames();
+				Enumeration allKeys = retrievedTreeTypeData.propertyNames();
 				while (allKeys.hasMoreElements() == true)
 				{
 					String nextKey = (String)allKeys.nextElement();
-					String nextValue = retrievedBookData.getProperty(nextKey);
-					// bookId = Integer.parseInt(retrievedBookData.getProperty("bookId"));
+					String nextValue = retrievedTreeTypeData.getProperty(nextKey);
+					// bookId = Integer.parseInt(retrievedTreeTypeData.getProperty("bookId"));
 
 					if (nextValue != null)
 					{
@@ -70,7 +70,7 @@ public class TreeType extends EntityBase implements IView
 
 			}
 		}
-		// If no book found for this book id, throw an exception
+		// If no tree type found for this treetypeid, throw an exception
 		else
 		{
 			throw new InvalidPrimaryKeyException("No tree type matching id : "
@@ -103,14 +103,14 @@ public class TreeType extends EntityBase implements IView
 			else
 			{
 				// copy all the retrieved data into persistent state
-				Properties retrievedBookData = allDataRetrieved.elementAt(0);
+				Properties retrievedTreeTypeData = allDataRetrieved.elementAt(0);
 				persistentState = new Properties();
 
-				Enumeration allKeys = retrievedBookData.propertyNames();
+				Enumeration allKeys = retrievedTreeTypeData.propertyNames();
 				while (allKeys.hasMoreElements() == true)
 				{
 					String nextKey = (String)allKeys.nextElement();
-					String nextValue = retrievedBookData.getProperty(nextKey);
+					String nextValue = retrievedTreeTypeData.getProperty(nextKey);
 
 					if (nextValue != null)
 					{
@@ -149,12 +149,12 @@ public class TreeType extends EntityBase implements IView
 		}
 	}
 
-    // Empty Contstructor
+        // Empty Contstructor
 	// --------------------------------------------------------------------
 	public TreeType()
 	{
 		super(myTableName);
-        setDependencies();
+                setDependencies();
 		persistentState = new Properties();
 	}
 
@@ -163,7 +163,7 @@ public class TreeType extends EntityBase implements IView
 	private void setDependencies()
 	{
 		dependencies = new Properties();
-        dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
+                dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
 		myRegistry.setDependencies(dependencies);
 	}
 	
@@ -214,7 +214,7 @@ public class TreeType extends EntityBase implements IView
 			else
 			{
 				int treeTypeId =
-					insertAutoIncrementalPersistentState(mySchema, persistentState);
+				insertAutoIncrementalPersistentState(mySchema, persistentState);
 				persistentState.setProperty("treeTypeId", "" + treeTypeId);
 				updateStatusMessage = "Tree type data for new Tree type : " +  persistentState.getProperty("treeTypeId" + "installed successfully in database!");
 			}
@@ -259,10 +259,10 @@ public class TreeType extends EntityBase implements IView
 
 	// Invokes the toString() method to display info about the chosen book
 	// -------------------------------------------------------
-    public void display()
-    {
-        System.out.println(toString());
-    }
+    	public void display()
+    	{
+        	System.out.println(toString());
+    	}
 
 	//---------------------------------------------------------------------
 	public void createAndShowTreeTypeView()
@@ -279,7 +279,7 @@ public class TreeType extends EntityBase implements IView
 		swapToView(currentScene);
 	}
 
-    //---------------------------------------------------------------------
+    	//---------------------------------------------------------------------
 	private void processNewTreeType(Properties props)
 	{
 		props.forEach((key, value) -> {
