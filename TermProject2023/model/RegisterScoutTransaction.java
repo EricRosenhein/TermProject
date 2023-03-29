@@ -1,78 +1,33 @@
 package model;
 
-import java.util.Properties;
+// system imports
+import javafx.stage.Stage;
 import javafx.scene.Scene;
+import java.util.Properties;
+import java.util.Vector;
+
+// project imports
+import event.Event;
+import exception.InvalidPrimaryKeyException;
+
 import userinterface.View;
 import userinterface.ViewFactory;
 
-public class RegisterScoutTransaction extends Transaction
-{
+public class RegisterScoutTransaction extends Transaction {
+    
     private Scout scout;
 
     // GUI Components
-	private String transactionErrorMessage = "";
-	private String scoutUpdateStatusMessage = "";
+    private String transactionErrorMessage = "";
+    private String scoutUpdateStatusMessage = "";
 
-    public RegisterScoutTransaction() throws Exception
-    {
-        super();
-
-        // DEBUG - program isn't getting to this point 03/26/2023 -SW
-        System.out.println("In RegisterScoutTransaction constructor");
+    // --------------------------------------------------------------
+    protected RegisterScoutTransaction() {
+	
     }
 
-    /**
-	 * This method encapsulates all the logic of creating the scout,
-	 * verifying ownership, crediting, etc. etc.
-	 */
-	//----------------------------------------------------------
-	public void processScoutData(Properties props)
-	{
-        System.out.println("RegisterScoutTransaction : processScoutData() - Work in Progress");
-        /* 
-            scout = new Scout(props);
-            scout.update();
-            scoutUpdateStatusMessage = (String)scout.getState("UpdateStatusMessage");
-        */
-	}
-
-    //-----------------------------------------------------------
-	public Object getState(String key)
-	{
-		if (key.equals("TransactionError"))
-		{
-			return transactionErrorMessage;
-		}
-		else
-		if (key.equals("ScoutUpdateStatusMessage") == true)
-		{
-			return scoutUpdateStatusMessage;
-		}
-		
-		return null;
-	}
-
-    //-----------------------------------------------------------
-	public void stateChangeRequest(String key, Object value)
-	{
-		// DEBUG 
-        System.out.println("RegisterScoutTransaction : stateChangeRequest() key is: " + key);
-
-		if (key.equals("DoYourJob"))
-		{
-			doYourJob();
-		}
-		else if (key.equals("RegisterScoutData"))
-		{
-			processScoutData((Properties)value);
-		}
-
-		//myRegistry.updateSubscribers(key, this);
-	}
-
-    //-----------------------------------------------------------
-    protected void setDependencies() 
-    {
+    // ----------------------------------------------------------
+    protected void setDependencies() {
         dependencies = new Properties();
         dependencies.setProperty("CancelScout", "CancelTransaction");
         dependencies.setProperty("InsertScoutData", "ScoutUpdateStatusMessage");
@@ -80,21 +35,65 @@ public class RegisterScoutTransaction extends Transaction
         myRegistry.setDependencies(dependencies);
     }
 
-    //-----------------------------------------------------------
-    protected Scene createView() 
-    {
-        // DEBUG 
-        System.out.println("In RegisterScoutTransaction : createView()");
+    /**
+     * This method encapsulates all the logic of creating the account,
+     * verifying ownership, crediting, etc. etc.
+     */
+    // ----------------------------------------------------------
+    public void processScoutData(Properties p) {
+	try
+	{
+        	Scout oldScout = new Scout(p); // Look up scoutID if query returns matching ID then display error message else no matching new scout is created
+	}
+	catch (Exception ex)
+	{       
+		scout = new Scout(p);
+        	scout.update();
+        	scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
+	}
+    }
 
-        Scene currentScene = myViews.get("RegisterScoutView");
-
-        // Create scene if its null
-        if (currentScene == null)
-        {
-            View newView = ViewFactory.createView("RegisterScoutView", this);
-            currentScene = new Scene(newView);
-            myViews.put("RegisterScoutView", currentScene);
+    // -----------------------------------------------------------
+    public Object getState(String key) {
+        if (key.equals("TransactionError") == true) {
+            return transactionErrorMessage;
+        } else if (key.equals("ScoutUpdateStatusMessage") == true) {
+            return scoutUpdateStatusMessage;
         }
 
-        return currentScene;
-    }  
+        return null;
+    }
+
+    // -----------------------------------------------------------
+    public void stateChangeRequest(String key, Object value) {
+        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
+
+        if (key.equals("DoYourJob") == true) {
+            doYourJob();
+        } else if (key.equals("InsertScoutData") == true) {
+            processScoutData((Properties) value);
+        }
+
+        myRegistry.updateSubscribers(key, this);
+    }
+
+    /**
+     * Create the view of this class. And then the super-class calls
+     * swapToView() to display the view in the frame
+     */
+    // ------------------------------------------------------
+    protected Scene createView() {
+        Scene currentScene = myViews.get("ScoutView");
+
+        if (currentScene == null) {
+            // create our initial view
+            View newView = ViewFactory.createView("ScoutView", this);
+            currentScene = new Scene(newView);
+            myViews.put("ScoutView", currentScene);
+
+            return currentScene;
+        } else {
+            return currentScene;
+        }
+    }
+}
