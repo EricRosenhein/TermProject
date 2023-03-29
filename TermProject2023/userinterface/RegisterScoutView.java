@@ -18,6 +18,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+ /** This is the Register Scout View class for the Application */
+ //=============================================================
 public class RegisterScoutView extends View
 {
     protected TextField firstName;
@@ -28,6 +30,7 @@ public class RegisterScoutView extends View
     protected TextField email;
     protected TextField troopID;
 
+    //------------------------------------------------------------  
     public RegisterScoutView(IModel registerScout)
     {
         super(registerScout, "RegisterScoutView");
@@ -50,10 +53,10 @@ public class RegisterScoutView extends View
     // ----------------------------------------------------------------------
     private Node createTitle() 
     {
-        Text titleText = new Text("       Register a Scout       ");
+        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales: Register Scout ");
         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BLACK);
+        titleText.setFill(Color.BURLYWOOD);
              
         return titleText;
     }
@@ -139,7 +142,7 @@ public class RegisterScoutView extends View
         email.setEditable(true);
         grid.add(email, 1, 6);
 
-        // Troop ID will be auto generated, so we may not need an editable text field. Maybe call the auto generate method as a parameter into the setText() 
+       
         Text troopIDLabel = new Text("Troop ID: ");
 		troopIDLabel.setFont(font);
 		troopIDLabel.setWrappingWidth(150);
