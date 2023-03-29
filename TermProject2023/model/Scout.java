@@ -23,16 +23,16 @@ public class Scout extends EntityBase {
     private String updateStatusMessage = "";
 
     // constructor
-    public Scout(String scoutId) throws InvalidPrimaryKeyException {
+    public Scout(String troopId) throws InvalidPrimaryKeyException {
         
 		super(myTableName);
 		setDependencies();
-		String query = "SELECT * FROM " + myTableName + " WHERE (ID = " + scoutId + ")";
+		String query = "SELECT * FROM " + myTableName + " WHERE (TroopId = " + troopId + ")";
 		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 		if (allDataRetrieved != null){
 			int size = allDataRetrieved.size();
 			if (size != 1){
-				throw new InvalidPrimaryKeyException("Multiple scouts matching id : "+scoutId+" found.");
+				throw new InvalidPrimaryKeyException("Multiple scouts matching troop id : "+ troopId + " found.");
 			} else{
 				Properties retrievedScoutData = allDataRetrieved.elementAt(0);
 				persistentState = new Properties();
@@ -49,7 +49,7 @@ public class Scout extends EntityBase {
 		}
 		// If no scout found for Id, throw exception
 		else{
-			throw new InvalidPrimaryKeyException("No account matching id : "+scoutId+" found.");
+			throw new InvalidPrimaryKeyException("No account matching troop id : "+ troopId +" found.");
 		}
 	}
 

@@ -35,7 +35,7 @@ abstract public class Transaction implements IView, IModel
 	 *
 	 */
 	//----------------------------------------------------------
-	protected Transaction() throws Exception
+	protected Transaction()
 	{
 		// DEBUG System.out.println("In Transaction constructor");
 

@@ -30,6 +30,8 @@ public class RegisterScoutView extends View
     protected TextField email;
     protected TextField troopID;
 
+    protected MessageView statusLog;
+
     //------------------------------------------------------------  
     public RegisterScoutView(IModel registerScout)
     {
@@ -47,7 +49,10 @@ public class RegisterScoutView extends View
 
         container.getChildren().add(createFormContents());
 
+        container.getChildren().add(createStatusLog("                                "));
         getChildren().add(container);
+
+        myModel.subscribe("ScoutUpdateStatusMessage", this);
     }
 
     // ----------------------------------------------------------------------
@@ -179,14 +184,40 @@ public class RegisterScoutView extends View
 
         return grid;
     }
- 
+
+    //-----------------------------------------------------------------------
+    protected MessageView createStatusLog(String initMsg)
+    {
+        return new MessageView(initMsg);
+    }
+
     // ----------------------------------------------------------------------
     @Override
     public void updateState(String key, Object value) 
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateState'");
-    }        
+       if (key.equals("ScoutUpdateStatusMessage"))
+       {
+           String msg = (String)value;
+           if (msg.startsWith("ERR")) {
+               displayErrorMessage(msg);
+           }
+           else {
+               displayMessage(msg);
+           }
+       }
+    }
+
+    //------------------------------------------------------------------------
+    protected void displayErrorMessage(String message)
+    {
+        statusLog.displayErrorMessage(message);
+    }
+
+    //-------------------------------------------------------------------------
+    protected void displayMessage(String message)
+    {
+        statusLog.displayMessage(message);
+    }
 }
 
 

@@ -23,7 +23,7 @@ public class RegisterScoutTransaction extends Transaction {
 
     // --------------------------------------------------------------
     protected RegisterScoutTransaction() {
-	
+	    super();
     }
 
     // ----------------------------------------------------------
@@ -43,13 +43,15 @@ public class RegisterScoutTransaction extends Transaction {
     public void processScoutData(Properties p) {
 	try
 	{
-        	Scout oldScout = new Scout(p); // Look up scoutID if query returns matching ID then display error message else no matching new scout is created
-	}
-	catch (Exception ex)
+        String troopIDSent = p.getProperty("TroopID");
+        Scout oldScout = new Scout(troopIDSent);
+        scoutUpdateStatusMessage = "ERROR: Scout with troop ID: " + troopIDSent + "already exists!";
+    }
+	catch (InvalidPrimaryKeyException ex)
 	{       
 		scout = new Scout(p);
-        	scout.update();
-        	scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
+        scout.update();
+        scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
 	}
     }
 
