@@ -27,6 +27,11 @@ public class TransactionFactory
 			returnValue = new RegisterScoutTransaction();
 		}
 		else
+		if (transactionType.equals("AddTree") == true)
+		{
+			returnValue = new AddTreeTransaction();
+		}
+		else
 		if (transactionType.equals("AddTreeType") == true)
 		{
 			returnValue = new AddTreeTypeTransaction();
