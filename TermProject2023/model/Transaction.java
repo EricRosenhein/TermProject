@@ -37,7 +37,7 @@ abstract public class Transaction implements IView, IModel
 	//----------------------------------------------------------
 	protected Transaction() throws Exception
 	{
-		System.out.println("In Transaction constructor");
+		// DEBUG System.out.println("In Transaction constructor");
 
 		myStage = MainStageContainer.getInstance();
 		myViews = new HashMap<String, Scene>();
@@ -49,7 +49,7 @@ abstract public class Transaction implements IView, IModel
 				"Could not instantiate Registry", Event.ERROR);
 		}
 
-		//setDependencies();	-- will have to implement this method in all transactions or else the program will stop at this point
+		setDependencies();
 
 	}
 
@@ -66,8 +66,7 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{		
-		// DEBUG
-		System.out.println("In Transaction : doYourJob()");
+		// DEBUG System.out.println("In Transaction : doYourJob()");
 
 		Scene newScene = createView();
 		
@@ -111,8 +110,7 @@ abstract public class Transaction implements IView, IModel
 	//-----------------------------------------------------------------------------
 	public void swapToView(Scene newScene)
 	{	
-		// DEBUG
-		System.out.println("In Transaction : swapToView()");
+		// DEBUG System.out.println("In Transaction : swapToView()");
 
 		if (newScene == null)
 		{
