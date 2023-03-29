@@ -83,13 +83,13 @@ public class RegisterScoutTransaction extends Transaction {
      */
     // ------------------------------------------------------
     protected Scene createView() {
-        Scene currentScene = myViews.get("ScoutView");
+        Scene currentScene = myViews.get("RegisterScoutView");
 
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("ScoutView", this);
+            View newView = ViewFactory.createView("RegisterScoutView", this);
             currentScene = new Scene(newView);
-            myViews.put("ScoutView", currentScene);
+            myViews.put("RegisterScoutView", currentScene);
 
             return currentScene;
         } else {
