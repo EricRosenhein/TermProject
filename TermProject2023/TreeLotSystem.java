@@ -1,4 +1,3 @@
-
 import event.Event;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -7,11 +6,11 @@ import model.TreeLotCoordinator;
 import userinterface.MainStageContainer;
 import userinterface.WindowPosition;
 
-/* Test driver classs */
-
+/** This is the main driver class for the Boy Scout Troop 209 Tree Sales Application */
+//======================================================================
 public class TreeLotSystem extends Application
 {
-    private TeeLotCoordinator tLC;
+    private TreeLotCoordinator tLC;
     private Stage mainStage;
 
     public void start(Stage primaryStage)
