@@ -26,41 +26,43 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class TransactionMenuView extends View
+/** This is the main Transaction Choice View for the Boy Scout Troop 209 Tree Sales Application */
+//==================================================================================
+public class TLCView extends View
 {
     private VBox container;
     private MessageView statusLog;
 
     // ----------------------------------------------------------------------
-    public TransactionMenuView(IModel transactionMenu) 
+    public TLCView(IModel transactionMenu) 
     {
-        super(transactionMenu, "TransactionMenuView");
+        super(transactionMenu, "TLCView");
        
         // create a container for showing the contents
-		container = new VBox(10);
+	container = new VBox(10);
 
         container.setPadding(new Insets(15, 5, 5, 5));
 
-		// create a Node (Text) for showing the title
-		container.getChildren().add(createTitle());
+	// create a Node (Text) for showing the title
+	container.getChildren().add(createTitle());
 
-		// create a Node (GridPane) for showing data entry fields
-		container.getChildren().add(createFormContents());
+	// create a Node (GridPane) for showing data entry fields
+	container.getChildren().add(createFormContents());
 
-		// Error message area
-		container.getChildren().add(createStatusLog(" "));
+	// Error message area
+	container.getChildren().add(createStatusLog(" "));
 
-		getChildren().add(container);
+	getChildren().add(container);
 
     }
 
      //----------------------------------------------------------------------------
     private Node createTitle() 
     {
-        Text titleText = new Text("       Choose Transaction       ");
+        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales System: Choose Transaction ");
         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BLACK);
+        titleText.setFill(Color.BURLYWOOD);
              
         return titleText;
     }
@@ -193,29 +195,29 @@ public class TransactionMenuView extends View
 
     // ----------------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
-	{
-		statusLog = new MessageView(initialMessage);
+    {
+	statusLog = new MessageView(initialMessage);
 
-		return statusLog;
-	}
+	return statusLog;
+    }
 
     // ----------------------------------------------------------------------
-     /**
-	 * Display error message
-	 */
-	public void displayErrorMessage(String message)
-	{
-		statusLog.displayErrorMessage(message);
-	}
+    /**
+     * Display error message
+     */
+    public void displayErrorMessage(String message)
+    {
+	statusLog.displayErrorMessage(message);
+    }
 
-	/**
-	 * Clear error message
-	 */
-	//----------------------------------------------------------
-	public void clearErrorMessage()
-	{
-		statusLog.clearErrorMessage();
-	}
+    /**
+      * Clear error message
+      */
+    //----------------------------------------------------------
+    public void clearErrorMessage()
+    {
+	statusLog.clearErrorMessage();
+    }
 
 }
 
