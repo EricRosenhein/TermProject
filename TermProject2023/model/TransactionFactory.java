@@ -17,8 +17,9 @@ public class TransactionFactory
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transactionType) throws Exception
 	{
-		// DEBUG
-		System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		// DEBUG System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		
+		// When editing, comment out sections not being tested
 		
 		Transaction returnValue = null;
 
@@ -26,7 +27,7 @@ public class TransactionFactory
 		{			
 			returnValue = new RegisterScoutTransaction();
 		}
-		else
+		/*else
 		if (transactionType.equals("AddTree") == true)
 		{
 			returnValue = new AddTreeTransaction();
@@ -60,7 +61,7 @@ public class TransactionFactory
 		if (transactionType.equals("RemoveTree") == true)
 		{
 			returnValue = new RemoveTreeTransaction();
-		} 
+		} */
 
 		// DEBUG
 		//System.out.println("Return value is: " + returnValue.toString());
