@@ -157,6 +157,9 @@ public class RegisterScoutView extends View
         Button cancelButton = new Button("Cancel");
         Button submitButton = new Button("Submit");
 
+// ADD EVENT HANDLER FOR SUBMIT BUTTON
+
+
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>() 
         {
