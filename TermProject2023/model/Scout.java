@@ -47,7 +47,7 @@ public class Scout extends EntityBase {
 				}
 			}
 		}
-		// If no scout found for Id, throw exception
+		// If no scout found for troopId, throw exception
 		else{
 			throw new InvalidPrimaryKeyException("No account matching troop id : "+ troopId +" found.");
 		}
@@ -131,7 +131,7 @@ public class Scout extends EntityBase {
                         + "installed successfully in database!";
             }
         } catch (SQLException ex) {
-            updateStatusMessage = "Error regestering scout data in database!";
+            updateStatusMessage = "Error registering scout data in database!";
         }
     }
 
@@ -169,7 +169,7 @@ public class Scout extends EntityBase {
     public String toString() {
         return "FirstName: " + persistentState.getProperty("FirstName") + "; LastName: "
                 + persistentState.getProperty("LastName") + "; MiddleName: " + persistentState.getProperty("LastName")
-                + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Eamil: "
+                + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Email: "
                 + persistentState.getProperty("Email")
                 + "; TroopId: " + persistentState.getProperty("TroopId") + "; Status: "
                 + persistentState.getProperty("Status") + "; DateStatusUpdated: "
