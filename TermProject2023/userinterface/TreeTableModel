@@ -17,11 +17,12 @@ public class TreeTableModel
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> treeData)
 	{
-		barcode =  new SimpleStringProperty(treeData.elementAt(0));
-                treeType =  new SimpleStringProperty(treeData.elementAt(1));
-		notes =  new SimpleStringProperty(treeData.elementAt(2));
-		status =  new SimpleStringProperty(treeData.elementAt(3));
-		dateStatusUpdated =  new SimpleStringProperty(treeData.elementAt(4));
+		  barcode =  new SimpleStringProperty(treeData.elementAt(0));
+      treeType =  new SimpleStringProperty(treeData.elementAt(1));
+		  notes =  new SimpleStringProperty(treeData.elementAt(2));
+		  status =  new SimpleStringProperty(treeData.elementAt(3));
+		  dateStatusUpdated =  new SimpleStringProperty(treeData.elementAt(4));
+
 	}
 
     //----------------------------------------------------------------------------
