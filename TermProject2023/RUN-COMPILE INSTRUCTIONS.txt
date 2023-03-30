@@ -1,5 +1,5 @@
 javac -d classes -classpath classes;. model\*.java userinterface\*.java
 
-javac -classpath classes;. Library.java  
+javac -classpath classes;. TreeLotSystem.java  
 
 run-only

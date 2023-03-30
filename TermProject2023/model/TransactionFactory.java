@@ -11,25 +11,61 @@ import javax.swing.JFrame;
 //==============================================================
 public class TransactionFactory
 {
-
-	/**
-	 *
-	 */
+	//----------------------------------------------------------s
+	public TransactionFactory() {}
+	
 	//----------------------------------------------------------
-	public static Transaction createTransaction(String transType)
-		throws Exception
+	public static Transaction createTransaction(String transactionType) throws Exception
 	{
-		Transaction retValue = null;
+		// DEBUG System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		
+		// When editing, comment out sections not being tested
+		
+		Transaction returnValue = null;
 
-		if (transType.equals("AddTreeType") == true)
-		{
-			retValue = new AddTreeTypeTransaction();
+		if (transactionType.equals("RegisterScout"))
+		{			
+			returnValue = new RegisterScoutTransaction();
 		}
-		else if (transType.equals("UpdateTreeType") == true)
+		/*else
+		if (transactionType.equals("AddTree") == true)
 		{
-			//retValue = new UpdateTreeTypeTransaction();
+			returnValue = new AddTreeTransaction();
 		}
+		else
+		if (transactionType.equals("AddTreeType") == true)
+		{
+			returnValue = new AddTreeTypeTransaction();
+		}
+		else
+		if (transactionType.equals("UpdateScout") == true)
+		{
+			returnValue = new UpdateScoutTransaction();
+		} 
+		else
+		if (transactionType.equals("UpdateTree") == true)
+		{
+			returnValue = new UpdateTreeTransaction();
+		} 
+		else
+		if (transactionType.equals("UpdateTreeType") == true)
+		{
+			returnValue = new UpdateTreeTypeTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveScout") == true)
+		{
+			returnValue = new RemoveScoutTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveTree") == true)
+		{
+			returnValue = new RemoveTreeTransaction();
+		} */
 
-		return retValue;
+		// DEBUG
+		//System.out.println("Return value is: " + returnValue.toString());
+
+		return returnValue;
 	}
 }
