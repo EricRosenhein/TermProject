@@ -18,9 +18,9 @@ public class Scout extends EntityBase implements IView {
     private String updateStatusMessage = "";
 
     // constructor
-    public Scout(String scoutId) throws  NotFoundException {
+    public Scout(String scoutId) throws  InvalidPrimaryKeyException {
         
-    }{
+    
 		super(myTableName);
 		setDependencies();
 		String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
@@ -93,8 +93,34 @@ public class Scout extends EntityBase implements IView {
         stateChangeRequest(key, value);
     }
 
-    public FindOldScout(String scoutId) throws NotFoundException {
+    public FindOldScout (String troopId) throws InvalidPrimaryKeyException {
         
+        super(myTableName);
+		setDependencies();
+		String query = "SELECT * FROM " + myTableName + " WHERE (troopId = " + troopId + ")";
+		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+		if (allDataRetrieved != null){
+			int size = allDataRetrieved.size();
+			if (size != 1){
+				throw new InvalidPrimaryKeyException("Multiple scouts matching id : "+troopId+" found.");
+			} else{
+				Properties retrievedScoutData = allDataRetrieved.elementAt(0);
+				persistentState = new Properties();
+				Enumeration allKeys = retrievedScoutData.propertyNames();
+				while (allKeys.hasMoreElements() == true){
+					String nextKey = (String)allKeys.nextElement();
+					String nextValue = retrievedScoutData.getProperty(nextKey);
+					// scoutId = Integer.parseInt(retrievedScoutData.getProperty("scoutId"));
+					if (nextValue != null){
+						persistentState.setProperty(nextKey, nextValue);
+					}
+				}
+			}
+		}
+		// If no scout found for Id, throw exception
+		else{
+			throw new InvalidPrimaryKeyException("No account matching id : "+troopId+" found.");
+		}
         // DEBUG sytem.out.println("Scout: FindOldScout");
     }
 
