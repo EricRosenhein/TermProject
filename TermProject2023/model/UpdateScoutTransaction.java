@@ -24,7 +24,6 @@ public class UpdateScoutTransaction extends Transaction {
     // --------------------------------------------------------------
     protected UpdateScoutTransaction() throws Exception {
 		super();
-		//TODO Auto-generated constructor stub
 	}
 
     // ----------------------------------------------------------
@@ -42,7 +41,7 @@ public class UpdateScoutTransaction extends Transaction {
      */
     // ----------------------------------------------------------
     public void processScoutData(Properties p) {
-        Scout scout = new Scout(p);
+        scout = new Scout(p);
         scout.update();
         scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
     }

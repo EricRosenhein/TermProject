@@ -49,7 +49,7 @@ public class Scout extends EntityBase {
 		}
 		// If no scout found for troopId, throw exception
 		else{
-			throw new InvalidPrimaryKeyException("No account matching troop id : "+ troopId +" found.");
+			throw new InvalidPrimaryKeyException("No scout matching troop id : "+ troopId +" found.");
 		}
 	}
 
@@ -165,7 +165,7 @@ public class Scout extends EntityBase {
         }
     }
     
-    // Prints out a description of the chosen book
+    // Prints out a description of the chosen scout
     public String toString() {
         return "FirstName: " + persistentState.getProperty("FirstName") + "; LastName: "
                 + persistentState.getProperty("LastName") + "; MiddleName: " + persistentState.getProperty("LastName")
