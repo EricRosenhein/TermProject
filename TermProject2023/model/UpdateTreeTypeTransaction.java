@@ -131,16 +131,16 @@ public class UpdateTreeTypeTransaction extends Transaction
 		}
 	}
 
-    protected void CreateAndShowUpdateTreeTypeTransactionView()
+    protected Scene CreateAndShowUpdateTreeTypeTransactionView()
     {
-        Scene currentScene = myViews.get("UpdateTreeTypeTransactionView");
+        Scene currentScene = myViews.get("UpdateTreeTypeView");
 
 		if (currentScene == null)
 		{
 			// create our initial view
-			View newView = ViewFactory.createView("UpdateTreeTypeTransactionView", this);
+			View newView = ViewFactory.createView("UpdateTreeTypeView", this);
 			currentScene = new Scene(newView);
-			myViews.put("UpdateTreeTypeTransactionView", currentScene);
+			myViews.put("UpdateTreeTypeView", currentScene);
 
 			return currentScene;
 		}

@@ -195,14 +195,52 @@ import userinterface.ViewFactory;
                         "; Barcode Prefix: " + persistentState.getProperty("BarcodePrefix") + "\n";
         }
 
+        //---------------------------------------------------------------------
+        // Get methods
         public String getTreeTypeId ()
         {
             /*
             String treeTypeId = (String)getState("ID");
             return treeTypeId;
-             */
-             String treeTypeId = persistentState.getProperty("ID");
-             return treeTypeId;
+            */
+            String treeTypeId = persistentState.getProperty("ID");
+            return treeTypeId;
+        }
+
+        public String getTypeDescription()
+        {
+            String TypeDescription = persistentState.getProperty("TypeDescription");
+            return TypeDescription;
+        }
+
+        public String getCost()
+        {
+            String Cost = persistentState.getProperty("Cost");
+            return Cost;
+        }
+
+        public String getBarcodePrefix()
+        {
+            String BarcodePrefix = persistentState.getProperty("BarcodePrefix");
+            return BarcodePrefix;
+        }
+
+
+        //---------------------------------------------------------------------
+        // Set methods
+        public void setTypeDescription(String TypeDescription)
+        {
+            persistentState.setProperty("TypeDescription", TypeDescription);
+        }
+
+        public void setCost(String Cost)
+        {
+            persistentState.setProperty("Cost", Cost);
+        }
+
+        public void setBarcodePrefix(String BarcodePrefix)
+        {
+            persistentState.setProperty("BarcodePrefix", BarcodePrefix);
         }
 
     }

@@ -45,7 +45,7 @@ public class AddTreeTypeTransaction extends Transaction
 		// String barcodePrefix = props.getProperty("barcodePrefix");
 
 		newTreeType = new TreeType(props);
-        	newTreeType.update();
+        newTreeType.update();
 		updateStatusMessage = (String)newTreeType.getState("UpdateStatusMessage");
 	}
 
@@ -84,14 +84,14 @@ public class AddTreeTypeTransaction extends Transaction
 	protected Scene createView()
 	{
 
-		Scene currentScene = myViews.get("AddTreeTypeTransactionView");
+		Scene currentScene = myViews.get("AddTreeTypeView");
 
 		if (currentScene == null)
 		{
 			// create our initial view
-			View newView = ViewFactory.createView("AddTreeTypeTransactionView", this);
+			View newView = ViewFactory.createView("AddTreeTypeView", this);
 			currentScene = new Scene(newView);
-			myViews.put("AddTreeTypeTransactionView", currentScene);
+			myViews.put("AddTreeTypeView", currentScene);
 
 			return currentScene;
 		}
