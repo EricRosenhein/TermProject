@@ -11,24 +11,28 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
-public class Scout extends EntityBase implements IView {
+import exception.InvalidPrimaryKeyException;
+
+/** This is the Scout class for the Application - interfaces with database table 'Scout'*/
+//===========================================================================
+public class Scout extends EntityBase implements IViem{
+
     private static final String myTableName = "Scout";
     protected Properties dependencies;
     // gui
     private String updateStatusMessage = "";
 
     // constructor
-    public Scout(String scoutId) throws  InvalidPrimaryKeyException {
+    public Scout(String troopId) throws InvalidPrimaryKeyException {
         
-    
 		super(myTableName);
 		setDependencies();
-		String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
+		String query = "SELECT * FROM " + myTableName + " WHERE (TroopId = " + troopId + ")";
 		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 		if (allDataRetrieved != null){
 			int size = allDataRetrieved.size();
 			if (size != 1){
-				throw new InvalidPrimaryKeyException("Multiple scouts matching id : "+scoutId+" found.");
+				throw new InvalidPrimaryKeyException("Multiple scouts matching troop id : "+ troopId + " found.");
 			} else{
 				Properties retrievedScoutData = allDataRetrieved.elementAt(0);
 				persistentState = new Properties();
@@ -36,19 +40,21 @@ public class Scout extends EntityBase implements IView {
 				while (allKeys.hasMoreElements() == true){
 					String nextKey = (String)allKeys.nextElement();
 					String nextValue = retrievedScoutData.getProperty(nextKey);
-					// scoutId = Integer.parseInt(retrievedScoutData.getProperty("scoutId"));
+				
 					if (nextValue != null){
 						persistentState.setProperty(nextKey, nextValue);
 					}
 				}
 			}
 		}
-		// If no scout found for Id, throw exception
+		// If no scout found for troopId, throw exception
 		else{
-			throw new InvalidPrimaryKeyException("No account matching id : "+scoutId+" found.");
+			throw new InvalidPrimaryKeyException("No scout matching troop id : "+ troopId +" found.");
 		}
 	}
 
+    /** This is the second constructor - takes in a Properties object to populate the Scout object with */
+    //---------------------------------------------------------------------
     public Scout(Properties scoutInfo){
 		super(myTableName);
 		setDependencies();
@@ -63,12 +69,15 @@ public class Scout extends EntityBase implements IView {
 		}
 	}
 
+    /** Empty (default) constructor */
+    //------------------------------------------------------------------------
     public Scout() {
 		super(myTableName);
 		setDependencies();
 		persistentState = new Properties();
-	}
+    }
 
+    //----------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
@@ -85,6 +94,7 @@ public class Scout extends EntityBase implements IView {
     // ----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value) {
        
+	persistentState.setProperty(key, (String)value);
     }
 
     /** Called via the IView relationship */
@@ -93,36 +103,7 @@ public class Scout extends EntityBase implements IView {
         stateChangeRequest(key, value);
     }
 
-    public FindOldScout (String troopId) throws InvalidPrimaryKeyException {
-        
-        super(myTableName);
-		setDependencies();
-		String query = "SELECT * FROM " + myTableName + " WHERE (troopId = " + troopId + ")";
-		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-		if (allDataRetrieved != null){
-			int size = allDataRetrieved.size();
-			if (size != 1){
-				throw new InvalidPrimaryKeyException("Multiple scouts matching id : "+troopId+" found.");
-			} else{
-				Properties retrievedScoutData = allDataRetrieved.elementAt(0);
-				persistentState = new Properties();
-				Enumeration allKeys = retrievedScoutData.propertyNames();
-				while (allKeys.hasMoreElements() == true){
-					String nextKey = (String)allKeys.nextElement();
-					String nextValue = retrievedScoutData.getProperty(nextKey);
-					// scoutId = Integer.parseInt(retrievedScoutData.getProperty("scoutId"));
-					if (nextValue != null){
-						persistentState.setProperty(nextKey, nextValue);
-					}
-				}
-			}
-		}
-		// If no scout found for Id, throw exception
-		else{
-			throw new InvalidPrimaryKeyException("No account matching id : "+troopId+" found.");
-		}
-        // DEBUG sytem.out.println("Scout: FindOldScout");
-    }
+    
 
     // -----------------------------------------------------------------------------------
     public void update() {
@@ -132,23 +113,25 @@ public class Scout extends EntityBase implements IView {
     // -----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
         try {
-            if (persistentState.getProperty("scoutId") != null) {
+            if (persistentState.getProperty("ID") != null) {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutId",
-                        persistentState.getProperty("scoutId"));
+                whereClause.setProperty("ID",
+                        persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Scout data for scoutId : "
-                        + persistentState.getProperty("ScoutId")
+                updateStatusMessage = "Scout data for scout : "
+                 	+ persistentState.getProperty("LastName") + ", " 
+			+ persistentState.getProperty("FirstName") 
                         + " updated successfully in database!";
             } else {
                 Integer scoutId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("ScoutId", "" + scoutId);
+                persistentState.setProperty("ID", "" + scoutId);
                 updateStatusMessage = "Scout data for new scout : "
-                        + persistentState.getProperty("ScoutId")
+                        + persistentState.getProperty("LastName") + ", " 
+			+ persistentState.getProperty("FirstName") 
                         + "installed successfully in database!";
             }
         } catch (SQLException ex) {
-            updateStatusMessage = "Error regestering scout data in database!";
+            updateStatusMessage = "Error registering scout data in database!";
         }
     }
 
@@ -182,28 +165,16 @@ public class Scout extends EntityBase implements IView {
         }
     }
     
-    // Prints out a description of the chosen book
+    // Prints out a description of the chosen scout
     public String toString() {
         return "FirstName: " + persistentState.getProperty("FirstName") + "; LastName: "
                 + persistentState.getProperty("LastName") + "; MiddleName: " + persistentState.getProperty("LastName")
-                + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Eamil: "
+                + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Email: "
                 + persistentState.getProperty("Email")
                 + "; TroopId: " + persistentState.getProperty("TroopId") + "; Status: "
                 + persistentState.getProperty("Status") + "; DateStatusUpdated: "
                 + persistentState.getProperty("DateStatusUpdated") + "\n";
     }
 
-    // -------------------------------------------------------
-    @Override
-    public void subscribe(String key, IView subscriber) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // -------------------------------------------------------
-    @Override
-    public void unSubscribe(String key, IView subscriber) {
-        // TODO Auto-generated method stub
-
-    }
+    
 }

@@ -11,36 +11,61 @@ import javax.swing.JFrame;
 //==============================================================
 public class TransactionFactory
 {
-
-	/**
-	 *
-	 */
+	//----------------------------------------------------------s
+	public TransactionFactory() {}
+	
 	//----------------------------------------------------------
-	public static Transaction createTransaction(String transType)
-		throws Exception
+	public static Transaction createTransaction(String transactionType) throws Exception
 	{
-		Transaction retValue = null;
+		// DEBUG System.out.println("In TransactionFactory : createTransaction() - Current Transaction Type is: " + transactionType);
+		
+		// When editing, comment out sections not being tested
+		
+		Transaction returnValue = null;
 
-		if (transType.equals("InsertNewBook") == true)
+		if (transactionType.equals("RegisterScout"))
+		{			
+			returnValue = new RegisterScoutTransaction();
+		}
+		/*else
+		if (transactionType.equals("AddTree") == true)
 		{
-			retValue = new InsertBookTransaction();
+			returnValue = new AddTreeTransaction();
 		}
 		else
-		if (transType.equals("RegisterNewScout") == true)
+		if (transactionType.equals("AddTreeType") == true)
 		{
-			retValue = new RegisterScoutTransaction();
+			returnValue = new AddTreeTypeTransaction();
 		}
 		else
-		if (transType.equals("SearchBooks") == true)
+		if (transactionType.equals("UpdateScout") == true)
 		{
-			retValue = new SearchBookTransaction();
-		}
-		else
-		if (transType.equals("SearchPatrons") == true)
-		{
-			retValue = new SearchPatronTransaction();
+			returnValue = new UpdateScoutTransaction();
 		} 
+		else
+		if (transactionType.equals("UpdateTree") == true)
+		{
+			returnValue = new UpdateTreeTransaction();
+		} 
+		else
+		if (transactionType.equals("UpdateTreeType") == true)
+		{
+			returnValue = new UpdateTreeTypeTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveScout") == true)
+		{
+			returnValue = new RemoveScoutTransaction();
+		} 
+		else
+		if (transactionType.equals("RemoveTree") == true)
+		{
+			returnValue = new RemoveTreeTransaction();
+		} */
 
-		return retValue;
+		// DEBUG
+		//System.out.println("Return value is: " + returnValue.toString());
+
+		return returnValue;
 	}
 }

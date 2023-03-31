@@ -3,40 +3,50 @@ package userinterface;
 import impresario.IModel;
 
 //==============================================================================
-public class ViewFactory {
-
+public class ViewFactory 
+{
 	public static View createView(String viewName, IModel model)
 	{
-		// DEBUG System.out.println("View Factory: creating view: " + viewName);
-		if(viewName.equals("LibrarianView") == true)
-		{
-			return new LibrarianView(model);
-		}
-		else if(viewName.equals("BookView") == true)
-		{
-			return new BookView(model);
-		}
-		else if(viewName.equals("PatronView") == true)
-		{
-			return new PatronView(model);
-		}
-		else if(viewName.equals("BookSearchView") == true)
-		{
-			return new BookSearchView(model);
-		}
-		else if(viewName.equals("PatronSearchView") == true)
-		{
-			return new PatronSearchView(model);
-		}
-		else if(viewName.equals("BookCollectionView") == true)
-		{
-			return new BookCollectionView(model);
-		}
-		else if(viewName.equals("PatronCollectionView") == true)
-		{
-			return new PatronCollectionView(model);
-		}
 		
+		// DEBUG
+		System.out.println("In View : createView(), view name: " + viewName);
+		
+		if (viewName.equals("TLCView"))
+		{
+			return new TLCView(model);
+		}
+		else if (viewName.equals("RegisterScoutView"))
+		{
+			return new RegisterScoutView(model);
+		}
+		else if (viewName.equals("AddTreeView"))
+		{
+			return new AddTreeView(model);
+		}
+		else if (viewName.equals("AddTreeTypeView"))
+		{
+			return new AddTreeTypeView(model);
+		}
+		else if (viewName.equals("UpdateScoutView"))
+		{
+			return new UpdateScoutView(model);
+		}
+		else if (viewName.equals("UpdateTreeView"))
+		{
+			return new UpdateTreeView(model);
+		}
+		else if (viewName.equals("UpdateTreeTypeView"))
+		{
+			return new UpdateTreeTypeView(model);
+		}
+		else if (viewName.equals("RemoveScoutView"))
+		{
+			return new RemoveScoutView(model);
+		}
+		else if (viewName.equals("RemoveTreeView"))
+		{
+			return new RemoveTreeView(model);
+		}
 		else
 			return null;
 	}

@@ -22,10 +22,9 @@ public class RegisterScoutTransaction extends Transaction {
     private String scoutUpdateStatusMessage = "";
 
     // --------------------------------------------------------------
-    protected RegisterScoutTransaction() throws Exception {
-		super();
-		//TODO Auto-generated constructor stub
-	}
+    protected RegisterScoutTransaction() {
+	    super();
+    }
 
     // ----------------------------------------------------------
     protected void setDependencies() {
@@ -42,10 +41,18 @@ public class RegisterScoutTransaction extends Transaction {
      */
     // ----------------------------------------------------------
     public void processScoutData(Properties p) {
-        Scout oldScout = new Scout(p); // Look up scoutID if query returns matching ID then display error message else no matching new scout is created
-        Scout scout = new Scout(p);
+	try
+	{
+        String troopIDSent = p.getProperty("TroopID");
+        Scout oldScout = new Scout(troopIDSent);
+        scoutUpdateStatusMessage = "ERROR: Scout with troop ID: " + troopIDSent + "already exists!";
+    }
+	catch (InvalidPrimaryKeyException ex)
+	{       
+		scout = new Scout(p);
         scout.update();
         scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
+	}
     }
 
     // -----------------------------------------------------------
@@ -78,13 +85,13 @@ public class RegisterScoutTransaction extends Transaction {
      */
     // ------------------------------------------------------
     protected Scene createView() {
-        Scene currentScene = myViews.get("ScoutView");
+        Scene currentScene = myViews.get("RegisterScoutView");
 
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("ScoutView", this);
+            View newView = ViewFactory.createView("RegisterScoutView", this);
             currentScene = new Scene(newView);
-            myViews.put("ScoutView", currentScene);
+            myViews.put("RegisterScoutView", currentScene);
 
             return currentScene;
         } else {

@@ -15,7 +15,7 @@ import userinterface.ViewFactory;
 
 public class UpdateScoutTransaction extends Transaction {
     
-    private Scout scout;
+    private Scout scoutToUpdate;
 
     // GUI Components
     private String transactionErrorMessage = "";
@@ -24,7 +24,6 @@ public class UpdateScoutTransaction extends Transaction {
     // --------------------------------------------------------------
     protected UpdateScoutTransaction() throws Exception {
 		super();
-		//TODO Auto-generated constructor stub
 	}
 
     // ----------------------------------------------------------
@@ -41,18 +40,32 @@ public class UpdateScoutTransaction extends Transaction {
      * verifying ownership, crediting, etc. etc.
      */
     // ----------------------------------------------------------
-    public void processScoutData(Properties p) {
-        Scout scout = new Scout(p);
-        scout.update();
-        scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
+    public void searchScoutData(Properties p) {
+       try {
+           scout = new Scout(p);
+           scout.update();
+           scoutUpdateStatusMessage = (String) scoutToUpdate.getState("UpdateStatusMessage");
+       }
+
+       catch (InvalidPrimaryKeyException e){
+           transactionErrorMessage = " No scout found with " + p + "identifications";
+       }
     }
 
+    public void processTransaction(Properties p) {
+        scoutToUpdate.info(p);
+        scoutToUpdate.update();
+
+        scoutUpdateStatusMessage = (String) scoutToUpdate.getState("scoutUpdateStatusMessage");
+    }
     // -----------------------------------------------------------
     public Object getState(String key) {
         if (key.equals("TransactionError") == true) {
             return transactionErrorMessage;
         } else if (key.equals("ScoutUpdateStatusMessage") == true) {
             return scoutUpdateStatusMessage;
+        } else if (key.equals("GetScoutToUpdate") == true) {
+            return scoutToUpdate;
         }
 
         return null;
@@ -64,8 +77,10 @@ public class UpdateScoutTransaction extends Transaction {
 
         if (key.equals("DoYourJob") == true) {
             doYourJob();
-        } else if (key.equals("InsertScoutData") == true) {
-            processScoutData((Properties) value);
+        } else if (key.equals("SearchScoutData") == true) {
+            searchScoutData((Properties) value);
+        } else if (key.equals("UpdateScoutData") == true) {
+            processTransaction(); // Not yet made
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -77,13 +92,28 @@ public class UpdateScoutTransaction extends Transaction {
      */
     // ------------------------------------------------------
     protected Scene createView() {
-        Scene currentScene = myViews.get("ScoutView");
+        Scene currentScene = myViews.get("ScoutSearchView");
 
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("ScoutView", this);
+            View newView = ViewFactory.createView("ScoutSearchView", this);
             currentScene = new Scene(newView);
-            myViews.put("ScoutView", currentScene);
+            myViews.put("ScoutSearchView", currentScene);
+
+            return currentScene;
+        } else {
+            return currentScene;
+        }
+    }
+
+    protected void CreateAndShowUpdateScoutSearchTransactionView() {
+        Scene currentScene = myViews.get("UpdateScoutTransactionView");
+
+        if (currentScene == null) {
+            // create our initial view
+            View newView = ViewFactory.createView("UpdateScoutTransactionView", this);
+            currentScene = new Scene(newView);
+            myViews.put("UpdateScoutTransactionView", currentScene);
 
             return currentScene;
         } else {
