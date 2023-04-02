@@ -2,10 +2,12 @@ package model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import event.Event;
 import impresario.IModel;
 import impresario.IView;
+import impresario.ModelRegistry;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import userinterface.MainStageContainer;
@@ -40,6 +42,9 @@ public class TreeLotCoordinator implements IView, IModel
         setDependencies();
 
         createAndShowTLCView();
+    }
+
+    private void setDependencies() {
     }
 
     // ----------------------------------------------------------------

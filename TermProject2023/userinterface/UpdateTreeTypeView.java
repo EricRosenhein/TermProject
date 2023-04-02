@@ -44,9 +44,9 @@ public class UpdateTreeTypeView extends View
 
     // constructor for this class -- takes a model object
 	//----------------------------------------------------------
-    public UpdateTreeTypeView(IModel treeType)
+    public UpdateTreeTypeView(IModel updateTreeType)
     {
-        super(treeType, "UpdateTreeTypeView");
+        super(updateTreeType, "UpdateTreeTypeView");
 
         // create a container for showing the contents
 		VBox container = new VBox(10);
@@ -62,6 +62,8 @@ public class UpdateTreeTypeView extends View
 		getChildren().add(container);
 		
 		populateFields();
+
+		myModel.subscribe("UpdateStatusMessage", this);
     }
 
     // Create the title container
@@ -147,7 +149,7 @@ public class UpdateTreeTypeView extends View
        		     @Override
        		     public void handle(ActionEvent e) {
        		    	clearErrorMessage();
-       		    	myModel.stateChangeRequest("Cancel", null);
+       		    	myModel.stateChangeRequest("CancelTransaction", null);
             	  }
         	});
 

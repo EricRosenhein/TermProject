@@ -19,34 +19,38 @@ public class ViewFactory
 		{
 			return new RegisterScoutView(model);
 		}
-		else if (viewName.equals("AddTreeView"))
-		{
-			return new AddTreeView(model);
-		}
+		// else if (viewName.equals("AddTreeView"))
+		// {
+		// 	return new AddTreeView(model);
+		// }
 		else if (viewName.equals("AddTreeTypeView"))
 		{
 			return new AddTreeTypeView(model);
 		}
-		else if (viewName.equals("UpdateScoutView"))
-		{
-			return new UpdateScoutView(model);
-		}
-		else if (viewName.equals("UpdateTreeView"))
-		{
-			return new UpdateTreeView(model);
-		}
+		// else if (viewName.equals("UpdateScoutView"))
+		// {
+		// 	return new UpdateScoutView(model);
+		// }
+		// else if (viewName.equals("UpdateTreeView"))
+		// {
+		// 	return new UpdateTreeView(model);
+		// }
 		else if (viewName.equals("UpdateTreeTypeView"))
 		{
 			return new UpdateTreeTypeView(model);
 		}
-		else if (viewName.equals("RemoveScoutView"))
+		else if(viewName.equals("TreeTypeSearchView"))
 		{
-			return new RemoveScoutView(model);
+			return new TreeTypeSearchView(model);
 		}
-		else if (viewName.equals("RemoveTreeView"))
-		{
-			return new RemoveTreeView(model);
-		}
+		// else if (viewName.equals("RemoveScoutView"))
+		// {
+		// 	return new RemoveScoutView(model);
+		// }
+		// else if (viewName.equals("RemoveTreeView"))
+		// {
+		// 	return new RemoveTreeView(model);
+		// }
 		else
 			return null;
 	}

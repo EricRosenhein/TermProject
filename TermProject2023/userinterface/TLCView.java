@@ -167,6 +167,10 @@ public class TLCView extends View
                     {
                         myModel.stateChangeRequest("AddTreeType", "");
                     }
+                    else if(selected == updateTreeTypeButton)
+                    {
+                        myModel.stateChangeRequest("UpdateTreeType", "");
+                    }
                 }
                 else
                 {

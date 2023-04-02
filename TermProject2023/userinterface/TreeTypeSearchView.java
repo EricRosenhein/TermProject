@@ -38,9 +38,9 @@ public class TreeTypeSearchView extends View
 
 	// constructor for this class -- takes a model object
 	//----------------------------------------------------------
-	public TreeTypeSearchView(IModel treeType)
+	public TreeTypeSearchView(IModel searchTreeType)
 	{
-		super(treeType, "TreeTypeSearchView");
+		super(searchTreeType, "TreeTypeSearchView");
 
 		// create a container for showing the contents
 		VBox container = new VBox(10);
@@ -58,7 +58,6 @@ public class TreeTypeSearchView extends View
 
 		populateFields();
 
-		myModel.subscribe("ServiceCharge", this);
 		myModel.subscribe("UpdateStatusMessage", this);
 	}
 
@@ -130,7 +129,7 @@ public class TreeTypeSearchView extends View
        		     @Override
        		     public void handle(ActionEvent e) {
        		    	clearErrorMessage();
-       		    	myModel.stateChangeRequest("Cancel", null);
+       		    	myModel.stateChangeRequest("CancelTransaction", null);
             	  }
         	});
 

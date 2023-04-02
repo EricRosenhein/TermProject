@@ -54,3 +54,5 @@
 [3/26/23, 10:32 AM]|TransactionMenu|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.UnsupportedOperationException: Unimplemented method 'setDependencies'>
 [3/26/23, 10:38 AM]|TransactionMenu|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.UnsupportedOperationException: Unimplemented method 'setDependencies'>
 [3/26/23, 10:44 AM]|TransactionMenu|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.UnsupportedOperationException: Unimplemented method 'setDependencies'>
+[4/2/23 3:31 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/2/23 3:33 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
