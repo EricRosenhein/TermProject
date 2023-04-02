@@ -44,10 +44,11 @@ public class TLCView extends View
         container.setPadding(new Insets(15, 5, 5, 5));
 
 	// create a Node (Text) for showing the title
-	container.getChildren().add(createTitle());
+	//container.getChildren().add(createTitle());
+    container.getChildren().add(createTitle("Boy Scout Troop 209 Tree Sales System: Choose Transaction"));
 
 	// create a Node (GridPane) for showing data entry fields
-	container.getChildren().add(createFormContents());
+	container.getChildren().add(createFormContents(""));
 
 	// Error message area
 	container.getChildren().add(createStatusLog(" "));
@@ -56,19 +57,8 @@ public class TLCView extends View
 
     }
 
-     //----------------------------------------------------------------------------
-    private Node createTitle() 
-    {
-        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales System: Choose Transaction ");
-        titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
-        titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BURLYWOOD);
-             
-        return titleText;
-    }
-
       //----------------------------------------------------------------------------
-    private Node createFormContents() 
+    protected Node createFormContents(String instructions)
     {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -131,7 +121,7 @@ public class TLCView extends View
             @Override
             public void handle(ActionEvent e) 
             {
-               // TEST 
+               // DEBUG
                System.out.println("You clicked the Cancel button!");
             }
         });
@@ -159,9 +149,25 @@ public class TLCView extends View
                     {
                         myModel.stateChangeRequest("RegisterScout", ""); 
                     }
+                    else if (selected == updateScoutButton)
+                    {
+                        myModel.stateChangeRequest("UpdateScout", "");
+                    }
+                    else if (selected == removeScoutButton)
+                    {
+                        myModel.stateChangeRequest("RemoveScout", "");
+                    }
                     else if (selected == addTreeButton)
                     {
                         myModel.stateChangeRequest("AddTree", "");
+                    }
+                    else if (selected == updateTreeButton)
+                    {
+                        myModel.stateChangeRequest("UpdateTree", "");
+                    }
+                    else if (selected == removeTreeButton)
+                    {
+                        myModel.stateChangeRequest("RemoveTree", "");
                     }
                     else if (selected == addTreeTypeButton)
                     {

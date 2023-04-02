@@ -2,6 +2,7 @@ package userinterface;
 
 import impresario.IModel;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,185 +21,67 @@ import javafx.scene.text.TextAlignment;
 
  /** This is the Register Scout View class for the Application */
  //=============================================================
-public class RegisterScoutView extends View
+public class RegisterScoutView extends ScoutView
 {
-    protected TextField firstName;
-    protected TextField middleName;
-    protected TextField lastName;
-    protected TextField dateOfBirth;
-    protected TextField phoneNumber;
-    protected TextField email;
-    protected TextField troopID;
-
-    protected MessageView statusLog;
-
     //------------------------------------------------------------  
     public RegisterScoutView(IModel registerScout)
     {
-        super(registerScout, "RegisterScoutView");
-
-        // TEST 
-        System.out.println("In RegisterScoutView constructor");
-
-        VBox container = new VBox(10);
-
-        container.setPadding(new Insets(15, 5, 5, 5));
-        container.setAlignment(Pos.CENTER);
-
-        container.getChildren().add(createTitle());
-
-        container.getChildren().add(createFormContents());
-
-        container.getChildren().add(createStatusLog("                                "));
-        getChildren().add(container);
-
-        myModel.subscribe("ScoutUpdateStatusMessage", this);
+        super(registerScout, "Please enter the following information to register a Scout.");
     }
 
-    // ----------------------------------------------------------------------
-    private Node createTitle() 
+    //------------------------------------------------------------
+    /** Validation for registering a scout
+     * @param event
+     */
+    @Override
+    public void processAction(Event event)
     {
-        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales: Register Scout ");
-        titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
-        titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BURLYWOOD);
-             
-        return titleText;
-    }
-
-    // ----------------------------------------------------------------------
-    private Node createFormContents() 
-    {
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-        Text prompt = new Text("Please enter the following");
-        prompt.setWrappingWidth(400);
-        prompt.setTextAlignment(TextAlignment.CENTER);
-        prompt.setFill(Color.BLACK);
-        grid.add(prompt, 0, 0, 2, 1);
-
-        // Set the font 
-        Font font = Font.font("Arial", FontWeight.BOLD, 12);
-
-        // Data fields
-        Text firstNameLabel = new Text("First Name: ");
-		firstNameLabel.setFont(font);
-		firstNameLabel.setWrappingWidth(150);
-		firstNameLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(firstNameLabel, 0, 1);
-        
-        firstName = new TextField();
-        firstName.setEditable(true);
-        grid.add(firstName, 1, 1);
-
-        Text middleNameLabel = new Text("Middle Name: ");
-		middleNameLabel.setFont(font);
-		middleNameLabel.setWrappingWidth(150);
-		middleNameLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(middleNameLabel, 0, 2);
-
-        middleName = new TextField();
-        middleName.setEditable(true);
-        grid.add(middleName, 1, 2);
-
-        Text lastNameLabel = new Text("Last Name: ");
-		lastNameLabel.setFont(font);
-		lastNameLabel.setWrappingWidth(150);
-		lastNameLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(lastNameLabel, 0, 3);
-
-        lastName = new TextField();
-        lastName.setEditable(true);
-        grid.add(lastName, 1, 3);
-
-        // Needs validation method
-        Text dateOfBirthLabel = new Text("Date of Birth: ");
-		dateOfBirthLabel.setFont(font);
-		dateOfBirthLabel.setWrappingWidth(150);
-		dateOfBirthLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(dateOfBirthLabel, 0, 4);
-
-        dateOfBirth = new TextField();
-        dateOfBirth.setEditable(true);
-        grid.add(dateOfBirth, 1, 4);
-
-        // Needs validation method
-        Text phoneNumberLabel = new Text("Phone Number: ");
-		phoneNumberLabel.setFont(font);
-		phoneNumberLabel.setWrappingWidth(150);
-		phoneNumberLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(phoneNumberLabel, 0, 5);
-
-        phoneNumber = new TextField();
-        phoneNumber.setEditable(true);
-        grid.add(phoneNumber, 1, 5);
-
-        Text emailLabel = new Text("Email: ");
-		emailLabel.setFont(font);
-		emailLabel.setWrappingWidth(150);
-		emailLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(emailLabel, 0, 6);
-
-        email = new TextField();
-        email.setEditable(true);
-        grid.add(email, 1, 6);
-
-       
-        Text troopIDLabel = new Text("Troop ID: ");
-		troopIDLabel.setFont(font);
-		troopIDLabel.setWrappingWidth(150);
-		troopIDLabel.setTextAlignment(TextAlignment.RIGHT);
-		grid.add(troopIDLabel, 0, 7);
-
-        troopID = new TextField();
-        troopID.setEditable(true);
-        grid.add(troopID, 1, 7);
-
-        // Cancel and submit buttons
-        Button cancelButton = new Button("Cancel");
-        Button submitButton = new Button("Submit");
-
-// ADD EVENT HANDLER FOR SUBMIT BUTTON
-
-
-        // Handle events for regular buttons
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() 
+       // Checks if the text in phone number matches the regex pattern consisting of digits (d) in format XXX-XXX-XXXX
+        if (phoneNumber.getText().matches("\\d{3}-\\d{3}-\\d{4}"))
         {
-            @Override
-            public void handle(ActionEvent e) 
-            {
-               // DEBUG - This should take us back to the TransactionMenu
-               myModel.stateChangeRequest("CancelTransaction", "");
-            }
-        });
-
-        HBox buttonContainer = new HBox(10);
-        buttonContainer.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonContainer.getChildren().add(cancelButton);
-        buttonContainer.getChildren().add(submitButton);
-        grid.add(buttonContainer, 0, 9);
-
-        return grid;
+            displayMessage("Valid phone number");
+        }
+        else
+        {
+            displayErrorMessage("Invalid phone number");
+        }
     }
 
-    //-----------------------------------------------------------------------
-    protected MessageView createStatusLog(String initMsg)
+    //------------------------------------------------------------
+    /* Checks whether the given text is null or if its empty (after trimming white spaces)
+     *
+     * @param text      string to check
+     * @return boolean  indicates whether the text is null or empty
+     */
+    public boolean empty(String text)
     {
-        return new MessageView(initMsg);
+        return text == null || text.trim().isEmpty();
+    }
+
+    //------------------------------------------------------------
+    /* Populates text fields
+     *
+     */
+    @Override
+    public void populateFields() {
+
     }
 
     // ----------------------------------------------------------------------
+    /** Updates the state of the view
+     *
+     * @param key       key we use to look up values in the map
+     * @param value     value we want mapped to the key
+     */
     @Override
     public void updateState(String key, Object value) 
     {
        if (key.equals("ScoutUpdateStatusMessage"))
        {
            String msg = (String)value;
-           if (msg.startsWith("ERR")) {
+
+           if (msg.startsWith("ERR"))
+           {
                displayErrorMessage(msg);
            }
            else {
@@ -206,27 +89,19 @@ public class RegisterScoutView extends View
            }
        }
     }
-
-    //------------------------------------------------------------------------
-    protected void displayErrorMessage(String message)
-    {
-        statusLog.displayErrorMessage(message);
-    }
-
-    //-------------------------------------------------------------------------
-    protected void displayMessage(String message)
-    {
-        statusLog.displayMessage(message);
-    }
 }
 
 
 /*******************************************************************************************
  * Revision History:
  * 
+ *
+ *
+ * 04/02/2023 01:12 AM Sebastian Whyte
+ * Created a method to check if a string is either null or blank, and added a regex pattern for the phone number field
  * 
- * 
- * 
+ * 04/01/2023 Dominic Laure
+ * Dominic made this a subclass of ScoutView.
  * 
  * 03/23/2023 Sebastian Whyte
  * Initial check in. Thinking about making common View methods (createTitle() and createFormContents())

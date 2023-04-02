@@ -24,6 +24,13 @@ import impresario.IView;
 import impresario.IModel;
 import impresario.IControl;
 import impresario.ControlRegistry;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 //==============================================================
 public abstract class View extends Group
@@ -32,6 +39,7 @@ public abstract class View extends Group
 	// private data
 	protected IModel myModel;
 	protected ControlRegistry myRegistry;
+
 	
 	
 	// GUI components
@@ -44,6 +52,7 @@ public abstract class View extends Group
 		myModel = model;
 		
 		myRegistry = new ControlRegistry(classname);
+
 	}
 	
 	
@@ -67,7 +76,27 @@ public abstract class View extends Group
 	{
 		myRegistry.unSubscribe(key, subscriber);
 	}
-	
-   	
+
+	//----------------------------------------------------------
+	/* Common method used by views to display the title text
+	 *
+	 * @param title		title to display
+	 */
+	protected Node createTitle(String title)
+	{
+		Text titleText = new Text(" " + title + " ");
+		titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
+		titleText.setTextAlignment(TextAlignment.CENTER);
+		titleText.setFill(Color.BURLYWOOD);
+
+		return titleText;
+	}
+
+	//----------------------------------------------------------
+	/* Common method used by views to display the title text
+	 *
+	 * @param title		title to display
+	 */
+	protected abstract Node createFormContents(String instructions);
 }
 

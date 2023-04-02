@@ -9,7 +9,7 @@ public class ViewFactory
 	{
 		
 		// DEBUG
-		System.out.println("In View : createView(), view name: " + viewName);
+		System.out.println("In ViewFactory : createView(), view name: " + viewName);
 		
 		if (viewName.equals("TLCView"))
 		{
@@ -19,36 +19,39 @@ public class ViewFactory
 		{
 			return new RegisterScoutView(model);
 		}
-		else if (viewName.equals("AddTreeView"))
-		{
-			return new AddTreeView(model);
-		}
-		else if (viewName.equals("AddTreeTypeView"))
-		{
-			return new AddTreeTypeView(model);
-		}
 		else if (viewName.equals("UpdateScoutView"))
 		{
 			return new UpdateScoutView(model);
-		}
-		else if (viewName.equals("UpdateTreeView"))
-		{
-			return new UpdateTreeView(model);
-		}
-		else if (viewName.equals("UpdateTreeTypeView"))
-		{
-			return new UpdateTreeTypeView(model);
 		}
 		else if (viewName.equals("RemoveScoutView"))
 		{
 			return new RemoveScoutView(model);
 		}
+		else if (viewName.equals("AddTreeView"))
+		{
+			return new AddTreeView(model);
+		}
+		else if (viewName.equals("UpdateTreeView"))
+		{
+			return new UpdateTreeView(model);
+		}
+		/* TODO - the following needs to be implemented
 		else if (viewName.equals("RemoveTreeView"))
 		{
 			return new RemoveTreeView(model);
 		}
-		else
-			return null;
+		else if (viewName.equals("AddTreeTypeView"))
+		{
+			return new AddTreeTypeView(model);
+		}
+		else if (viewName.equals("UpdateTreeTypeView"))
+		{
+			return new UpdateTreeTypeView(model);
+		}
+		*/
+
+		// If we don't meet any of the above conditions, then return null
+		return null;
 	}
 
 
