@@ -33,7 +33,6 @@ public class TreeTypeTableModel
         id.set(i);
     }
 
-    //----------------------------------------------------------------------------
     public String getTypeDescription() {
         return typeDescription.get();
     }
