@@ -95,8 +95,10 @@ public class AddTreeTransaction extends Transaction
         }
     }
 
-    /** This class extracts the first 2 characters from a string */
+
     //-----------------------------------------------------------
+    // This method
+    // @
     private String extract(String bar){
 
         if ((bar != null) && (bar.length() > 0))

@@ -22,16 +22,16 @@ public class ScoutTableModel
     //----------------------------------------------------------------------------
 	public ScoutTableModel(Vector<String> scoutData)
 	{
-	id =  new SimpleStringProperty(scoutData.elementAt(0));
+	    id =  new SimpleStringProperty(scoutData.elementAt(0));
         lastName =  new SimpleStringProperty(scoutData.elementAt(1));
-	firstName =  new SimpleStringProperty(scoutData.elementAt(2));
+	    firstName =  new SimpleStringProperty(scoutData.elementAt(2));
         middleName =  new SimpleStringProperty(scoutData.elementAt(3));
         dateOfBirth =  new SimpleStringProperty(scoutData.elementAt(4));
         phoneNumber =  new SimpleStringProperty(scoutData.elementAt(5));
         email =  new SimpleStringProperty(scoutData.elementAt(6));
         troopID =  new SimpleStringProperty(scoutData.elementAt(7));
-	status =  new SimpleStringProperty(scoutData.elementAt(8));
-	dateStatusUpdated =  new SimpleStringProperty(scoutData.elementAt(9));
+	    status =  new SimpleStringProperty(scoutData.elementAt(8));
+	    dateStatusUpdated =  new SimpleStringProperty(scoutData.elementAt(9));
 	}
 
     //----------------------------------------------------------------------------

@@ -4,7 +4,6 @@ package model;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.Properties;
-import java.util.Vector;
 
 // project imports
 import event.Event;
@@ -57,9 +56,11 @@ public class RegisterScoutTransaction extends Transaction {
 
     // -----------------------------------------------------------
     public Object getState(String key) {
-        if (key.equals("TransactionError") == true) {
+        if (key.equals("TransactionError") == true)
+        {
             return transactionErrorMessage;
-        } else if (key.equals("ScoutUpdateStatusMessage") == true) {
+        }
+        else if (key.equals("ScoutUpdateStatusMessage") == true) {
             return scoutUpdateStatusMessage;
         }
 

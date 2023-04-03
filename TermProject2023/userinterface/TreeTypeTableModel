@@ -18,9 +18,9 @@ public class TreeTypeTableModel
 	{
 		
 		id =  new SimpleStringProperty(treeTypeData.elementAt(0));
-        	typeDescription =  new SimpleStringProperty(treeTypeData.elementAt(1));
-        	cost =  new SimpleStringProperty(treeTypeData.elementAt(2));
-        	barcodePrefix =  new SimpleStringProperty(treeTypeData.elementAt(3));
+        typeDescription =  new SimpleStringProperty(treeTypeData.elementAt(1));
+        cost =  new SimpleStringProperty(treeTypeData.elementAt(2));
+        barcodePrefix =  new SimpleStringProperty(treeTypeData.elementAt(3));
 	}
 
     //----------------------------------------------------------------------------

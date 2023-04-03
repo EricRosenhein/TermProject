@@ -15,29 +15,47 @@ import exception.InvalidPrimaryKeyException;
 
 /** This is the Scout class for the Application - interfaces with database table 'Scout'*/
 //===========================================================================
-public class Scout extends EntityBase {
+public class Scout extends EntityBase implements IView{
 
+    // Instance variables
     private static final String myTableName = "Scout";
+    private String status = "Active";
     protected Properties dependencies;
-    // gui
     private String updateStatusMessage = "";
 
-    // constructor
+    /** Constructor that takes in the primary key value */
+    // ----------------------------------------------------------------------------
     public Scout(String troopId) throws InvalidPrimaryKeyException {
         
 		super(myTableName);
+
 		setDependencies();
+
 		String query = "SELECT * FROM " + myTableName + " WHERE (TroopId = " + troopId + ")";
+
 		Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-		if (allDataRetrieved != null){
+
+        // You must get at least one scout
+		if (allDataRetrieved != null)
+        {
+            // Get the size of the vector
 			int size = allDataRetrieved.size();
-			if (size != 1){
+
+            // There should be EXACTLY one scout. If you get more than that, there is an error
+			if (size != 1)
+            {
 				throw new InvalidPrimaryKeyException("Multiple scouts matching troop id : "+ troopId + " found.");
-			} else{
+			}
+            // Else, copy all the retrieved data into persisent state
+            else
+            {
 				Properties retrievedScoutData = allDataRetrieved.elementAt(0);
 				persistentState = new Properties();
+
 				Enumeration allKeys = retrievedScoutData.propertyNames();
-				while (allKeys.hasMoreElements() == true){
+
+				while (allKeys.hasMoreElements() == true)
+                {
 					String nextKey = (String)allKeys.nextElement();
 					String nextValue = retrievedScoutData.getProperty(nextKey);
 				
@@ -47,8 +65,9 @@ public class Scout extends EntityBase {
 				}
 			}
 		}
-		// If no scout found for troopId, throw exception
-		else{
+		// Else, if no scout found for troopId, throw exception
+		else
+        {
 			throw new InvalidPrimaryKeyException("No scout matching troop id : "+ troopId +" found.");
 		}
 	}
@@ -71,14 +90,16 @@ public class Scout extends EntityBase {
 
     /** Empty (default) constructor */
     //------------------------------------------------------------------------
-    public Scout() {
+    public Scout()
+    {
 		super(myTableName);
 		setDependencies();
 		persistentState = new Properties();
     }
 
     //----------------------------------------------------------------------
-    private void setDependencies() {
+    private void setDependencies()
+    {
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
     }
@@ -92,42 +113,56 @@ public class Scout extends EntityBase {
     }
 
     // ----------------------------------------------------------------
-    public void stateChangeRequest(String key, Object value) {
-       
-	persistentState.setProperty(key, (String)value);
+    public void stateChangeRequest(String key, Object value)
+    {
+	    persistentState.setProperty(key, (String)value);
     }
 
     /** Called via the IView relationship */
     // ----------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         stateChangeRequest(key, value);
     }
 
-    
-
     // -----------------------------------------------------------------------------------
-    public void update() {
+    public void update()
+    {
         updateStateInDatabase();
     }
 
     // -----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
-        try {
-            if (persistentState.getProperty("ID") != null) {
+        try
+        {
+            // If scout ID is not null, then it is already in the database - update its data
+            if (persistentState.getProperty("ID") != null)
+            {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("ID",
-                        persistentState.getProperty("ID"));
+
+                // Map the key to a value
+                whereClause.setProperty("ID", persistentState.getProperty("ID"));
+
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Scout data for scout : "
-                 	+ persistentState.getProperty("LastName") + ", " 
-			+ persistentState.getProperty("FirstName") 
+                    	+ persistentState.getProperty("LastName")
+                        + ", "
+			            + persistentState.getProperty("FirstName")
                         + " updated successfully in database!";
-            } else {
+            }
+            // Else, we insert the scout because there is no record of it in the database
+            else
+            {
+                //DEBUG System.out.println(persistentState);
+                //DEBUG System.out.println(mySchema);
                 Integer scoutId = insertAutoIncrementalPersistentState(mySchema, persistentState);
+
+                //Maps scout ID to its int value (after conversion from integer)
                 persistentState.setProperty("ID", "" + scoutId);
+
                 updateStatusMessage = "Scout data for new scout : "
                         + persistentState.getProperty("LastName") + ", " 
-			+ persistentState.getProperty("FirstName") 
+			            + persistentState.getProperty("FirstName")
                         + "installed successfully in database!";
             }
         } catch (SQLException ex) {
@@ -159,14 +194,18 @@ public class Scout extends EntityBase {
     }
 
     // -----------------------------------------------------------------------------------
-    protected void initializeSchema(String tableName) {
-        if (mySchema == null) {
+    protected void initializeSchema(String tableName)
+    {
+        if (mySchema == null)
+        {
             mySchema = getSchemaInfo(tableName);
         }
     }
     
-    // Prints out a description of the chosen scout
-    public String toString() {
+    /** Prints out a description of the chosen scout */
+    // ------------------------------------------------------------------------------------
+    public String toString()
+    {
         return "FirstName: " + persistentState.getProperty("FirstName") + "; LastName: "
                 + persistentState.getProperty("LastName") + "; MiddleName: " + persistentState.getProperty("LastName")
                 + "; DateOfBirth: " + persistentState.getProperty("DateOfBirth") + "; Email: "
@@ -175,6 +214,5 @@ public class Scout extends EntityBase {
                 + persistentState.getProperty("Status") + "; DateStatusUpdated: "
                 + persistentState.getProperty("DateStatusUpdated") + "\n";
     }
-
     
 }
