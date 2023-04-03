@@ -141,7 +141,7 @@ public class UpdateTreeTypeTransaction extends Transaction
 			View newView = ViewFactory.createView("UpdateTreeTypeView", this);
 			currentScene = new Scene(newView);
 			myViews.put("UpdateTreeTypeView", currentScene);
-
+			swapToView(currentScene);
 			return currentScene;
 		}
 		else

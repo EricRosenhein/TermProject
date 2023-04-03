@@ -195,9 +195,9 @@ public class AddTreeTypeView extends View
         {
             displayErrorMessage("Cost has a limit of 25 characters!");
         }
-        else if(BarcodePrefixField.getText().length() > 2)
+        else if(BarcodePrefixField.getText().length() != 2)
         {
-            displayErrorMessage("Barcode Prefix has a limit of 2 characters!");
+            displayErrorMessage("Barcode Prefix muse be 2 characters long!");
         }
 		else
 		{
