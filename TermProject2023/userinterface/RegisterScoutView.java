@@ -1,12 +1,19 @@
 package userinterface;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Properties;
+
 import impresario.IModel;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -17,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import model.TransactionFactory;
 
  /** This is the Register Scout View class for the Application */
  //=============================================================
@@ -26,7 +34,12 @@ public class RegisterScoutView extends View
     protected TextField middleName;
     protected TextField lastName;
     protected TextField dateOfBirth;
-    protected TextField phoneNumber;
+    protected DatePicker datePicker;
+    protected String date;
+    protected TextField areaCode;
+    protected TextField threeDigits;
+    protected TextField fourDigits;
+    protected String phoneNumber;
     protected TextField email;
     protected TextField troopID;
 
@@ -40,6 +53,8 @@ public class RegisterScoutView extends View
         // TEST 
         System.out.println("In RegisterScoutView constructor");
 
+        // Housekeeping initializations
+        datePicker = new DatePicker(LocalDate.now());
         VBox container = new VBox(10);
 
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -48,9 +63,12 @@ public class RegisterScoutView extends View
         container.getChildren().add(createTitle());
 
         container.getChildren().add(createFormContents());
+        
 
         container.getChildren().add(createStatusLog("                                "));
         getChildren().add(container);
+
+        //populateFields();
 
         myModel.subscribe("ScoutUpdateStatusMessage", this);
     }
@@ -122,9 +140,8 @@ public class RegisterScoutView extends View
 		dateOfBirthLabel.setTextAlignment(TextAlignment.RIGHT);
 		grid.add(dateOfBirthLabel, 0, 4);
 
-        dateOfBirth = new TextField();
-        dateOfBirth.setEditable(true);
-        grid.add(dateOfBirth, 1, 4);
+        datePicker = new DatePicker();
+        grid.add(datePicker, 1, 4);
 
         // Needs validation method
         Text phoneNumberLabel = new Text("Phone Number: ");
@@ -133,9 +150,17 @@ public class RegisterScoutView extends View
 		phoneNumberLabel.setTextAlignment(TextAlignment.RIGHT);
 		grid.add(phoneNumberLabel, 0, 5);
 
-        phoneNumber = new TextField();
-        phoneNumber.setEditable(true);
-        grid.add(phoneNumber, 1, 5);
+        areaCode = new TextField();
+        areaCode.setEditable(true);
+        grid.add(areaCode, 1, 5);
+        
+        threeDigits = new TextField();
+        threeDigits.setEditable(true);
+        grid.add(threeDigits, 2, 5);
+
+        fourDigits = new TextField();
+        fourDigits.setEditable(true);
+        grid.add(fourDigits, 3, 5);
 
         Text emailLabel = new Text("Email: ");
 		emailLabel.setFont(font);
@@ -162,9 +187,6 @@ public class RegisterScoutView extends View
         Button cancelButton = new Button("Cancel");
         Button submitButton = new Button("Submit");
 
-// ADD EVENT HANDLER FOR SUBMIT BUTTON
-
-
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>() 
         {
@@ -176,6 +198,14 @@ public class RegisterScoutView extends View
             }
         });
 
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				clearErrorMessage();
+				processAction(e);
+			}
+		});
+
         HBox buttonContainer = new HBox(10);
         buttonContainer.setAlignment(Pos.BOTTOM_RIGHT);
         buttonContainer.getChildren().add(cancelButton);
@@ -185,38 +215,159 @@ public class RegisterScoutView extends View
         return grid;
     }
 
+    public void processAction(Event evt)
+	{
+        phoneNumber = areaCode.getText() + threeDigits.getText() + fourDigits.getText();
+        LocalDate dt = datePicker.getValue();
+        if (dt != null)
+         date = dt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        else
+        {
+            displayErrorMessage("Invalid date entered");
+            return;
+        }
+
+        if(firstName.getText().isEmpty() || middleName.getText().isEmpty() || 
+        lastName.getText().isEmpty() || 
+        email.getText().isEmpty() || troopID.getText().isEmpty())
+        {
+            displayErrorMessage("Please fill every field");
+            return;
+        }
+        else if(areaCode.getText().length() != 3 ||
+            threeDigits.getText().length() != 3 ||
+            fourDigits.getText().length() != 4)
+        {
+            displayErrorMessage("Please enter a valid phone number");
+            return;
+        }
+        else if(email.getText().contains("@") == false)
+        {
+            displayErrorMessage("Please enter a valid email");
+            return;
+        }
+        else if(troopID.getText().length() < 5)
+        {
+            displayErrorMessage("Troop ID must be 5 integers long!");
+            return;
+        }
+        else if(checkTroopID(troopID.getText()) == false)
+        {
+            return;
+        }
+        else if(checkPhoneNumber(phoneNumber) == false)
+        {
+            return;
+        }
+		else
+		{
+            RegisterScout();
+		}
+	}
+
+    private void RegisterScout()
+	{
+		Properties props = new Properties();
+		props.setProperty("FirstName", firstName.getText());
+        props.setProperty("MiddleName", middleName.getText());
+        props.setProperty("LastName", lastName.getText());
+        props.setProperty("DateOfBirth", date);
+        props.setProperty("PhoneNumber", phoneNumber);
+        props.setProperty("Email", email.getText());
+        props.setProperty("TroopID", troopID.getText());
+
+        LocalDateTime ldt = LocalDateTime.now();
+        String now = ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        props.setProperty("DateStatusUpdated", now);
+
+		myModel.stateChangeRequest("InsertScoutData", props);
+		displayMessage("Scout registered!");
+	}
+
     //-----------------------------------------------------------------------
-    protected MessageView createStatusLog(String initMsg)
-    {
-        return new MessageView(initMsg);
-    }
+    protected MessageView createStatusLog(String initialMessage)
+	{
+		statusLog = new MessageView(initialMessage);
+
+		return statusLog;
+	}
 
     // ----------------------------------------------------------------------
-    @Override
     public void updateState(String key, Object value) 
     {
-       if (key.equals("ScoutUpdateStatusMessage"))
-       {
-           String msg = (String)value;
-           if (msg.startsWith("ERR")) {
-               displayErrorMessage(msg);
-           }
-           else {
-               displayMessage(msg);
-           }
-       }
+    //    if (key.equals("ScoutUpdateStatusMessage"))
+    //    {
+    //        String msg = (String)value;
+    //        if (msg.startsWith("ERR")) {
+    //            displayErrorMessage(msg);
+    //        }
+    //        else {
+    //            displayMessage(msg);
+    //        }
+    //    }
     }
 
-    //------------------------------------------------------------------------
-    protected void displayErrorMessage(String message)
+    /**
+	 * Update method
+	 */
+	//---------------------------------------------------------
+	
+
+	/**
+	 * Display error message
+	 */
+	//----------------------------------------------------------
+	public void displayErrorMessage(String message)
+	{
+		statusLog.displayErrorMessage(message);
+	}
+
+	/**
+	 * Display info message
+	 */
+	//----------------------------------------------------------
+	public void displayMessage(String message)
+	{
+		statusLog.displayMessage(message);
+	}
+
+	/**
+	 * Clear error message
+	 */
+	//----------------------------------------------------------
+	public void clearErrorMessage()
+	{
+		statusLog.clearErrorMessage();
+	}
+
+    private boolean checkTroopID(String troopID)
     {
-        statusLog.displayErrorMessage(message);
+        try
+            {
+                Integer.parseInt(troopID);
+                return true;
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.print(e.getMessage());
+                displayErrorMessage("Troop ID must contain only numbers!");
+                return false;
+            }
     }
 
-    //-------------------------------------------------------------------------
-    protected void displayMessage(String message)
+    private boolean checkPhoneNumber(String phoneNumber)
     {
-        statusLog.displayMessage(message);
+        try
+            {
+                Long.parseLong(phoneNumber);
+                return true;
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.print(e.getMessage());
+                displayErrorMessage("Phone Number must contain only numbers!");
+                return false;
+            }
     }
 }
 

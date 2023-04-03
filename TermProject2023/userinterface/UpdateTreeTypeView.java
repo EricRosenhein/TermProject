@@ -108,7 +108,7 @@ public class UpdateTreeTypeView extends View
 		grid.add(TypeDescriptionLabel, 0, 1);
 
 		TypeDescriptionField = new TextField();
-		TypeDescriptionField.setEditable(false);
+		TypeDescriptionField.setEditable(true);
 		grid.add(TypeDescriptionField, 1, 1);
 
 		Text CostLabel = new Text(" Cost : ");
@@ -185,7 +185,11 @@ public class UpdateTreeTypeView extends View
 
     public void processAction(Event evt)
 	{
-        if(CostField.getText().length() > 20)
+		if(TypeDescriptionField.getText().isEmpty() || CostField.getText().isEmpty())
+		{
+			displayErrorMessage("Please fill every field");
+		}
+        else if(CostField.getText().length() > 20)
         {
             displayErrorMessage("Cost has a limit of 25 characters!");
         }
@@ -195,13 +199,25 @@ public class UpdateTreeTypeView extends View
         }
 		else
 		{
-			UpdateTreeType();
+			try
+			{
+				Integer.parseInt(CostField.getText());
+				UpdateTreeType();
+			}
+			catch(NumberFormatException e)
+			{
+				displayErrorMessage("Cost must be a number!");
+			}
 		}
 	}
 
     private void UpdateTreeType()
 	{
-		myModel.stateChangeRequest("UpdateTreeTypeData", CostField.getText());
+		Properties props = new Properties();
+		props.setProperty("TypeDescription", TypeDescriptionField.getText());
+		props.setProperty("Cost", CostField.getText());
+
+		myModel.stateChangeRequest("UpdateTreeTypeData", props);
 		displayMessage("TreeType Updated!");
 	}
 

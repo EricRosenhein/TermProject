@@ -37,13 +37,13 @@ public class UpdateTreeTypeTransaction extends Transaction
 		myRegistry.setDependencies(dependencies);
 	}
 
-    public void searchTreeTypes(String barcodePrefix)
+    protected void searchTreeTypes(String barcodePrefix)
     {
         try 
         {
             treeTypeToUpdate = new TreeType(barcodePrefix);
 
-            CreateAndShowUpdateTreeTypeTransactionView();
+            createAndShowUpdateTreeTypeTransactionView();
 
             updateStatusMessage = (String)treeTypeToUpdate.getState("UpdateStatusMessage");
         } 
@@ -54,14 +54,13 @@ public class UpdateTreeTypeTransaction extends Transaction
         }
     }
 
-    public void processTransaction(String cost)
+    public void processTransaction(Properties props)
 	{
 
-		// String typeDescription = props.getProperty("typeDescription");
-		// String cost = props.getProperty("cost");
-		// String barcodePrefix = props.getProperty("barcodePrefix");
+		String typeDescription = props.getProperty("typeDescription");
+		String cost = props.getProperty("cost");
 
-		
+		treeTypeToUpdate.setTypeDescription(typeDescription);
         treeTypeToUpdate.setCost(cost);
         
         treeTypeToUpdate.update();
@@ -103,7 +102,7 @@ public class UpdateTreeTypeTransaction extends Transaction
         else
 		if (key.equals("UpdateTreeTypeData") == true)
 		{
-			processTransaction((String)value);
+			processTransaction((Properties) value);
 		}
 
 		myRegistry.updateSubscribers(key, this);
@@ -131,22 +130,12 @@ public class UpdateTreeTypeTransaction extends Transaction
 		}
 	}
 
-    protected Scene CreateAndShowUpdateTreeTypeTransactionView()
+    protected void createAndShowUpdateTreeTypeTransactionView()
     {
-        Scene currentScene = myViews.get("UpdateTreeTypeView");
-
-		if (currentScene == null)
-		{
-			// create our initial view
-			View newView = ViewFactory.createView("UpdateTreeTypeView", this);
-			currentScene = new Scene(newView);
-			myViews.put("UpdateTreeTypeView", currentScene);
-			swapToView(currentScene);
-			return currentScene;
-		}
-		else
-		{
-			return currentScene;
-		}
+		// create the update view
+		View newView = ViewFactory.createView("UpdateTreeTypeView", this);
+		Scene currentScene = new Scene(newView);
+		myViews.put("UpdateTreeTypeView", currentScene);
+		swapToView(currentScene);
     }
 }
