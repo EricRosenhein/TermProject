@@ -61,3 +61,5 @@
 [4/3/23 2:45 PM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=9383) Field 'DateStatusUpdated' doesn't have a default value>
 [4/3/23 2:51 PM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=9420) Field 'DateStatusUpdated' doesn't have a default value>
 [4/3/23 3:04 PM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=9425) Field 'DateStatusUpdated' doesn't have a default value>
+[4/3/23 3:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/3/23 3:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>

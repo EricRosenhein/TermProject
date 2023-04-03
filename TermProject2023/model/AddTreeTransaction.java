@@ -53,21 +53,21 @@ public class AddTreeTransaction extends Transaction
     protected void processTreeData(Properties p)
     {
         // Set barcode prefix to the first 2 chars of the Barcode
-        barcode = p.getProperty("Barcode");
-        barPrefix = extract(barcode);
+        String treeTypeID = p.getProperty("Barcode");
+        //barPrefix = extract(barcode);
 
         // Retrieve tt object from the database using barcode prefix
-        try
-        {
-            if (barPrefix.length() > 0)
-                treeType = new TreeType(barPrefix);
-            else
-                treeUpdateStatusMessage = "ERROR: Invalid barcode for tree";
-        }
-         catch(InvalidPrimaryKeyException ex)
-          {
-             treeUpdateStatusMessage = "ERROR: No tree type found with barcode prefix " + barPrefix;
-          }
+        // try
+        // {
+        //     if (barPrefix.length() > 0)
+        //         treeType = new TreeType(barPrefix);
+        //     else
+        //         treeUpdateStatusMessage = "ERROR: Invalid barcode for tree";
+        // }
+        //  catch(InvalidPrimaryKeyException ex)
+        //   {
+        //      treeUpdateStatusMessage = "ERROR: No tree type found with barcode prefix " + barPrefix;
+        //   }
 
         // Try and fail to make an existing tree
         try
@@ -84,12 +84,13 @@ public class AddTreeTransaction extends Transaction
                 String currentDate = df.format(currentDate);
 
              */
-            String currentDate = LocalDate.now().toString();
-            String treeTypeId = treeType.getTreeTypeId();
+            //String currentDate = LocalDate.now().toString();
+            //String treeTypeId = treeType.getTreeTypeId();
 
-            p.setProperty("DateStatusUpdated", currentDate);
-            p.setProperty("TreeType", treeTypeId);
+            //p.setProperty("DateStatusUpdated", currentDate);
+            //p.setProperty("TreeType", treeTypeId);
             tree = new Tree(p);
+            System.out.println(tree.toString());
             tree.update();
             treeUpdateStatusMessage = (String) tree.getState("UpdateStatusMessage");
         }

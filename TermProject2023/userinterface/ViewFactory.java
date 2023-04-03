@@ -19,10 +19,10 @@ public class ViewFactory
 		{
 			return new RegisterScoutView(model);
 		}
-		// else if (viewName.equals("AddTreeView"))
-		// {
-		// 	return new AddTreeView(model);
-		// }
+		else if (viewName.equals("AddTreeView"))
+		{
+			return new AddTreeView(model);
+		}
 		else if (viewName.equals("AddTreeTypeView"))
 		{
 			return new AddTreeTypeView(model);

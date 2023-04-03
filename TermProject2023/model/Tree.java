@@ -114,24 +114,43 @@ public class Tree extends EntityBase implements IView {
 
     // -----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
-        try {
-            if (persistentState.getProperty("Barcode") != null) {
-                Properties whereClause = new Properties();
-                whereClause.setProperty("Barcode",
-                        persistentState.getProperty("Barcode"));
-                updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Tree data for tree : "
-                        + persistentState.getProperty("Barcode")
-                        + " updated successfully in database!";
-            } else {
-                Integer barcode = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("Barcode", "" + barcode);
-                updateStatusMessage = "Tree data for new tree : "
-                        + persistentState.getProperty("Barcode")
-                        + "installed successfully in database!";
+        // try {
+        //     if (persistentState.getProperty("Barcode") != null) {
+        //         System.out.print(persistentState.getProperty("Barcode"));
+        //         Properties whereClause = new Properties();
+        //         whereClause.setProperty("Barcode",
+        //                 persistentState.getProperty("Barcode"));
+        //         updatePersistentState(mySchema, persistentState, whereClause);
+        //         updateStatusMessage = "Tree data for tree : "
+        //                 + persistentState.getProperty("Barcode")
+        //                 + " updated successfully in database!";
+        //     } else {
+        //         System.out.print("else section");
+        //         Integer barcode = insertAutoIncrementalPersistentState(mySchema, persistentState);
+        //         persistentState.setProperty("Barcode", "" + barcode);
+        //         updateStatusMessage = "Tree data for new tree : "
+        //                 + persistentState.getProperty("Barcode")
+        //                 + "installed successfully in database!";
+        //     }
+        // } catch (SQLException ex) {
+        //     updateStatusMessage = "Error registering tree data in database!";
+        // }
+
+        try 
+        {
+            Tree newTree = new Tree(persistentState.getProperty("Barcode"));
+            System.out.println("Tree already exists");
+        } 
+
+        catch (InvalidPrimaryKeyException e) 
+        {
+            try{
+                insertPersistentState(mySchema, persistentState);
             }
-        } catch (SQLException ex) {
-            updateStatusMessage = "Error registering tree data in database!";
+            
+            catch (SQLException ex) {
+                updateStatusMessage = "Error registering tree data in database!";
+            }
         }
     }
 
