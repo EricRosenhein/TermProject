@@ -15,7 +15,9 @@ import userinterface.ViewFactory;
 
 public class UpdateScoutTransaction extends Transaction {
     
-    private Scout scout;
+    private ScoutCollection scoutCollection;
+    private Vector scoutList;
+    private Scout scoutToUpdate;
 
     // GUI Components
     private String transactionErrorMessage = "";
@@ -35,22 +37,75 @@ public class UpdateScoutTransaction extends Transaction {
         myRegistry.setDependencies(dependencies);
     }
 
+    protected void searchScouts(Properties props)
+    {
+        //try 
+        //{
+            //scoutToUpdate = new Scout(props);
+            System.out.println(props.getProperty("FirstName"));
+            System.out.println(props.getProperty("LastName"));
+            String firstName = (String)props.getProperty("FirstName");
+            String lastName = (String)props.getProperty("LastName");
+            scoutList = scoutCollection.findScoutsWithNameLike(firstName, lastName);
+
+            createAndShowScoutCollectionView();
+        //} 
+
+        // catch (InvalidPrimaryKeyException e) 
+        // {
+        //     transactionErrorMessage = "No Scout found with troop id : ";
+        // }
+    }
+
     /**
      * This method encapsulates all the logic of creating the account,
      * verifying ownership, crediting, etc. etc.
      */
     // ----------------------------------------------------------
     public void processScoutData(Properties p) {
-        scout = new Scout(p);
-        scout.update();
-        scoutUpdateStatusMessage = (String) scout.getState("UpdateStatusMessage");
+        String firstName = p.getProperty("FirstName");
+        scoutToUpdate.persistentState.setProperty("FirstName", firstName);
+
+        String middleName = p.getProperty("MiddleName");
+        scoutToUpdate.persistentState.setProperty("MiddleName", middleName);
+
+        String lastName = p.getProperty("LastName");
+        scoutToUpdate.persistentState.setProperty("LastName", lastName);
+
+        String dateOfBirth = p.getProperty("DateOfBirth");
+        scoutToUpdate.persistentState.setProperty("DateOfBirth", dateOfBirth);
+
+        String phoneNumber = p.getProperty("PhoneNumber");
+        scoutToUpdate.persistentState.setProperty("PhoneNumber", phoneNumber);
+
+        String email = p.getProperty("Email");
+        scoutToUpdate.persistentState.setProperty("Email", email);
+
+        String status = p.getProperty("Status");
+        scoutToUpdate.persistentState.setProperty("Status", status);
+
+        String dateOfUpdate = p.getProperty("DateStatusUpdated");
+        scoutToUpdate.persistentState.setProperty("DateStatusUpdated", dateOfUpdate);
+        
+        scoutToUpdate.update();
+
+		scoutUpdateStatusMessage = (String)scoutToUpdate.getState("UpdateStatusMessage");
     }
 
     // -----------------------------------------------------------
     public Object getState(String key) {
         if (key.equals("TransactionError") == true) {
             return transactionErrorMessage;
-        } else if (key.equals("ScoutUpdateStatusMessage") == true) {
+        } 
+        else if(key.equals("GetScoutList") == true)
+        {
+            return scoutList;
+        }
+        else if(key.equals("GetScoutToUpdate") == true)
+        {
+            return scoutToUpdate;
+        }
+        else if (key.equals("ScoutUpdateStatusMessage") == true) {
             return scoutUpdateStatusMessage;
         }
 
@@ -63,7 +118,12 @@ public class UpdateScoutTransaction extends Transaction {
 
         if (key.equals("DoYourJob") == true) {
             doYourJob();
-        } else if (key.equals("InsertScoutData") == true) {
+        }    
+        else if(key.equals("SearchScouts") == true)
+        {
+            searchScouts((Properties) value);
+        }
+         else if (key.equals("UpdateScoutData") == true) {
             processScoutData((Properties) value);
         }
 
@@ -76,17 +136,38 @@ public class UpdateScoutTransaction extends Transaction {
      */
     // ------------------------------------------------------
     protected Scene createView() {
-        Scene currentScene = myViews.get("ScoutView");
+        Scene currentScene = myViews.get("SearchScoutView");
 
-        if (currentScene == null) {
-            // create our initial view
-            View newView = ViewFactory.createView("ScoutView", this);
-            currentScene = new Scene(newView);
-            myViews.put("ScoutView", currentScene);
+		if (currentScene == null)
+		{
+			// create our initial view
+			View newView = ViewFactory.createView("SearchScoutView", this);
+			currentScene = new Scene(newView);
+			myViews.put("SearchScoutView", currentScene);
 
-            return currentScene;
-        } else {
-            return currentScene;
-        }
+			return currentScene;
+		}
+		else
+		{
+			return currentScene;
+		}
+    }
+
+    protected void createAndShowUpdateScoutView()
+    {
+		// create the update view
+		View newView = ViewFactory.createView("UpdateScoutView", this);
+		Scene currentScene = new Scene(newView);
+		myViews.put("UpdateScoutView", currentScene);
+		swapToView(currentScene);
+    }
+
+    protected void createAndShowScoutCollectionView()
+    {
+        // create the collection view
+        View newView = ViewFactory.createView("ScoutCollectionView", this);
+        Scene currentScene = new Scene(newView);
+        myViews.put("UpdateScoutView", currentScene);
+        swapToView(currentScene);
     }
 }

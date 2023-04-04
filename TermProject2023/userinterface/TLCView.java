@@ -159,6 +159,10 @@ public class TLCView extends View
                     {
                         myModel.stateChangeRequest("RegisterScout", ""); 
                     }
+                    else if(selected == updateScoutButton)
+                    {
+                        myModel.stateChangeRequest("UpdateScout", "");
+                    }
                     else if (selected == addTreeButton)
                     {
                         myModel.stateChangeRequest("AddTree", "");

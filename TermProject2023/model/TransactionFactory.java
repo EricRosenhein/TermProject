@@ -37,11 +37,11 @@ public class TransactionFactory
 		{
 			returnValue = new AddTreeTypeTransaction();
 		}
-		// else
-		// if (transactionType.equals("UpdateScout") == true)
-		// {
-		// 	returnValue = new UpdateScoutTransaction();
-		// } 
+		else
+		if (transactionType.equals("UpdateScout") == true)
+		{
+			returnValue = new UpdateScoutTransaction();
+		} 
 		// else
 		// if (transactionType.equals("UpdateTree") == true)
 		// {

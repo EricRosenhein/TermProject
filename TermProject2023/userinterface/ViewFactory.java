@@ -27,10 +27,18 @@ public class ViewFactory
 		{
 			return new AddTreeTypeView(model);
 		}
-		// else if (viewName.equals("UpdateScoutView"))
-		// {
-		// 	return new UpdateScoutView(model);
-		// }
+		else if (viewName.equals("UpdateScoutView"))
+		{
+			return new UpdateScoutView(model);
+		}
+		else if(viewName.equals("SearchScoutView"))
+		{
+			return new SearchScoutView(model);
+		}
+		else if(viewName.equals("ScoutCollectionView"))
+		{
+			return new ScoutCollectionView(model);
+		}
 		// else if (viewName.equals("UpdateTreeView"))
 		// {
 		// 	return new UpdateTreeView(model);

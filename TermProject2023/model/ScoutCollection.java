@@ -46,8 +46,11 @@ public class ScoutCollection extends EntityBase implements IView{
         return doQuery(query);
     }
 
-    public Vector findPatronsWithNameLike(String LastName) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (author LIKE '%" + LastName + "%')";
+    public Vector findScoutsWithNameLike(String firstName, String lastName) {
+        System.out.println("In query");
+        System.out.println(firstName);
+        System.out.println(firstName);
+        String query = "SELECT * FROM " + myTableName + " WHERE FirstName LIKE '%" + firstName + "%' AND LastName LIKE '%'" + lastName + "'%'";
         return doQuery(query);
     }
 
@@ -106,13 +109,13 @@ public class ScoutCollection extends EntityBase implements IView{
     }
 
     public void createAndShowScoutCollectionView() {
-        Scene currentScene = myViews.get("ScoutSearchView");
+        Scene currentScene = myViews.get("SearchScoutView");
 
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("ScoutSearchView", this); // USE VIEW FACTORY
+            View newView = ViewFactory.createView("SearchScoutView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
-            myViews.put("ScoutSearchView", currentScene);
+            myViews.put("SearchScoutView", currentScene);
         }
 
         swapToView(currentScene);

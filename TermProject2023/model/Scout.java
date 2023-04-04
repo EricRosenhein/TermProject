@@ -11,6 +11,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import exception.InvalidPrimaryKeyException;
 
 /** This is the Scout class for the Application - interfaces with database table 'Scout'*/
@@ -176,5 +178,50 @@ public class Scout extends EntityBase {
                 + persistentState.getProperty("DateStatusUpdated") + "\n";
     }
 
+
+    // Get Methods
+    // --------------------------------------------------------------------------
+    public String getID() 
+    {
+        return persistentState.getProperty("ID");
+    }
+
+     public String getFirstName() {
+        return persistentState.getProperty("FirstName");
+    }
+
+    public String getLastName() {
+        return persistentState.getProperty("LastName");
+    }
+ 
+    public String getMiddleName() {
+        return persistentState.getProperty("MiddleName");
+    }
+        
+    public String getDateOfBirth() {
+        return persistentState.getProperty("DateOfBirth");
+    }
     
+    public String getPhoneNumber() {
+        return persistentState.getProperty("PhoneNumber");
+    }
+        
+    public String getEmail() {
+        return persistentState.getProperty("Email");
+    }
+
+    //----------------------------------------------------------------------------
+    public String getTroopID() {
+        return persistentState.getProperty("TroopID");
+    }
+
+    public String getStatus()
+    {
+        return persistentState.getProperty("Satus");
+    }
+
+    public String getDateStatusUpdated()
+    {
+        return persistentState.getProperty("DateStatusUpdated");
+    }
 }
