@@ -9,13 +9,14 @@ import java.util.Vector;
 // project imports
 import event.Event;
 import exception.InvalidPrimaryKeyException;
+import model.ScoutCollection;
 
 import userinterface.View;
 import userinterface.ViewFactory;
 
 public class UpdateScoutTransaction extends Transaction {
     
-    private ScoutCollection scoutCollection;
+    private ScoutCollection scoutCollection = new ScoutCollection();
     private Vector scoutList;
     private Scout scoutToUpdate;
 
@@ -123,7 +124,16 @@ public class UpdateScoutTransaction extends Transaction {
         {
             searchScouts((Properties) value);
         }
-         else if (key.equals("UpdateScoutData") == true) {
+        else if(key.equals("CancelSearch") == true)
+        {
+            doYourJob();
+        }
+        else if(key.equals("ScoutChosen") == true)
+        {
+            scoutToUpdate = (Scout) value;
+            createAndShowUpdateScoutView();
+        }
+        else if (key.equals("UpdateScoutData") == true) {
             processScoutData((Properties) value);
         }
 

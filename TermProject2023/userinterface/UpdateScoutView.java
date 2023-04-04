@@ -39,6 +39,7 @@ public class UpdateScoutView extends View {
     protected String phoneNumber;
     protected TextField email;
     protected TextField troopID;
+    protected TextField status;
     protected Button cancelButton;
     protected Button submitButton;
 
@@ -182,6 +183,16 @@ public class UpdateScoutView extends View {
         troopID.setEditable(false);
         grid.add(troopID, 1, 7);
 
+        Text statusLabel = new Text("Status : ");
+        statusLabel.setFont(font);
+        statusLabel.setWrappingWidth(150);
+        statusLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(statusLabel, 0, 8);
+
+        status = new TextField();
+        status.setEditable(false);
+        grid.add(status, 1, 8);
+
         // Cancel and submit buttons
         cancelButton = new Button("Cancel");
         submitButton = new Button("Submit");
@@ -232,6 +243,7 @@ public class UpdateScoutView extends View {
         fourDigits.setText(((String) scoutToUpdate.getState("PhoneNumber")).substring(6,9));
         email.setText((String) scoutToUpdate.getState("Email"));
         troopID.setText((String) scoutToUpdate.getState("TroopID"));
+        status.setText((String) scoutToUpdate.getState("Status"));
     }
     public void processAction(Event evt)
     {
@@ -299,6 +311,7 @@ public class UpdateScoutView extends View {
         props.setProperty("PhoneNumber", phoneNumber);
         props.setProperty("Email", email.getText());
         props.setProperty("TroopID", troopID.getText());
+        props.setProperty("Status", status.getText());
 
         LocalDateTime ldt = LocalDateTime.now();
         String now = ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

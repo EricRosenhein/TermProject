@@ -38,8 +38,9 @@ public class ScoutCollectionView extends View
 {
 
 	// GUI components
-	private TableView<Scout> table = new TableView<Scout>();
+	private TableView<Scout> table = new TableView<>();
 
+    protected Button submitButton;
 	protected Button backButton;
 
 	// For showing error message
@@ -109,9 +110,20 @@ public class ScoutCollectionView extends View
 
 		table.setEditable(true);
 
-
 		HBox btnCont = new HBox(10);
 		btnCont.setAlignment(Pos.CENTER);
+
+        submitButton = new Button("Submit");
+        submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				clearErrorMessage();
+				processAction(e);
+			}
+		});
+
 		backButton = new Button("Back");
 		backButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -120,11 +132,12 @@ public class ScoutCollectionView extends View
 			public void handle(ActionEvent e) {
 				clearErrorMessage();
 				table.getItems().clear();
-				myModel.stateChangeRequest("Cancel", null);
+				myModel.stateChangeRequest("CancelSearch", null);
 			}
 		});
 
 		btnCont.getChildren().add(backButton);
+        btnCont.getChildren().add(submitButton);
 
 		vbox.getChildren().add(table);
 		vbox.getChildren().add(btnCont);
@@ -214,7 +227,9 @@ public class ScoutCollectionView extends View
 
 	private void processAction(Event e)
 	{
-
+        Scout selectedScout = table.getSelectionModel().getSelectedItem();
+        System.out.println("Selected: " + selectedScout.getState("FirstName"));
+        myModel.stateChangeRequest("ScoutChosen", selectedScout);
 	}
 
 }

@@ -50,7 +50,7 @@ public class ScoutCollection extends EntityBase implements IView{
         System.out.println("In query");
         System.out.println(firstName);
         System.out.println(firstName);
-        String query = "SELECT * FROM " + myTableName + " WHERE FirstName LIKE '%" + firstName + "%' AND LastName LIKE '%'" + lastName + "'%'";
+        String query = "SELECT * FROM " + myTableName + " WHERE (FirstName LIKE '%" + firstName + "%') AND (LastName LIKE '%" + lastName + "%')";
         return doQuery(query);
     }
 
