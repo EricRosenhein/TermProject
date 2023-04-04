@@ -192,6 +192,22 @@ public class Tree extends EntityBase implements IView {
     }
 
 
+    // -----------------------------------------------------------------------------------
+    public String getBarcode()
+    {
+        String barcode = persistentState.getProperty("Barcode");
+        return barcode;
+    }
+
+
+    // -----------------------------------------------------------------------------------
+    public String getNotes()
+    {
+        String notes = persistentState.getProperty("Notes");
+        return notes;
+    }
+
+
     // Prints out a description of the chosen tree
     // ----------------------------------------------------------------------------------
     public String toString() {
@@ -203,4 +219,3 @@ public class Tree extends EntityBase implements IView {
 
 
 }
-
