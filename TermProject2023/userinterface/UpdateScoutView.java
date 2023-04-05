@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.collections.FXCollections;
 import model.TransactionFactory;
 import model.Scout;
 
@@ -39,7 +41,8 @@ public class UpdateScoutView extends View {
     protected String phoneNumber;
     protected TextField email;
     protected TextField troopID;
-    protected TextField status;
+    static String status[] = {"Active", "Inactive"};
+	protected ComboBox statusComboBox;
     protected Button cancelButton;
     protected Button submitButton;
 
@@ -143,7 +146,6 @@ public class UpdateScoutView extends View {
         datePicker = new DatePicker();
         grid.add(datePicker, 1, 4);
 
-        // Needs validation method
         Text phoneNumberLabel = new Text("Phone Number: ");
         phoneNumberLabel.setFont(font);
         phoneNumberLabel.setWrappingWidth(150);
@@ -189,9 +191,8 @@ public class UpdateScoutView extends View {
         statusLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(statusLabel, 0, 8);
 
-        status = new TextField();
-        status.setEditable(false);
-        grid.add(status, 1, 8);
+        statusComboBox = new ComboBox(FXCollections.observableArrayList(status));
+		grid.add(statusComboBox, 1, 8);
 
         // Cancel and submit buttons
         cancelButton = new Button("Cancel");
@@ -243,7 +244,7 @@ public class UpdateScoutView extends View {
         fourDigits.setText(((String) scoutToUpdate.getState("PhoneNumber")).substring(6,9));
         email.setText((String) scoutToUpdate.getState("Email"));
         troopID.setText((String) scoutToUpdate.getState("TroopID"));
-        status.setText((String) scoutToUpdate.getState("Status"));
+        statusComboBox.setValue((String) scoutToUpdate.getState("Status"));
     }
     public void processAction(Event evt)
     {
@@ -311,7 +312,7 @@ public class UpdateScoutView extends View {
         props.setProperty("PhoneNumber", phoneNumber);
         props.setProperty("Email", email.getText());
         props.setProperty("TroopID", troopID.getText());
-        props.setProperty("Status", status.getText());
+        props.setProperty("Status", (String)statusComboBox.getValue());
 
         LocalDateTime ldt = LocalDateTime.now();
         String now = ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -325,16 +326,7 @@ public class UpdateScoutView extends View {
     // ----------------------------------------------------------------------
     public void updateState(String key, Object value)
     {
-        //    if (key.equals("ScoutUpdateStatusMessage"))
-        //    {
-        //        String msg = (String)value;
-        //        if (msg.startsWith("ERR")) {
-        //            displayErrorMessage(msg);
-        //        }
-        //        else {
-        //            displayMessage(msg);
-        //        }
-        //    }
+        
     }
 
     /**

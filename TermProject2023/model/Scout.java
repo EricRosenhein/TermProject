@@ -217,7 +217,7 @@ public class Scout extends EntityBase {
 
     public String getStatus()
     {
-        return persistentState.getProperty("Satus");
+        return persistentState.getProperty("Status");
     }
 
     public String getDateStatusUpdated()
