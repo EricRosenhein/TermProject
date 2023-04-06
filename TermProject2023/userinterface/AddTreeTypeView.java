@@ -189,15 +189,15 @@ public class AddTreeTypeView extends View
 		}
 		else if(TypeDescriptionField.getText().length() > 25)
 		{
-			displayErrorMessage("Type Description has a limit of 25 characters!");
+			displayErrorMessage("Type Description has a limit of 25 characters");
 		}
         else if(CostField.getText().length() > 20)
         {
-            displayErrorMessage("Cost has a limit of 25 characters!");
+            displayErrorMessage("Cost has a limit of 25 characters");
         }
         else if(BarcodePrefixField.getText().length() != 2)
         {
-            displayErrorMessage("Barcode Prefix muse be 2 characters long!");
+            displayErrorMessage("Barcode Prefix must be 2 characters long");
         }
 		else
 		{

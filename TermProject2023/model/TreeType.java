@@ -34,6 +34,7 @@ import userinterface.ViewFactory;
         public TreeType(String barPrefix) throws InvalidPrimaryKeyException
         {
             super(myTableName);
+            System.out.println("TreeType.java constructor");
 
             setDependencies();
             String query = "SELECT * FROM " + myTableName + " WHERE (BarcodePrefix = '" + barPrefix + "')";
@@ -41,7 +42,7 @@ import userinterface.ViewFactory;
             Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
             // You must get one tree type at least
-            if (allDataRetrieved != null) {
+            if (allDataRetrieved.size() != 0) {
                 int size = allDataRetrieved.size();
 
                 // There should be EXACTLY one tree type. More than that is an error

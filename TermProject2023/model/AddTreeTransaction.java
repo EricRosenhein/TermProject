@@ -53,25 +53,30 @@ public class AddTreeTransaction extends Transaction
     protected void processTreeData(Properties p)
     {
         // Set barcode prefix to the first 2 chars of the Barcode
-        String treeTypeID = p.getProperty("Barcode");
-        //barPrefix = extract(barcode);
-
-        // Retrieve tt object from the database using barcode prefix
-        // try
-        // {
-        //     if (barPrefix.length() > 0)
-        //         treeType = new TreeType(barPrefix);
-        //     else
-        //         treeUpdateStatusMessage = "ERROR: Invalid barcode for tree";
-        // }
-        //  catch(InvalidPrimaryKeyException ex)
-        //   {
-        //      treeUpdateStatusMessage = "ERROR: No tree type found with barcode prefix " + barPrefix;
-        //   }
+        String barcode = p.getProperty("Barcode", "");
+        // DEBUG String notes = p.getProperty("Notes");
+        // DEBUG System.out.println("Process Tree Transaction barcode: "+barcode);
+        // DEBUG System.out.println("Process Tree Transaction notes: "+ notes);
+        barPrefix = extract(barcode);
+        System.out.println("Process Tree Transaction: "+barPrefix);
+        //Retrieve tt object from the database using barcode prefix
+        try
+        {
+            System.out.println("AddTreeTransaction Prefix Length: " + barPrefix.length());
+            //if (barPrefix.length() > 0)
+                treeType = new TreeType(barPrefix);
+            //else
+                //treeUpdateStatusMessage = "ERROR: Invalid barcode for tree";
+        }
+         catch(InvalidPrimaryKeyException ex)
+          {
+             treeUpdateStatusMessage = "ERROR: No tree type found with barcode prefix " + barPrefix;
+          }
 
         // Try and fail to make an existing tree
         try
         {
+
             existingTree = new Tree(barcode);
             treeUpdateStatusMessage = "ERROR: tree with barcode: " + barcode + "already exists!";
         }
@@ -85,10 +90,11 @@ public class AddTreeTransaction extends Transaction
 
              */
             //String currentDate = LocalDate.now().toString();
-            //String treeTypeId = treeType.getTreeTypeId();
+            //System.out.println("AddTree TreeType: " + treeType.toString());
+            String treeTypeId = treeType.getTreeTypeId();
 
             //p.setProperty("DateStatusUpdated", currentDate);
-            //p.setProperty("TreeType", treeTypeId);
+            p.setProperty("TreeType", treeTypeId);
             tree = new Tree(p);
             System.out.println(tree.toString());
             tree.update();

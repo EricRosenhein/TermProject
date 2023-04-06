@@ -51,10 +51,10 @@ public class ViewFactory
 		{
 			return new TreeTypeSearchView(model);
 		}
-		// else if (viewName.equals("RemoveScoutView"))
-		// {
-		// 	return new RemoveScoutView(model);
-		// }
+		else if (viewName.equals("RemoveScoutView"))
+		{
+			return new RemoveScoutView(model);
+		}
 		// else if (viewName.equals("RemoveTreeView"))
 		// {
 		// 	return new RemoveTreeView(model);

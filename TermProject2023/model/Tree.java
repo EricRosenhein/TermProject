@@ -34,7 +34,8 @@ public class Tree extends EntityBase implements IView {
         oldFlag = true;
         String query = "SELECT * FROM " + myTableName + " WHERE (Barcode = " + bar + ")";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-        if (allDataRetrieved != null){
+        System.out.println("Data Retrieved Size: " + allDataRetrieved.size());
+        if (allDataRetrieved.size() != 0){
             int size = allDataRetrieved.size();
             if (size != 1){
                 oldFlag = false; // necessary?

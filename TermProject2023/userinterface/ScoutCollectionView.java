@@ -158,8 +158,6 @@ public class ScoutCollectionView extends View
 	//-------------------------------------------------------------
 	public void populateFields()
 	{
-		TableColumn scoutIdCol = new TableColumn("Scout Id");
-		scoutIdCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
 		TableColumn lastNameCol = new TableColumn("Last Name");
 		lastNameCol.setCellValueFactory(new PropertyValueFactory<>("LastName"));
 		TableColumn firstNameCol = new TableColumn("First Name");
@@ -184,7 +182,7 @@ public class ScoutCollectionView extends View
 		ObservableList<Scout> observableList = FXCollections.observableList(scoutList);
 		List<Scout> list = Collections.list(scoutList.elements());
 
-		table.getColumns().addAll(scoutIdCol, firstNameCol, lastNameCol, middleNameCol, 
+		table.getColumns().addAll( firstNameCol, lastNameCol, middleNameCol, 
             dateOfBirthCol, phoneNumberCol, emailCol, troopIDCol, statusCol, dateStatusUpdatedCol);
 		table.setItems(observableList);
 	}

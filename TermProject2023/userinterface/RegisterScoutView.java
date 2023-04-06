@@ -246,7 +246,7 @@ public class RegisterScoutView extends View
             displayErrorMessage("Please enter a valid email");
             return;
         }
-        else if(troopID.getText().length() < 5)
+        else if(troopID.getText().length() != 5)
         {
             displayErrorMessage("Troop ID must be 5 integers long!");
             return;

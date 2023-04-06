@@ -65,7 +65,7 @@ public abstract class TreeView extends View
 		HBox container = new HBox();
 		container.setAlignment(Pos.CENTER);	
 
-		Text titleText = new Text(" Whysenhein Library ");
+		Text titleText = new Text(" Boy Scout Troop 209 Tree Sales System: Tree View ");
 		titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);

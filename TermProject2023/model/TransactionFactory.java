@@ -52,11 +52,11 @@ public class TransactionFactory
 		{
 			returnValue = new UpdateTreeTypeTransaction();
 		} 
-		// else
-		// if (transactionType.equals("RemoveScout") == true)
-		// {
-		// 	returnValue = new RemoveScoutTransaction();
-		// } 
+		else
+		if (transactionType.equals("RemoveScout") == true)
+		{
+			returnValue = new RemoveScoutTransaction();
+		} 
 		// else
 		// if (transactionType.equals("RemoveTree") == true)
 		// {

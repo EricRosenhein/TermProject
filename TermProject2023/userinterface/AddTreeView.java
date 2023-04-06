@@ -123,26 +123,22 @@ public class AddTreeView extends TreeView
     public void processAction(Event event)
     {
         String bcode = barcode.getText();
-        String treeType = bcode.substring(0,2);
+        //String treeType = bcode.substring(0,2);
         String no = notes.getText();
 
         LocalDate today = LocalDate.now();
         String now = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String dateScoutStatusUpdated = now;
 
-        if(treeType.equals("20") == false //|| bcodeSub.equals( "21") == false || (bcodeSub.equals( "30") == false) || (bcodeSub.equals("31") == false) || (bcodeSub.equals("40") == false) ||
-        //(bcodeSub.equals( "41") == false) || (bcodeSub.equals( "50") == false) || (bcodeSub.equals( "51") == false) || (bcodeSub.equals( "60") == false) || (bcodeSub.equals( "61") == false) ||
-        || (bcode.length() != 5)) 
-        {
-            displayErrorMessage("ERROR: Invalid barcode");
-        }
-        else if((no == null) || (no.trim().length() == 0)) {
+        if((no == null) || (no.trim().length() == 0)) {
             displayErrorMessage("Please enter notes");
         }
         else {
             Properties props = new Properties();
+            //DEBUG System.out.println("Addtree view: "+bcode);
             props.setProperty("Barcode", bcode);
-            props.setProperty("TreeType", treeType);
+            System.out.println("Addtreeview: " + props.getProperty("Barcode"));
+            //props.setProperty("TreeType", treeType);
             props.setProperty("Notes", no);
             props.setProperty("DateStatusUpdated", dateScoutStatusUpdated);
 
