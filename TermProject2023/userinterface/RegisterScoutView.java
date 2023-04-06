@@ -261,11 +261,11 @@ public class RegisterScoutView extends View
         }
 		else
 		{
-            RegisterScout();
+            registerScout();
 		}
 	}
 
-    private void RegisterScout()
+    private void registerScout()
 	{
 		Properties props = new Properties();
 		props.setProperty("FirstName", firstName.getText());
