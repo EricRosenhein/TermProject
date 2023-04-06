@@ -66,7 +66,7 @@ public class RemoveScoutTransaction extends Transaction
      * verifying ownership, crediting, etc. etc.
      */
     // ----------------------------------------------------------
-    public void removeScout(Properties p) {
+    public void removeScout() {
         // Set scout status to Inactive
         scoutToRemove.persistentState.setProperty("Status", "Inactive");
 
@@ -120,7 +120,7 @@ public class RemoveScoutTransaction extends Transaction
             createAndShowRemoveScoutView();
         }
         else if (key.equals("RemoveScout") == true) {
-            removeScout((Properties) value);
+            removeScout();
         }
 
         myRegistry.updateSubscribers(key, this);

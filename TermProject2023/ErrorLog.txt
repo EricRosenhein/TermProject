@@ -82,3 +82,6 @@
 [4/4/23 4:59 PM]|ScoutCollection|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=15325) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Cummings'%')' at line 1>
 [4/6/23 1:27 PM]|TreeType|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=21502) Duplicate entry '71' for key 'BarcodePrefix'>
 [4/6/23 1:27 PM]|TreeType|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=21502) Duplicate entry '71' for key 'BarcodePrefix'>
+[4/6/23 5:04 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: columnSpan must be greater or equal to 1, but was 0>
+[4/6/23 5:25 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: columnSpan must be greater or equal to 1, but was 0>
+[4/6/23 5:26 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: rowSpan must be greater or equal to 1, but was 0>

@@ -88,17 +88,57 @@ public class RemoveScoutView extends View
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
-        grid.add(prompt, 0, 0, 2, 1); 
+        grid.add(prompt, 0, 1); 
 
         Scout scoutToUpdate = (Scout) myModel.getState("GetScoutToRemove");
 
-        Text scoutInfo = new Text(scoutToUpdate.toString());
+        Text scoutInfo = new Text("Name: " + scoutToUpdate.getState("FirstName") + " " + 
+            scoutToUpdate.getState("MiddleName") + " " +scoutToUpdate.getState("LastName") +
+            "\nDate of Birth: " + scoutToUpdate.getState("DateOfBirth") +
+            "\nPhone Number: " + scoutToUpdate.getState("PhoneNumber") +
+            "\nEmail: " + scoutToUpdate.getState("Email") + 
+            "\nTroopID: " + scoutToUpdate.getState("TroopID"));
         scoutInfo.setWrappingWidth(400);
         scoutInfo.setTextAlignment(TextAlignment.CENTER);
         scoutInfo.setFill(Color.BLACK);
-        grid.add(scoutInfo, 0, 0, 3, 2);
+        grid.add(scoutInfo,0,2);
+
+        // Cancel and submit buttons
+        cancelButton = new Button("Cancel");
+        submitButton = new Button("Submit");
+
+        // Handle events for regular buttons
+        cancelButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent e)
+            {
+                // DEBUG - This should take us back to the TransactionMenu
+                myModel.stateChangeRequest("CancelTransaction", "");
+            }
+        });
+
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                processAction(e);
+            }
+        });
+
+        HBox buttonContainer = new HBox(10);
+        buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
+        buttonContainer.getChildren().add(cancelButton);
+        buttonContainer.getChildren().add(submitButton);
+        grid.add(buttonContainer, 0, 3);
 
         return grid;
+    }
+
+    public void processAction(Event evt)
+    {
+        myModel.stateChangeRequest("RemoveScout", "");
+        displayMessage("Scout Removed!");
     }
 
     protected MessageView createStatusLog(String initialMessage) {
