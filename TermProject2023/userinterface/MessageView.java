@@ -1,5 +1,6 @@
 package userinterface;
 
+import Utilities.GlobalData;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -15,6 +16,7 @@ public class MessageView extends Text
         setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
         setFill(Color.BLUE);
         setTextAlignment(TextAlignment.LEFT);
+        setWrappingWidth(GlobalData.MAX_WRAPPING_WIDTH_FOR_MESSAGES);
     }
 
     //----------------------------------------------------------

@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 public class MainStageContainer
 {
    	// data members
-	
 	private static Stage myInstance = null;
 	
 	// class constructor

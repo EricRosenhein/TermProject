@@ -21,6 +21,9 @@ public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
     protected Properties dependencies;
     private String updateStatusMessage = "";
+    private String deleteStatusMessage = "";
+
+    private boolean oldFlag = true;
 
     //---------------------------------------------------------------------
     // Constructor accepting barcode to search for an existing record
@@ -28,11 +31,13 @@ public class Tree extends EntityBase implements IView {
 
         super(myTableName);
         setDependencies();
+        oldFlag = true;
         String query = "SELECT * FROM " + myTableName + " WHERE (Barcode = " + bar + ")";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
         if (allDataRetrieved != null){
             int size = allDataRetrieved.size();
             if (size != 1){
+                oldFlag = false; // necessary?
                 throw new InvalidPrimaryKeyException("Multiple trees matching barcode : "+ bar + " found.");
             } else{
                 Properties retrievedTreeData = allDataRetrieved.elementAt(0);
@@ -50,7 +55,8 @@ public class Tree extends EntityBase implements IView {
         }
         // If no tree found for barcode, throw exception
         else{
-            throw new InvalidPrimaryKeyException("No trees matching barcode : "+ bar +" found.");
+            oldFlag = false; // necessary?
+            throw new InvalidPrimaryKeyException("ERROR: No trees matching barcode : "+ bar +" found.");
         }
     }
 
@@ -87,7 +93,13 @@ public class Tree extends EntityBase implements IView {
     // ----------------------------------------------------------
     public Object getState(String key) {
         if (key.equals("UpdateStatusMessage") == true)
+        {
             return updateStatusMessage;
+        }
+        else if (key.equals("DeleteStatusMessage") == true)
+        {
+            return deleteStatusMessage;
+        }
 
         return persistentState.getProperty(key);
     }
@@ -111,30 +123,56 @@ public class Tree extends EntityBase implements IView {
     public void update() {
         updateStateInDatabase();
     }
+    public void delete() {
+        deleteStateInDatabase();
+    }
 
     // -----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
         try {
-            if (persistentState.getProperty("Barcode") != null) {
+            if (oldFlag == true) {
                 Properties whereClause = new Properties();
                 whereClause.setProperty("Barcode",
                         persistentState.getProperty("Barcode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Tree data for tree : "
+                oldFlag = true;
+                updateStatusMessage = "Tree data for tree: "
                         + persistentState.getProperty("Barcode")
                         + " updated successfully in database!";
             } else {
-                Integer barcode = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("Barcode", "" + barcode);
-                updateStatusMessage = "Tree data for new tree : "
+                insertPersistentState(mySchema, persistentState);
+                oldFlag = true;
+                updateStatusMessage = "Tree data for new tree: "
                         + persistentState.getProperty("Barcode")
-                        + "installed successfully in database!";
+                        + " installed successfully in database!";
             }
         } catch (SQLException ex) {
-            updateStatusMessage = "Error registering tree data in database!";
+            updateStatusMessage = "ERROR: Error registering tree data in database!";
         }
     }
 
+    //----------------------------------------------------------------
+    public void setOldFlag(boolean val)
+    {
+        oldFlag = val;
+    }
+
+    //------------------------------------------------------------------
+    private void deleteStateInDatabase( ) // NOT NEEDED IN OTHER CLASSES -- REFER TO DELETE TREE SEQUENCE DIAGRAM
+    {
+        try
+        {
+            Properties whereClause = new Properties();
+            whereClause.setProperty ( "Barcode", persistentState.getProperty( "Barcode" ) );
+            deletePersistentState( mySchema, whereClause );
+            deleteStatusMessage =  "Tree with barcode: " +persistentState.getProperty("Barcode")
+                    + " removed successfully from the database!";
+        }
+        catch ( SQLException ex )
+        {
+            deleteStatusMessage = "ERROR: Error in removing tree data from database!";
+        }
+    }
 
     /**
      * This method is needed solely to enable the Tree information to be
@@ -160,7 +198,25 @@ public class Tree extends EntityBase implements IView {
         }
     }
 
+
+    // -----------------------------------------------------------------------------------
+    public String getBarcode()
+    {
+        String barcode = persistentState.getProperty("Barcode");
+        return barcode;
+    }
+
+
+    // -----------------------------------------------------------------------------------
+    public String getNotes()
+    {
+        String notes = persistentState.getProperty("Notes");
+        return notes;
+    }
+
+
     // Prints out a description of the chosen tree
+    // ----------------------------------------------------------------------------------
     public String toString() {
         return "Barcode: " + persistentState.getProperty("Barcode") + "; TreeType: "
                 + persistentState.getProperty("TreeType") + "; Notes: " + persistentState.getProperty("Notes")

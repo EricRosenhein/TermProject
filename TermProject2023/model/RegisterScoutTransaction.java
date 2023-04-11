@@ -44,7 +44,7 @@ public class RegisterScoutTransaction extends Transaction {
 	{
         String troopIDSent = p.getProperty("TroopID");
         Scout oldScout = new Scout(troopIDSent);
-        scoutUpdateStatusMessage = "ERROR: Scout with troop ID: " + troopIDSent + "already exists!";
+        scoutUpdateStatusMessage = "ERROR: Scout with troop ID: " + troopIDSent + " already exists!";
     }
 	catch (InvalidPrimaryKeyException ex)
 	{       
@@ -71,9 +71,11 @@ public class RegisterScoutTransaction extends Transaction {
     public void stateChangeRequest(String key, Object value) {
         // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
 
-        if (key.equals("DoYourJob") == true) {
+        if (key.equals("DoYourJob") == true)
+        {
             doYourJob();
-        } else if (key.equals("InsertScoutData") == true) {
+        }
+        else if (key.equals("InsertScoutData") == true) {
             processScoutData((Properties) value);
         }
 

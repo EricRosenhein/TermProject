@@ -139,8 +139,7 @@ public class TreeLotCoordinator implements IView, IModel
     //---------------------------------------------------------------------------------------
 	public void doTransaction(String transactionType)
 	{
-        // DEBUG 
-		System.out.println("Handling transaction type: " + transactionType);
+        // DEBUG System.out.println("Handling transaction type: " + transactionType);
 		
         try
 	    {
@@ -161,7 +160,7 @@ public class TreeLotCoordinator implements IView, IModel
     // ----------------------------------------------------------------
     public void updateState(String key, Object value) 
     {
-        // DEBUG System.out.println("TransactionMenu:updateState, key is: " + key);
+        // DEBUG System.out.println("TreeLotCoordinator:updateState, key is: " + key);
 
 		stateChangeRequest(key, value);
     }

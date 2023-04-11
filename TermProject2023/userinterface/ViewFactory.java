@@ -1,5 +1,6 @@
 package userinterface;
 
+
 import impresario.IModel;
 
 //==============================================================================
@@ -8,8 +9,7 @@ public class ViewFactory
 	public static View createView(String viewName, IModel model)
 	{
 		
-		// DEBUG
-		System.out.println("In View : createView(), view name: " + viewName);
+		// DEBUG System.out.println("In View : createView(), view name: " + viewName);
 		
 		if (viewName.equals("TLCView"))
 		{
@@ -27,13 +27,29 @@ public class ViewFactory
 		{
 			return new AddTreeTypeView(model);
 		}
+		else if (viewName.equals("SearchScoutView"))
+		{
+			return new SearchScoutView(model);
+		}
+		else if (viewName.equals("ScoutCollectionView"))
+		{
+			return new ScoutCollectionView(model);
+		}
 		else if (viewName.equals("UpdateScoutView"))
 		{
 			return new UpdateScoutView(model);
 		}
+		else if (viewName.equals("ScanTreeBarcodeView"))
+		{
+			return new ScanTreeBarcodeView(model);
+		}
 		else if (viewName.equals("UpdateTreeView"))
 		{
 			return new UpdateTreeView(model);
+		}
+		else if (viewName.equals("TreeTypeSearchView"))
+		{
+			return new TreeTypeSearchView(model);
 		}
 		else if (viewName.equals("UpdateTreeTypeView"))
 		{
@@ -43,9 +59,9 @@ public class ViewFactory
 		{
 			return new RemoveScoutView(model);
 		}
-		else if (viewName.equals("RemoveTreeView"))
+		else if (viewName.equals("ConfirmDeleteTreeView"))
 		{
-			return new RemoveTreeView(model);
+			return new ConfirmDeleteTreeView(model);
 		}
 		else
 			return null;

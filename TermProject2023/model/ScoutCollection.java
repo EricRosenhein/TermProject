@@ -25,32 +25,67 @@ public class ScoutCollection extends EntityBase implements IView{
     // constructor for this class
     // ----------------------------------------------------------
     public ScoutCollection() {
-		super(myTableName);
-		setDependencies();
-		scoutList = new Vector<>(); // new Vector<Scout>();
-	}
+        super(myTableName);
+        setDependencies();
+        scoutList = new Vector<>(); // new Vector<Scout>();
+    }
 
-    public Vector findScoutsOlderThan(String DateOfBirth) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth < " + DateOfBirth + ") ORDER BY name ASC;";
+    // -----------------------------------------------------------------------------------------------
+    public Vector findScoutsWithNameLike(String firstName, String lastName)
+    {
+        String query = "";
+
+        if (((firstName.length() == 0) || (firstName == null)) && ((lastName.length() == 0) || (lastName == null)))
+        {
+            query = "SELECT * FROM " + myTableName + " ORDER BY LastName, FirstName, TroopID";
+        }
+        else if ((firstName.length() == 0) || (firstName == null))
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (LastName LIKE '%" + lastName + "%') ORDER BY LastName, FirstName, TroopID";
+
+        }
+        else if ((lastName.length() == 0) || (lastName == null))
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (FirstName LIKE '%" + firstName + "%') ORDER BY LastName, FirstName, TroopID";
+
+        }
+        else
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (FirstName LIKE '%" + firstName + "%') AND (LastName LIKE '%" + lastName + "%') ORDER BY LastName, FirstName, TroopID";
+        }
         return doQuery(query);
     }
 
-    public Vector findScoutsYoungerThan(String DateOfBirth) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (DateOfBirth > " + DateOfBirth + ") ORDER BY name ASC;";
+    // -----------------------------------------------------------------------------------------------
+    public Vector findActiveScoutsWithNameLike(String firstName, String lastName)
+    {
+        String query = "";
+
+        if (((firstName.length() == 0) || (firstName == null)) && ((lastName.length() == 0) || (lastName == null)))
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (Status = 'Active') ORDER BY LastName, FirstName, TroopID";
+        }
+        else if ((firstName.length() == 0) || (firstName == null))
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (LastName LIKE '%" + lastName + "%') " +
+                    " AND (Status = 'Active') ORDER BY LastName, FirstName, TroopID";
+
+        }
+        else if ((lastName.length() == 0) || (lastName == null))
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (FirstName LIKE '%" + firstName + "%') " +
+                    " AND (Status = 'Active') ORDER BY LastName, FirstName, TroopID";
+
+        }
+        else
+        {
+            query = "SELECT * FROM " + myTableName + " WHERE (FirstName LIKE '%" + firstName + "%') AND "
+                    + " (LastName LIKE '%" + lastName + "%') AND (Status = 'Active') ORDER BY LastName, FirstName, TroopID";
+        }
         return doQuery(query);
     }
 
-    public Vector findAllScouts() {
-
-        String query = "SELECT * FROM " + myTableName + " ORDER BY name ASC;";
-        return doQuery(query);
-    }
-
-    public Vector findPatronsWithNameLike(String LastName) {
-        String query = "SELECT * FROM " + myTableName + " WHERE (author LIKE '%" + LastName + "%')";
-        return doQuery(query);
-    }
-
+    // -----------------------------------------------------------------
     private Vector doQuery(String query) {
         try {
             Vector allDataRetrieved = getSelectQueryResult(query);
@@ -65,11 +100,12 @@ public class ScoutCollection extends EntityBase implements IView{
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
-        System.out.println("In Bcview: doQuery - ScoutCollection.java");
-        System.out.println(scoutList + "prints scoutList");
+        // DEBUG System.out.println("model/ScoutCollection: doQuery(String query): Printing scoutList \n" + scoutList);
         return scoutList;
     }
 
+
+    // --------------------------------------------------------------------------
     private void setDependencies() {
         Properties dependencies = new Properties();
         dependencies.setProperty("CancelSearchScout", "SearchScoutView");
@@ -80,7 +116,7 @@ public class ScoutCollection extends EntityBase implements IView{
     // ----------------------------------------------------------
     @Override
     public Object getState(String key) {
-        if (key.equals("scouts"))
+        if (key.equals("ScoutCollection"))
             return scoutList;
         return null;
     }
@@ -106,21 +142,21 @@ public class ScoutCollection extends EntityBase implements IView{
     }
 
     public void createAndShowScoutCollectionView() {
-        Scene currentScene = myViews.get("ScoutSearchView");
+        Scene currentScene = myViews.get("SearchScoutView");
 
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("ScoutSearchView", this); // USE VIEW FACTORY
+            View newView = ViewFactory.createView("SearchScoutView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
-            myViews.put("ScoutSearchView", currentScene);
+            myViews.put("SearchScoutView", currentScene);
         }
 
         swapToView(currentScene);
     }
 
-    public void ShowScoutCollectionView() {
+    public void showScoutCollectionView() {
         Scene currentScene = myViews.get("ScoutCollectionView");
-        System.out.println("ScoutCollectionView - ScoutCollection.java");
+        // DEBUG System.out.println("userinterface/ScoutCollectionView: showScoutCollectionView()");
         if (currentScene == null) {
             // create our initial view
             View newView = ViewFactory.createView("ScoutCollectionView", this); // USE VIEW FACTORY

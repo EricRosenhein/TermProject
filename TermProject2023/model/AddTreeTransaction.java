@@ -1,3 +1,7 @@
+/**
+ *  AddTreeTransaction:
+ *
+ */
 // specify the package
 package model;
 
@@ -22,10 +26,6 @@ public class AddTreeTransaction extends Transaction
 {
 
     private Tree tree;
-    private Tree existingTree;
-    private TreeType treeType;
-    private String barPrefix;
-    private String barcode;
 
 
     // GUI Components
@@ -53,14 +53,32 @@ public class AddTreeTransaction extends Transaction
     protected void processTreeData(Properties p)
     {
         // Set barcode prefix to the first 2 chars of the Barcode
-        barcode = p.getProperty("Barcode");
-        barPrefix = extract(barcode);
+        String barcode = p.getProperty("Barcode");
+        String barPrefix = extract(barcode);
+
+        // DEBUG System.out.println("model/AddTreeTransaction: processTreeData(Properties p): barcode - " + barcode + "\nbarPrefix - " + barPrefix);
 
         // Retrieve tt object from the database using barcode prefix
         try
         {
-            if (barPrefix.length() > 0)
-                treeType = new TreeType(barPrefix);
+            if (barPrefix.length() > 0) {
+                TreeType treeType = new TreeType(barPrefix);
+                String treeTypeId = (String)treeType.getState("ID");
+                p.setProperty("TreeType", treeTypeId);
+                try {
+                    Tree existingTree = new Tree(barcode);
+                    treeUpdateStatusMessage = "ERROR: Tree with barcode: " + barcode + " already exists!";
+                }
+                catch (InvalidPrimaryKeyException excep)
+                {
+                    String currentDate = LocalDate.now().toString();
+                    p.setProperty("DateStatusUpdated", currentDate);
+                    tree = new Tree(p);
+                    tree.setOldFlag(false);
+                    tree.update();
+                    treeUpdateStatusMessage = (String)tree.getState("UpdateStatusMessage");
+                }
+            }
             else
                 treeUpdateStatusMessage = "ERROR: Invalid barcode for tree";
         }
@@ -69,14 +87,7 @@ public class AddTreeTransaction extends Transaction
              treeUpdateStatusMessage = "ERROR: No tree type found with barcode prefix " + barPrefix;
           }
 
-        // Try and fail to make an existing tree
-        try
-        {
-            existingTree = new Tree(barcode);
-            treeUpdateStatusMessage = "ERROR: tree with barcode: " + barcode + "already exists!";
-        }
-        catch(InvalidPrimaryKeyException ex)
-        {
+
             /*
                 Calendar rightNow = Calendar.getInstance();
                 Date currentDate = rightNow.getTime();
@@ -84,15 +95,8 @@ public class AddTreeTransaction extends Transaction
                 String currentDate = df.format(currentDate);
 
              */
-            String currentDate = LocalDate.now().toString();
-            String treeTypeId = treeType.getTreeTypeId();
 
-            p.setProperty("DateStatusUpdated", currentDate);
-            p.setProperty("TreeType", treeTypeId);
-            tree = new Tree(p);
-            tree.update();
-            treeUpdateStatusMessage = (String) tree.getState("UpdateStatusMessage");
-        }
+
     }
 
 

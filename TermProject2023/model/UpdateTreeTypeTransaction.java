@@ -16,79 +16,92 @@ import userinterface.ViewFactory;
 
 public class UpdateTreeTypeTransaction extends Transaction
 {
-    private TreeType treeTypeToUpdate;
+	private TreeType treeTypeToUpdate;
+	private String treeTypeUpdateStatusMessage = "";
 
-    private String transactionErrorMessage = "";
-    private String updateStatusMessage = "";
+	// Constructor
+	//---------------------------------------------------------------------
+	public UpdateTreeTypeTransaction()
+	{
 
-    // Constructor
-    //---------------------------------------------------------------------
-    public UpdateTreeTypeTransaction() throws Exception
-    {
-        super();
-    }
+		super();
+		createView();
+	}
 
-    protected void setDependencies()
+	protected void setDependencies()
 	{
 		dependencies = new Properties();
-		dependencies.setProperty("UpdateTreeTypeData", "UpdateStatusMessage");
-		dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
+		dependencies.setProperty("UpdateTreeTypeData", "TreeTypeUpdateStatusMessage");
+		dependencies.setProperty("CancelUpdateTreeType", "CancelTransaction");
 
 		myRegistry.setDependencies(dependencies);
 	}
 
-    public void searchTreeTypes(String barcodePrefix)
-    {
-        try 
-        {
-            treeTypeToUpdate = new TreeType(barcodePrefix);
+	public void searchTreeTypes(String barcodePrefix)
+	{
+		try
+		{
+			treeTypeToUpdate = new TreeType(barcodePrefix);
 
-            CreateAndShowUpdateTreeTypeTransactionView();
+			createAndShowUpdateTreeTypeTransactionView();
 
-            updateStatusMessage = (String)treeTypeToUpdate.getState("UpdateStatusMessage");
-        } 
+			treeTypeUpdateStatusMessage = (String)treeTypeToUpdate.getState("UpdateStatusMessage");
+		}
 
-        catch (InvalidPrimaryKeyException e) 
-        {
-            transactionErrorMessage = "No tree type found with " + barcodePrefix + "barcode prefix";
-        }
-    }
+		catch (InvalidPrimaryKeyException e)
+		{
+			treeTypeUpdateStatusMessage = "No tree type found with " + barcodePrefix + "barcode prefix";
+		}
+	}
 
-    public void processTransaction(String cost)
+	public void processTransaction(Properties updateData)
 	{
 
 		// String typeDescription = props.getProperty("typeDescription");
 		// String cost = props.getProperty("cost");
 		// String barcodePrefix = props.getProperty("barcodePrefix");
 
-		
-        treeTypeToUpdate.setCost(cost);
-        
-        treeTypeToUpdate.update();
+		String newDescription = updateData.getProperty("TypeDescription");
+		String newCost = updateData.getProperty("Cost");
 
-		updateStatusMessage = (String)treeTypeToUpdate.getState("UpdateStatusMessage");
-	}
-
-    //-----------------------------------------------------------
-	public Object getState(String key)
-	{
-		if (key.equals("TransactionError") == true)
+		if ((newDescription != null) && (newDescription.length() > 0))
 		{
-			return transactionErrorMessage;
+			treeTypeToUpdate.setTypeDescription(newDescription);
+			if ((newCost != null) && (newCost.length() > 0))
+			{
+				treeTypeToUpdate.setCost(newCost);
+				treeTypeToUpdate.update();
+				treeTypeUpdateStatusMessage = (String)treeTypeToUpdate.getState("UpdateStatusMessage");
+			}
+			else
+			{
+				treeTypeUpdateStatusMessage = "ERROR: Cost value cannot be empty!";
+			}
 		}
 		else
-		if (key.equals("UpdateStatusMessage") == true)
 		{
-			return updateStatusMessage;
+			treeTypeUpdateStatusMessage = "ERROR: Description cannot be empty!";
 		}
-        else if(key.equals("GetTreeTypeToUpdate") == true)
-        {
-            return treeTypeToUpdate;
-        }
+			;
+
+
+	}
+
+	//-----------------------------------------------------------
+	public Object getState(String key)
+	{
+		if (key.equals("TreeTypeUpdateStatusMessage") == true)
+		{
+			return treeTypeUpdateStatusMessage;
+		}
+		else if(key.equals("GetTreeTypeToUpdate") == true)
+		{
+			return treeTypeToUpdate;
+		}
 		return null;
 	}
 
-    //-----------------------------------------------------------
+	//-----------------------------------------------------------
 	public void stateChangeRequest(String key, Object value)
 	{
 		if (key.equals("DoYourJob") == true)
@@ -96,21 +109,21 @@ public class UpdateTreeTypeTransaction extends Transaction
 			doYourJob();
 		}
 		else
-        if(key.equals("SearchTreeTypes") == true)
-        {
-            searchTreeTypes((String)value);
-        }
-        else
+		if(key.equals("SearchTreeTypes") == true)
+		{
+			searchTreeTypes((String)value);
+		}
+		else
 		if (key.equals("UpdateTreeTypeData") == true)
 		{
-			processTransaction((String)value);
+			processTransaction((Properties)value);
 		}
 
 		myRegistry.updateSubscribers(key, this);
 	}
 
-    // Show the TreeTypeSearchView first
-    //------------------------------------------------------
+	// Show the TreeTypeSearchView first
+	//------------------------------------------------------
 	protected Scene createView()
 	{
 
@@ -131,22 +144,12 @@ public class UpdateTreeTypeTransaction extends Transaction
 		}
 	}
 
-    protected void CreateAndShowUpdateTreeTypeTransactionView()
-    {
-        Scene currentScene = myViews.get("UpdateTreeTypeTransactionView");
-
-		if (currentScene == null)
-		{
+	protected void createAndShowUpdateTreeTypeTransactionView()
+	{
 			// create our initial view
-			View newView = ViewFactory.createView("UpdateTreeTypeTransactionView", this);
-			currentScene = new Scene(newView);
-			myViews.put("UpdateTreeTypeTransactionView", currentScene);
-
-			return currentScene;
-		}
-		else
-		{
-			return currentScene;
-		}
-    }
+			View newView = ViewFactory.createView("UpdateTreeTypeView", this);
+			Scene currentScene = new Scene(newView);
+			myViews.put("UpdateTreeTypeView", currentScene);
+			swapToView(currentScene);
+	}
 }

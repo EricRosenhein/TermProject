@@ -27,7 +27,7 @@ public class TransactionFactory
 		{			
 			returnValue = new RegisterScoutTransaction();
 		}
-		/*else
+
 		if (transactionType.equals("AddTree") == true)
 		{
 			returnValue = new AddTreeTransaction();
@@ -56,15 +56,14 @@ public class TransactionFactory
 		if (transactionType.equals("RemoveScout") == true)
 		{
 			returnValue = new RemoveScoutTransaction();
-		} 
+		}
 		else
 		if (transactionType.equals("RemoveTree") == true)
 		{
 			returnValue = new RemoveTreeTransaction();
-		} */
+		}
 
-		// DEBUG
-		//System.out.println("Return value is: " + returnValue.toString());
+		// DEBUG System.out.println("Return value is: " + returnValue.toString());
 
 		return returnValue;
 	}

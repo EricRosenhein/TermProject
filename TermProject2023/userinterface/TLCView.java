@@ -1,5 +1,6 @@
 package userinterface;
 
+import Utilities.GlobalData;
 import event.Event;
 import impresario.IModel;
 import userinterface.View;
@@ -20,55 +21,53 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 /** This is the main Transaction Choice View for the Boy Scout Troop 209 Tree Sales Application */
 //==================================================================================
 public class TLCView extends View
 {
+    private static final int MIN_RADIO_BUTTON_WIDTH = GlobalData.MIN_RADIO_BUTTON_WIDTH;
     private VBox container;
     private MessageView statusLog;
 
     // ----------------------------------------------------------------------
-    public TLCView(IModel transactionMenu) 
+    public TLCView(IModel transactionMenu)
     {
         super(transactionMenu, "TLCView");
-       
+
         // create a container for showing the contents
-	container = new VBox(10);
+        container = new VBox(10);
 
-        container.setPadding(new Insets(15, 5, 5, 5));
+        container.setPadding(new Insets(15, 60, 5, 60));
 
-	// create a Node (Text) for showing the title
-	container.getChildren().add(createTitle());
+        // create a Node (Text) for showing the title
+        container.getChildren().add(createTitle());
 
-	// create a Node (GridPane) for showing data entry fields
-	container.getChildren().add(createFormContents());
+        // create a Node (GridPane) for showing data entry fields
+        container.getChildren().add(createFormContents());
 
-	// Error message area
-	container.getChildren().add(createStatusLog(" "));
+        // Error message area
+        container.getChildren().add(createStatusLog(" "));
 
-	getChildren().add(container);
+        getChildren().add(container);
 
     }
 
-     //----------------------------------------------------------------------------
-    private Node createTitle() 
+    //----------------------------------------------------------------------------
+    private Node createTitle()
     {
-        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales System: Choose Transaction ");
+        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales System:\nChoose Transaction ");
         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.BURLYWOOD);
-             
+
         return titleText;
     }
 
-      //----------------------------------------------------------------------------
-    private Node createFormContents() 
+    //----------------------------------------------------------------------------
+    private Node createFormContents()
     {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -76,37 +75,37 @@ public class TLCView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-       // Radio button choices
-        RadioButton registerScoutButton = new RadioButton();
-        registerScoutButton.setText("Register a Scout");
+        // Radio button choices
+        RadioButton registerScoutButton = new RadioButton("Register a Scout");
+        registerScoutButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(registerScoutButton, 0, 0);
 
-        RadioButton updateScoutButton = new RadioButton();
-        updateScoutButton.setText("Update a Scout");
+        RadioButton updateScoutButton = new RadioButton("Update a Scout");
+        updateScoutButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateScoutButton, 0, 1);
 
-        RadioButton removeScoutButton = new RadioButton();
-        removeScoutButton.setText("Remove a Scout");
+        RadioButton removeScoutButton = new RadioButton("Remove a Scout");
+        removeScoutButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(removeScoutButton, 0, 2);
 
-        RadioButton addTreeButton = new RadioButton();
-        addTreeButton.setText("Add a Tree");
+        RadioButton addTreeButton = new RadioButton("Add a Tree");
+        addTreeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(addTreeButton, 0, 3);
 
-        RadioButton updateTreeButton = new RadioButton();
-        updateTreeButton.setText("Update a Tree");
+        RadioButton updateTreeButton = new RadioButton("Update a Tree");
+        updateTreeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeButton, 0, 4);
 
-        RadioButton removeTreeButton = new RadioButton();
-        removeTreeButton.setText("Remove a Tree");
+        RadioButton removeTreeButton = new RadioButton("Remove a Tree");
+        removeTreeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(removeTreeButton, 0, 5);
 
-        RadioButton addTreeTypeButton = new RadioButton();
-        addTreeTypeButton.setText("Add Tree Type");
+        RadioButton addTreeTypeButton = new RadioButton("Add Tree Type");
+        addTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(addTreeTypeButton, 0, 6);
 
-        RadioButton updateTreeTypeButton = new RadioButton();
-        updateTreeTypeButton.setText("Update Tree Type");
+        RadioButton updateTreeTypeButton = new RadioButton("Update Tree Type");
+        updateTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeTypeButton, 0, 7);
 
         // Toggles the radio buttons so only one button can be selected at a time
@@ -121,51 +120,58 @@ public class TLCView extends View
         addTreeTypeButton.setToggleGroup(toggleGroup);
         updateTreeTypeButton.setToggleGroup(toggleGroup);
 
-        // Cancel and submit buttons
-        Button cancelButton = new Button("Cancel");
+        // submit button
         Button submitButton = new Button("Submit");
 
-        // Handle events for regular buttons
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            @Override
-            public void handle(ActionEvent e) 
-            {
-               // TEST 
-               System.out.println("You clicked the Cancel button!");
-            }
-        });
 
         // Handle event when user clicks the submit button
-        submitButton.setOnAction(new EventHandler<ActionEvent>() 
+        submitButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(ActionEvent e) 
+            public void handle(ActionEvent e)
             {
-               // DEBUG
-               System.out.println("\nYou clicked the Submit button!\n");
+                // DEBUG System.out.println("\nYou clicked the Submit button!\n");
 
-               // Check which radio button the user chose
-               if (toggleGroup.getSelectedToggle() != null) 
-               {
-                     // Check the selected radio button and get the text
+                // Check which radio button the user chose
+                if (toggleGroup.getSelectedToggle() != null)
+                {
+                    // Check the selected radio button
                     RadioButton selected = (RadioButton)toggleGroup.getSelectedToggle();
-                    String str = selected.getText();
-   
-                    // DEBUG
-                    System.out.println("Selected button: " + str);
+
+                    // DEBUG String str = selected.getText();
+                    // DEBUG System.out.println("Selected button: " + str);
 
                     if (selected == registerScoutButton)
                     {
-                        myModel.stateChangeRequest("RegisterScout", ""); 
+                        myModel.stateChangeRequest("RegisterScout", "");
+                    }
+                    else if(selected == updateScoutButton)
+                    {
+                        myModel.stateChangeRequest("UpdateScout", "");
+                    }
+                    else if(selected == removeScoutButton)
+                    {
+                        myModel.stateChangeRequest("RemoveScout", "");
                     }
                     else if (selected == addTreeButton)
                     {
                         myModel.stateChangeRequest("AddTree", "");
                     }
+                    else if (selected == updateTreeButton)
+                    {
+                        myModel.stateChangeRequest("UpdateTree", "");
+                    }
+                    else if (selected == removeTreeButton)
+                    {
+                        myModel.stateChangeRequest("RemoveTree", "");
+                    }
                     else if (selected == addTreeTypeButton)
                     {
                         myModel.stateChangeRequest("AddTreeType", "");
+                    }
+                    else if(selected == updateTreeTypeButton)
+                    {
+                        myModel.stateChangeRequest("UpdateTreeType", "");
                     }
                 }
                 else
@@ -175,10 +181,9 @@ public class TLCView extends View
             }
         });
 
-    
+
         HBox buttonContainer = new HBox(10);
-        buttonContainer.setAlignment(Pos.BOTTOM_RIGHT);
-        buttonContainer.getChildren().add(cancelButton);
+        buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
         buttonContainer.getChildren().add(submitButton);
         grid.add(buttonContainer, 0, 9);
 
@@ -187,18 +192,16 @@ public class TLCView extends View
 
     // ----------------------------------------------------------------------
     //@Override
-    public void updateState(String key, Object value) 
+    public void updateState(String key, Object value)
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateState'");
     }
 
     // ----------------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
     {
-	statusLog = new MessageView(initialMessage);
+        statusLog = new MessageView(initialMessage);
 
-	return statusLog;
+        return statusLog;
     }
 
     // ----------------------------------------------------------------------
@@ -207,31 +210,16 @@ public class TLCView extends View
      */
     public void displayErrorMessage(String message)
     {
-	statusLog.displayErrorMessage(message);
+        statusLog.displayErrorMessage(message);
     }
 
     /**
-      * Clear error message
-      */
+     * Clear error message
+     */
     //----------------------------------------------------------
     public void clearErrorMessage()
     {
-	statusLog.clearErrorMessage();
+        statusLog.clearErrorMessage();
     }
 
 }
-
-/*******************************************************************************************
- * Revision History:
- * 
- * 
- * 
- * 
- * 
- * 03/24/2023 07:18 PM Sebastian Whyte
- * Added if statement inside of submit button event handler that checks which radio button the user selected. 
- * Also, I started working on Transactions for the add operations
- * 
- * 03/22/2023 Sebastian Whyte
- * Initial check in. Created the GUI for the transaction menu. Added radio, submit, and cancel buttons
-*******************************************************************************************/
