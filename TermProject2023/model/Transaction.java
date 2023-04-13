@@ -18,11 +18,13 @@ import userinterface.WindowPosition;
 
 /** The class containing the Transaction for the ATM application */
 //==============================================================
-abstract public class Transaction implements IView, IModel
+abstract public class Transaction extends EntityBase implements IView, IModel	// may break from extending EntityBase -SW
 {
 	// For Impresario
 	protected Properties dependencies;
 	protected ModelRegistry myRegistry;
+
+	private static final String myTableName = "Transaction";	// may break -SW
 
 	protected Stage myStage;
 	protected Map<String, Scene> myViews;
@@ -38,6 +40,9 @@ abstract public class Transaction implements IView, IModel
 	protected Transaction()
 	{
 		// DEBUG System.out.println("In Transaction constructor");
+
+		// Creating tablename for Transaction in database; may break -SW
+		super("Transaction");
 
 		myStage = MainStageContainer.getInstance();
 		myViews = new HashMap<String, Scene>();
@@ -107,6 +112,7 @@ abstract public class Transaction implements IView, IModel
 	public abstract Object getState(String key);
 
 	//-----------------------------------------------------------
+	// May break 04/13/2023 -SW
 	public abstract void stateChangeRequest(String key, Object value);
 
 	/** Called via the IView relationship
@@ -156,6 +162,18 @@ abstract public class Transaction implements IView, IModel
 		// DEBUG: System.out.println("Cager.unSubscribe");
 		// forward to our registry
 		myRegistry.unSubscribe(key, subscriber);
+	}
+
+	// -----------------------------------------------------------------------------------
+	/** Initializes the schema; may break -SW
+	 *
+	 * @param tableName		name of the table to initialize
+	 */
+	protected void initializeSchema(String tableName)
+	{
+		if (mySchema == null) {
+			mySchema = getSchemaInfo(tableName);
+		}
 	}
 
 	//-----------------------------------------------------------------------------

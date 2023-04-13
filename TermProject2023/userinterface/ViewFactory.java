@@ -63,6 +63,10 @@ public class ViewFactory
 		{
 			return new ConfirmDeleteTreeView(model);
 		}
+		else if (viewName.equals("SellTreeView"))
+		{
+			return new SellTreeView(model);
+		}
 		else
 			return null;
 	}
