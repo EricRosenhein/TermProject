@@ -149,7 +149,7 @@ public abstract class TreeView extends View
             grid.add(statusBoxLabel, 0, 3);
 
             statusComboBox = new ComboBox();
-            statusComboBox.getItems().addAll("Available", "Sold", "Damaged");
+            statusComboBox.getItems().addAll("Available", "Damaged");
             grid.add(statusComboBox, 1, 3);
         }
 
