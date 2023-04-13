@@ -8,9 +8,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
-import javafx.beans.property.SimpleStringProperty;
-
-import exception.InvalidPrimaryKeyException;
 
 /** This is the Scout class for the Application - interfaces with database table 'Scout'*/
 //===========================================================================
