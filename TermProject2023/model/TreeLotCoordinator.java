@@ -90,7 +90,7 @@ public class TreeLotCoordinator implements IView, IModel
             createAndShowTLCView();
         }
         else if (key.equals("RegisterScout") || key.equals("AddTree") || key.equals("AddTreeType") || key.equals("UpdateScout") ||
-		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree"))
+		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree") || key.equals("SellTree"))
         {
             String transType = key;
             doTransaction(transType);

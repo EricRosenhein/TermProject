@@ -1,11 +1,9 @@
 // specify the package
 package model;
 
-import java.util.HashMap;
+import java.sql.SQLException;
+import java.util.*;
 // system imports
-import java.util.Map;
-import java.util.Properties;
-import java.util.Vector;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -29,6 +27,8 @@ abstract public class Transaction implements IView, IModel
 	protected Stage myStage;
 	protected Map<String, Scene> myViews;
 
+	private String updateStatusMessage = "";
+
 	/**
 	 * Constructor for this class.
 
@@ -51,6 +51,35 @@ abstract public class Transaction implements IView, IModel
 
 		setDependencies();
 
+	}
+
+	/** Constructor that takes in a Properties object; may break -SW
+	 *
+	 * @param props		object with properties
+	 */
+	//----------------------------------------------------------
+	protected Transaction(Properties props)
+	{
+		super(myTableName);
+
+		try
+		{
+			setDependencies();
+			persistentState = new Properties();
+
+			Enumeration allKeys = props.propertyNames();
+			while (allKeys.hasMoreElements() == true) {
+				String nextKey = (String) allKeys.nextElement();
+				String nextValue = props.getProperty(nextKey);
+				if (nextValue != null) {
+					persistentState.setProperty(nextKey, nextValue);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Transaction : Transaction(Properties props) - could not create table!");
+		}
 	}
 
 	//----------------------------------------------------------
@@ -87,6 +116,28 @@ abstract public class Transaction implements IView, IModel
 	public void updateState(String key, Object value)
 	{
 		stateChangeRequest(key, value);
+	}
+
+	// -----------------------------------------------------------------------------------
+	public void update() {
+		updateStateInDatabase();
+	}
+
+	// -----------------------------------------------------------------------------------
+	private void updateStateInDatabase() {
+		try {
+			if (persistentState.getProperty("ID") != null) {
+				// Update Transaction
+			} else {
+				Integer transactionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
+				persistentState.setProperty("ID", "" + transactionId);
+				updateStatusMessage = "Transaction data for new Transaction: "
+						+ persistentState.getProperty("transactionId")
+						+ " installed successfully in database!";
+			}
+		} catch (SQLException ex) {
+			updateStatusMessage = "ERROR: Error registering scout data in database!";
+		}
 	}
 
 	/** Register objects to receive state updates. */

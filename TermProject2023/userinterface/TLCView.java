@@ -108,6 +108,10 @@ public class TLCView extends View
         updateTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeTypeButton, 0, 7);
 
+        RadioButton sellTreeButton = new RadioButton("Sell A Tree");
+        sellTreeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(sellTreeButton, 0, 8);
+
         // Toggles the radio buttons so only one button can be selected at a time
         ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -119,6 +123,7 @@ public class TLCView extends View
         removeTreeButton.setToggleGroup(toggleGroup);
         addTreeTypeButton.setToggleGroup(toggleGroup);
         updateTreeTypeButton.setToggleGroup(toggleGroup);
+        sellTreeButton.setToggleGroup(toggleGroup);
 
         // submit button
         Button submitButton = new Button("Submit");
@@ -172,6 +177,10 @@ public class TLCView extends View
                     else if(selected == updateTreeTypeButton)
                     {
                         myModel.stateChangeRequest("UpdateTreeType", "");
+                    }
+                    else if(selected == sellTreeButton)
+                    {
+                        myModel.stateChangeRequest("SellTree", "");
                     }
                 }
                 else

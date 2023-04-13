@@ -63,6 +63,11 @@ public class TransactionFactory
 			returnValue = new RemoveTreeTransaction();
 		}
 
+		else if(transactionType.equals("SellTree") == true)
+		{
+			returnValue = new SellTreeTransaction();
+		}
+
 		// DEBUG System.out.println("Return value is: " + returnValue.toString());
 
 		return returnValue;
