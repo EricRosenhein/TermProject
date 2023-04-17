@@ -435,13 +435,16 @@ public class SellTreeView extends View
     public boolean validatePhoneNumber(String areaCode, String threeDigits, String fourDigits)
     {
         String fullPhoneNumber = areaCode + threeDigits + fourDigits;
-
-        if (areaCode != null && (areaCode.length() != 3 ||
+//        if(fullPhoneNumber.equals(""))
+//        {
+//            return true;
+//        }
+        if ((fullPhoneNumber.equals("") == false) && (areaCode.length() != 3 ||
                 threeDigits.length() != 3 ||
                 fourDigits.length() != 4)) {
             return false;
         }
-        else if(checkPhoneNumber(fullPhoneNumber) == false)
+        else if((fullPhoneNumber.equals("") == false) && (checkPhoneNumber(fullPhoneNumber) == false))
         {
             return false;
         }
@@ -457,7 +460,7 @@ public class SellTreeView extends View
     //------------------------------------------------------------------------------------------------
     public boolean validateEmail(String email)
     {
-        if(email != null && email.contains("@") == false)
+        if((email.equals("") == false) && (email.contains("@") == false))
         {
             return false;
         }
