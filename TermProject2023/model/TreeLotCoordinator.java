@@ -61,6 +61,7 @@ public class TreeLotCoordinator implements IView, IModel
         dependencies.setProperty("UpdateTreeType", "Transaction Error");
         dependencies.setProperty("RemoveScout", "Transaction Error");
         dependencies.setProperty("RemoveTree", "Transaction Error");
+        dependencies.setProperty("SellTree", "Transaction Error");
 
         myRegistry.setDependencies(dependencies);
     }

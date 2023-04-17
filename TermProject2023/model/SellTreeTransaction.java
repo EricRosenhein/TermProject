@@ -16,7 +16,7 @@ public class SellTreeTransaction extends Transaction
     protected Tree treeToSell;
     protected TreeType typeOfTreeToSell;
 
-    private String transactionErrorMessage = "";
+    private String transactionReceiptStatusMessage = "";
     protected String treeSearchStatusMessage = "";
     protected String treeUpdateStatusMessage = "";
 
@@ -24,8 +24,9 @@ public class SellTreeTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
+        dependencies.setProperty("SearchTrees", "TreeSearchStatusMessage");
+        dependencies.setProperty("InsertTransactionData", "TransactionReceiptStatusMessage");
         dependencies.setProperty("CancelSellTree", "CancelTransaction");
-        dependencies.setProperty("SellTree", "SellTreeStatusMessage");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -33,9 +34,13 @@ public class SellTreeTransaction extends Transaction
     //-----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("TransactionError") == true)
+        if (key.equals("TransactionReceiptStatusMessage") == true)
         {
-            return transactionErrorMessage;
+            return transactionReceiptStatusMessage;
+        }
+        else if(key.equals("TreeSearchStatusMessage"))
+        {
+            return treeSearchStatusMessage;
         }
         else
         if (key.equals("GetTreeToSell") == true)
@@ -53,8 +58,14 @@ public class SellTreeTransaction extends Transaction
         try
         {
             treeToSell = new Tree(barcode);
-
-            createAndShowSellTreeTransactionView();
+            if(treeToSell.getState("Status").equals("Sold"))
+            {
+                treeSearchStatusMessage = "ERROR: Tree with barcode: " + barcode + " has already been sold";
+            }
+            else
+            {
+                createAndShowSellTreeTransactionView();
+            }
         }
         catch (InvalidPrimaryKeyException e)
         {
@@ -74,42 +85,32 @@ public class SellTreeTransaction extends Transaction
 
         // If tree status is sold, display an error to user
         if (treeCurrentStatus.equals("Sold") == true)
-            treeUpdateStatusMessage = "ERROR: Tree with barcode: " + treeToSell.getState("Barcode") + " is already sold!";
+            transactionReceiptStatusMessage = "ERROR: Tree with barcode: " + treeToSell.getState("Barcode") + " is already sold!";
         // Else, we will delete the tree that the user wants to buy
         else
         {
-            treeToSell.delete();
-            treeUpdateStatusMessage = (String) treeToSell.getState("DeleteStatusMessage");
+            treeToSell.persistentState.setProperty("Status", "Sold");
+            treeToSell.update();
+            TransactionReceipt transactionReceipt = new TransactionReceipt(props);
+            transactionReceipt.update();
+            transactionReceiptStatusMessage = (String)transactionReceipt.getState("TransactionReceiptStatusMessage");
+            System.out.println("TransactionReceipt object made");
         }
 
         // Try to create a Transaction object so we can initialize its table in database
-        try {
-            Transaction transaction = new Transaction(props) {
-                @Override
-                protected void setDependencies() {
-
-                }
-
-                @Override
-                protected Scene createView() {
-                    return null;
-                }
-
-                @Override
-                public Object getState(String key) {
-                    return null;
-                }
-
-                @Override
-                public void stateChangeRequest(String key, Object value) {
-
-                }
-            };
-        }
-        catch (Exception ex)
-        {
-            System.out.println("SellTreeTransaction : processTransaction(Properties props) - could not make Transaction object!");
-        }
+//        try {
+//            TransactionReceipt transactionReceipt = new TransactionReceipt(props);
+//            transactionReceipt.update();
+//            System.out.println("TransactionReceipt object made");
+//        }
+//        catch (Exception ex)
+//        {
+//            System.out.println("SellTreeTransaction : processTransaction(Properties props) - could not make TransactionReceipt object!");
+//        }
+//        TransactionReceipt transactionReceipt = new TransactionReceipt(props);
+//        transactionReceipt.update();
+//        transactionReceiptStatusMessage = (String)transactionReceipt.getState("TransactionReceiptStatusMessage");
+//        System.out.println("TransactionReceipt object made");
     }
 
 

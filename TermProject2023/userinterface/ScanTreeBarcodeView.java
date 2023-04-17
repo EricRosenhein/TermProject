@@ -193,6 +193,7 @@ public class ScanTreeBarcodeView extends View {
         if (key.equals("TreeSearchStatusMessage") == true)
         {
             String msg = (String)value;
+            System.out.println(msg);
             if ((msg.startsWith("ERR") == true) || (msg.startsWith("Err") == true))
             {
                 displayErrorMessage(msg);

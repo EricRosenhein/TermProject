@@ -1,9 +1,11 @@
 // specify the package
 package model;
 
-import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
 // system imports
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -18,31 +20,23 @@ import userinterface.WindowPosition;
 
 /** The class containing the Transaction for the ATM application */
 //==============================================================
-abstract public class Transaction extends EntityBase implements IView, IModel	// may break from extending EntityBase -SW
+abstract public class Transaction implements IView, IModel
 {
 	// For Impresario
 	protected Properties dependencies;
 	protected ModelRegistry myRegistry;
 
-	private static final String myTableName = "Transaction";	// may break -SW
-
 	protected Stage myStage;
 	protected Map<String, Scene> myViews;
 
-	private String updateStatusMessage = "";
-
 	/**
 	 * Constructor for this class.
-
 	 *
 	 */
 	//----------------------------------------------------------
 	protected Transaction()
 	{
 		// DEBUG System.out.println("In Transaction constructor");
-
-		// Creating tablename for Transaction in database; may break -SW
-		super("Transaction");
 
 		myStage = MainStageContainer.getInstance();
 		myViews = new HashMap<String, Scene>();
@@ -51,40 +45,11 @@ abstract public class Transaction extends EntityBase implements IView, IModel	//
 		if (myRegistry == null)
 		{
 			new Event(Event.getLeafLevelClassName(this), "Transaction",
-				"Could not instantiate Registry", Event.ERROR);
+					"Could not instantiate Registry", Event.ERROR);
 		}
 
 		setDependencies();
 
-	}
-
-	/** Constructor that takes in a Properties object; may break -SW
-	 *
-	 * @param props		object with properties
-	 */
-	//----------------------------------------------------------
-	protected Transaction(Properties props)
-	{
-		super(myTableName);
-
-		try
-		{
-			setDependencies();
-			persistentState = new Properties();
-
-			Enumeration allKeys = props.propertyNames();
-			while (allKeys.hasMoreElements() == true) {
-				String nextKey = (String) allKeys.nextElement();
-				String nextValue = props.getProperty(nextKey);
-				if (nextValue != null) {
-					persistentState.setProperty(nextKey, nextValue);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			System.out.println("Transaction : Transaction(Properties props) - could not create table!");
-		}
 	}
 
 	//----------------------------------------------------------
@@ -99,12 +64,12 @@ abstract public class Transaction extends EntityBase implements IView, IModel	//
 	 */
 	//---------------------------------------------------------
 	protected void doYourJob()
-	{		
+	{
 		// DEBUG System.out.println("In Transaction : doYourJob()");
 
 		Scene newScene = createView();
-		
-		swapToView(newScene);		
+
+		swapToView(newScene);
 	}
 
 	// Forward declarations
@@ -112,7 +77,6 @@ abstract public class Transaction extends EntityBase implements IView, IModel	//
 	public abstract Object getState(String key);
 
 	//-----------------------------------------------------------
-	// May break 04/13/2023 -SW
 	public abstract void stateChangeRequest(String key, Object value);
 
 	/** Called via the IView relationship
@@ -122,28 +86,6 @@ abstract public class Transaction extends EntityBase implements IView, IModel	//
 	public void updateState(String key, Object value)
 	{
 		stateChangeRequest(key, value);
-	}
-
-	// -----------------------------------------------------------------------------------
-	public void update() {
-		updateStateInDatabase();
-	}
-
-	// -----------------------------------------------------------------------------------
-	private void updateStateInDatabase() {
-		try {
-			if (persistentState.getProperty("ID") != null) {
-				// Update Transaction
-			} else {
-				Integer transactionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-				persistentState.setProperty("ID", "" + transactionId);
-				updateStatusMessage = "Transaction data for new Transaction: "
-						+ persistentState.getProperty("transactionId")
-						+ " installed successfully in database!";
-			}
-		} catch (SQLException ex) {
-			updateStatusMessage = "ERROR: Error registering scout data in database!";
-		}
 	}
 
 	/** Register objects to receive state updates. */
@@ -164,38 +106,25 @@ abstract public class Transaction extends EntityBase implements IView, IModel	//
 		myRegistry.unSubscribe(key, subscriber);
 	}
 
-	// -----------------------------------------------------------------------------------
-	/** Initializes the schema; may break -SW
-	 *
-	 * @param tableName		name of the table to initialize
-	 */
-	protected void initializeSchema(String tableName)
-	{
-		if (mySchema == null) {
-			mySchema = getSchemaInfo(tableName);
-		}
-	}
-
 	//-----------------------------------------------------------------------------
 	public void swapToView(Scene newScene)
-	{	
+	{
 		// DEBUG System.out.println("In Transaction : swapToView()");
 
 		if (newScene == null)
 		{
 			System.out.println("Transaction : swapToView() - Missing view for display");
 			new Event(Event.getLeafLevelClassName(this), "swapToView",
-				"Missing view for display ", Event.ERROR);
+					"Missing view for display ", Event.ERROR);
 
 			return;
 		}
-		
+
 		myStage.setScene(newScene);
 		myStage.sizeToScene();
-					
+
 		//Place in center
 		WindowPosition.placeCenter(myStage);
 
 	}
 }
-

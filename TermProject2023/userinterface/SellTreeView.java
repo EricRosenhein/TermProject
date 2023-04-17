@@ -1,6 +1,7 @@
 package userinterface;
 
 // system imports
+import Utilities.GlobalData;
 import exception.InvalidPrimaryKeyException;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
@@ -48,7 +49,7 @@ public class SellTreeView extends View
     protected String phoneNumber;
     protected TextField email;
     protected ComboBox paymentMethodComboBox;
-    protected ComboBox transactionTypeComb;
+    protected ComboBox transactionTypeComboBox;
     protected LocalDateTime ldt = LocalDateTime.now();
 
     protected String now = ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -82,7 +83,7 @@ public class SellTreeView extends View
 
         populateFields();
 
-        myModel.subscribe("SellTreeStatusMessage", this);
+        myModel.subscribe("TransactionReceiptStatusMessage", this);
     }
 
     // Create the title container
@@ -125,83 +126,83 @@ public class SellTreeView extends View
         transactionTypeLabel.setFont(font);
         transactionTypeLabel.setWrappingWidth(150);
         transactionTypeLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(transactionTypeLabel, 0, 10);
+        grid.add(transactionTypeLabel, 0, 1);
 
         // Transaction type combo box
-        transactionTypeComb = new ComboBox();
-        transactionTypeComb.getItems().addAll("Tree Sale", "Wreath Sale", "Item Sale");
+        transactionTypeComboBox = new ComboBox();
+        transactionTypeComboBox.getItems().addAll("Tree Sale", "Wreath Sale", "Item Sale");
         // Add transaction type combo box to grid
-        grid.add(transactionTypeComb, 1, 10);
+        grid.add(transactionTypeComboBox, 1, 1);
 
 
         Text barcodeLabel = new Text("Tree Barcode: ");
         barcodeLabel.setFont(font);
         barcodeLabel.setWrappingWidth(150);
         barcodeLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(barcodeLabel, 0, 1);
+        grid.add(barcodeLabel, 0, 2);
 
         barcode = new TextField();
         barcode.setEditable(false);
-        grid.add(barcode, 1, 1);
+        grid.add(barcode, 1, 2);
 
         Text costLabel = new Text("Cost: ");
         costLabel.setFont(font);
         costLabel.setWrappingWidth(150);
         costLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(costLabel, 0, 2);
+        grid.add(costLabel, 0, 3);
 
         cost = new TextField();
         cost.setEditable(true);
-        grid.add(cost, 1, 2);
+        grid.add(cost, 1, 3);
 
 
         Text notesLabel = new Text("Notes: ");
         notesLabel.setFont(font);
         notesLabel.setWrappingWidth(150);
         notesLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(notesLabel, 0, 3);
+        grid.add(notesLabel, 0, 4);
 
         notes = new TextField();
         notes.setEditable(true);
         notes.setPrefHeight(50);
         notes.setPrefWidth(25);
-        grid.add(notes, 1, 3);
+        grid.add(notes, 1, 4);
 
         Text firstNameLabel = new Text("First Name: ");
         firstNameLabel.setFont(font);
         firstNameLabel.setWrappingWidth(150);
         firstNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(firstNameLabel, 0, 4);
+        grid.add(firstNameLabel, 0, 5);
 
         firstName = new TextField();
         firstName.setEditable(true);
-        grid.add(firstName, 1, 4);
+        grid.add(firstName, 1, 5);
 
         Text middleNameLabel = new Text("Middle Name: ");
         middleNameLabel.setFont(font);
         middleNameLabel.setWrappingWidth(150);
         middleNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(middleNameLabel, 0, 5);
+        grid.add(middleNameLabel, 0, 6);
 
         middleName = new TextField();
         middleName.setEditable(true);
-        grid.add(middleName, 1, 5);
+        grid.add(middleName, 1, 6);
 
         Text lastNameLabel = new Text("Last Name: ");
         lastNameLabel.setFont(font);
         lastNameLabel.setWrappingWidth(150);
         lastNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(lastNameLabel, 0, 6);
+        grid.add(lastNameLabel, 0, 7);
 
         lastName = new TextField();
         lastName.setEditable(true);
-        grid.add(lastName, 1, 6);
+        grid.add(lastName, 1, 7);
 
         Text phoneNumberLabel = new Text("Phone Number: ");
         phoneNumberLabel.setFont(font);
         phoneNumberLabel.setWrappingWidth(150);
         phoneNumberLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(phoneNumberLabel, 0, 7);
+        grid.add(phoneNumberLabel, 0, 8);
 
 
         // Phone Number HBox for formatting
@@ -240,7 +241,7 @@ public class SellTreeView extends View
         phoneNum.getChildren().add(fourDigits);
 
 
-        grid.add(phoneNum, 1, 7);
+        grid.add(phoneNum, 1, 8);
 
         // End of HBox for phone number
 
@@ -248,23 +249,23 @@ public class SellTreeView extends View
         emailLabel.setFont(font);
         emailLabel.setWrappingWidth(150);
         emailLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(emailLabel, 0, 8);
+        grid.add(emailLabel, 0, 9);
 
         email = new TextField();
         email.setEditable(true);
-        grid.add(email, 1, 8);
+        grid.add(email, 1, 9);
 
         Text paymentMethodLabel = new Text("Payment Method: ");
         paymentMethodLabel.setFont(font);
         paymentMethodLabel.setWrappingWidth(150);
         paymentMethodLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(paymentMethodLabel, 0, 9);
+        grid.add(paymentMethodLabel, 0, 10);
 
 
 
         paymentMethodComboBox = new ComboBox();
         paymentMethodComboBox.getItems().addAll("Cash", "Check");
-        grid.add(paymentMethodComboBox, 1, 9);
+        grid.add(paymentMethodComboBox, 1, 10);
 
         submitButton = new Button("Submit");
         submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -335,7 +336,11 @@ public class SellTreeView extends View
 
         String n = (String)treeToSell.getState("Notes");
         notes.setText(n);
+
+        paymentMethodComboBox.getSelectionModel().selectFirst();
+        transactionTypeComboBox.getSelectionModel().selectFirst();
     }
+
 
     //-------------------------------------------------------------------------------------------------
     public void processAction(Event evt)
@@ -350,7 +355,7 @@ public class SellTreeView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-        if (key.equals("SellTreeStatusMessage") == true)
+        if (key.equals("TransactionReceiptStatusMessage") == true)
         {
             String msg = (String)value;
             if (msg.startsWith("ERR") == true)
@@ -361,12 +366,142 @@ public class SellTreeView extends View
     }
 
     /**
+     * Handling cost validation
+     */
+    //------------------------------------------------------------------------------------------------
+    public boolean validateCostValue(String costVal)
+    {
+        if (costVal.length() > GlobalData.MAX_TREE_TYPE_COST_LENGTH)
+            return false;
+        else {
+            try {
+                double costValue = Double.parseDouble(costVal);
+                return true;
+            }
+            catch (NumberFormatException excep)
+            {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Handling Name validation
+     */
+    //------------------------------------------------------------------------------------------------
+    public boolean validateName(String first, String middle, String last)
+    {
+        if(first != null && first.length() > 25)
+        {
+            return false;
+        }
+        else if(middle != null && middle.length() > 25)
+        {
+            return false;
+        }
+        else if(last != null && last.length() > 25)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /**
+     *  Validation method to check if Phone Number is ony integers
+     */
+    //----------------------------------------------------------
+    private boolean checkPhoneNumber(String pN)
+    {
+        try
+        {
+            Long.parseLong(pN);
+            return true;
+        }
+        catch (NumberFormatException e)
+        {
+            // DEBUG System.out.print(e.getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * Handling Phone number validation
+     */
+    //------------------------------------------------------------------------------------------------
+    public boolean validatePhoneNumber(String areaCode, String threeDigits, String fourDigits)
+    {
+        String fullPhoneNumber = areaCode + threeDigits + fourDigits;
+
+        if (areaCode != null && (areaCode.length() != 3 ||
+                threeDigits.length() != 3 ||
+                fourDigits.length() != 4)) {
+            return false;
+        }
+        else if(checkPhoneNumber(fullPhoneNumber) == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Handling Email validation
+     */
+    //------------------------------------------------------------------------------------------------
+    public boolean validateEmail(String email)
+    {
+        if(email != null && email.contains("@") == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /**
      *  Handling validation for all fields
      */
     //----------------------------------------------------------
     public void validateSellTree()
     {
-        getOperation();
+        String costVal = cost.getText();
+        String fName = firstName.getText();
+        String mName = middleName.getText();
+        String lName = lastName.getText();
+        String aCode = areaCode.getText();
+        String tDigits = threeDigits.getText();
+        String fDigits = fourDigits.getText();
+        String mail = email.getText();
+
+        if (validateCostValue(costVal) == false)
+        {
+            displayErrorMessage("ERROR: Cost value too long, or not numeric!");
+        }
+        else if(validateName(fName, mName, lName) == false)
+        {
+            displayErrorMessage("ERROR: Please enter a name under 25 characters.");
+        }
+        else if(validatePhoneNumber(aCode, tDigits, fDigits) == false)
+        {
+            displayErrorMessage("ERROR: Please enter a valid, 10-digit phone number");
+        }
+        else if(validateEmail(mail) == false)
+        {
+            displayErrorMessage("ERROR: Please enter a valid email address.");
+        }
+        else
+        {
+            getOperation();
+        }
     }
 
     /** Obtains the data from the text fields
@@ -383,13 +518,13 @@ public class SellTreeView extends View
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Properties props = new Properties();
-        //props.setProperty("SessionID", "null");
-        props.setProperty("TransactionType", (String)transactionTypeComb.getValue());
+        props.setProperty("SessionID", "1");
+        props.setProperty("TransactionType", (String) transactionTypeComboBox.getValue());
         props.setProperty("Barcode", barcode.getText());
         props.setProperty("TransactionAmount", cost.getText());
         props.setProperty("CustomerName", fullCustomerName);
-        props.setProperty("PhoneNumber", phoneNumber);
-        props.setProperty("Email", email.getText());
+        props.setProperty("CustomerPhone", phoneNumber);
+        props.setProperty("CustomerEmail", email.getText());
         props.setProperty("PaymentMethod", (String)paymentMethodComboBox.getValue());
         props.setProperty("TransactionDate", now);
         props.setProperty("TransactionTime", nowTime);
@@ -412,7 +547,7 @@ public class SellTreeView extends View
         }
         catch (Exception ex)
         {
-            System.out.println("SellTreeView : getOperation() - Could not Insert Transaction Data!");
+            System.out.println("SellTreeView : getOperation() - Could not Insert Transaction Receipt Data!");
         }
     }
 
