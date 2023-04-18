@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 //==============================================================================
 
-public class ScoutTableModel
+public class TransactionTableModel
 {
     private final SimpleStringProperty id;
     private final SimpleStringProperty sessionId;
@@ -23,7 +23,7 @@ public class ScoutTableModel
     private final SimpleStringProperty dateStatusUpdated;
 
     //----------------------------------------------------------------------------
-    public ScoutTableModel(Vector<String> transactionData)
+    public TransactionTableModel(Vector<String> transactionData)
     {
         id =  new SimpleStringProperty(transactionData.elementAt(0));
         sessionId =  new SimpleStringProperty(transactionData.elementAt(1));

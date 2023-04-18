@@ -108,6 +108,23 @@ public class TLCView extends View
         updateTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeTypeButton, 0, 7);
 
+        RadioButton startShift = new RadioButton("Start Shift");
+        startShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(startShift, 0, 8);
+
+        //inactive by default
+        RadioButton endShift = new RadioButton("End Shift");
+        endShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(endShift, 0, 9);
+        endShift.setDisable(true);
+
+        //inactive by default
+        RadioButton sellTree = new RadioButton("Sell Tree");
+        sellTree.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(sellTree, 0, 10);
+        sellTree.setDisable(true);
+       // sellTree.;
+
         // Toggles the radio buttons so only one button can be selected at a time
         ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -119,10 +136,12 @@ public class TLCView extends View
         removeTreeButton.setToggleGroup(toggleGroup);
         addTreeTypeButton.setToggleGroup(toggleGroup);
         updateTreeTypeButton.setToggleGroup(toggleGroup);
+        startShift.setToggleGroup(toggleGroup);
+        endShift.setToggleGroup(toggleGroup);
+        sellTree.setToggleGroup(toggleGroup);
 
         // submit button
         Button submitButton = new Button("Submit");
-
 
         // Handle event when user clicks the submit button
         submitButton.setOnAction(new EventHandler<ActionEvent>()
@@ -173,6 +192,18 @@ public class TLCView extends View
                     {
                         myModel.stateChangeRequest("UpdateTreeType", "");
                     }
+                    else if(selected == startShift)
+                    {
+                        myModel.stateChangeRequest("StartShift", "");
+                    }
+                    else if(selected == endShift)
+                    {
+                        //myModel.stateChangeRequest("UpdateTreeType", "");
+                    }
+                    else if(selected == sellTree)
+                    {
+                        //myModel.stateChangeRequest("UpdateTreeType", "");
+                    }
                 }
                 else
                 {
@@ -185,7 +216,7 @@ public class TLCView extends View
         HBox buttonContainer = new HBox(10);
         buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
         buttonContainer.getChildren().add(submitButton);
-        grid.add(buttonContainer, 0, 9);
+        grid.add(buttonContainer, 0, 11);
 
         return grid;
     }

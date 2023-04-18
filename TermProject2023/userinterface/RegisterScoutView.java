@@ -20,6 +20,7 @@ public class RegisterScoutView extends ScoutView
     }
 
     // ----------------------------------------------------------------------
+    @Override
     public String getTitleText()
     {
         return " Boy Scout Troop 209 Tree Sales: \nRegister Scout ";

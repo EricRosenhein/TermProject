@@ -5,13 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
-
+import java.util.Properties;
+import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,7 +25,12 @@ import javafx.scene.text.TextAlignment;
 
 // project imports
 import impresario.IModel;
+import model.Scout;
 import model.ScoutCollection;
+import Utilities.GlobalData;
+
+// NOTE: Once the user hits add a scout to the shift, we will make a properties object and make a Record with it 04/18/2023
+
 
 /** This is the Start A Shift class for the Application */
 //=============================================================
@@ -40,23 +47,21 @@ public class StartShiftView extends View
     protected TextField startTimeMinute;
     protected TextField endTimeHour;
     protected TextField endTimeMinute;
+    protected TextField startingCash;
     protected ComboBox scoutsComboBox;
     protected TextField companionName;
     protected TextField companionHours;
-    protected TextField companionStartTimeHour;
-    protected TextField companionStartTimeMinute;
-    protected TextField companionEndTimeHour;
-
     protected TextField scoutStartTimeHour;
     protected TextField scoutStartTimeMinute;
     protected TextField scoutEndTimeHour;
     protected TextField scoutEndTimeMinute;
 
-   // private TableView<StartShift> table = new TableView<>();
+    private TableView<Scout> table = new TableView<>();
 
-    protected Button add;
-    protected Button startShift;
-    protected Button cancel;
+    protected Button addSessionButton;
+    protected Button addScoutToShiftButton;
+    protected Button startShiftButton;
+    protected Button cancelButton;
 
     protected ScoutCollection scoutCollection = new ScoutCollection();
     protected Vector scoutList;
@@ -68,8 +73,8 @@ public class StartShiftView extends View
     //------------------------------------------------------------
     public StartShiftView(IModel shift)
     {
-        super(shift, "StartAShiftiew");
-        // DEBUG System.out.println("In ScoutView constructor");
+        super(shift, "StartShiftView");
+        //DEBUG System.out.println("model/StartShiftView: Constructor: getting here!");
 
         // Housekeeping initializations
         datePicker = new DatePicker(LocalDate.now());
@@ -93,10 +98,6 @@ public class StartShiftView extends View
         populateFields();
 
         myModel.subscribe("ShiftUpdateStatusMessage", this);
-    }
-
-    public StartShiftView(IModel model, String classname) {
-        super(model, classname);
     }
 
     // ----------------------------------------------------------------------
@@ -136,7 +137,7 @@ public class StartShiftView extends View
         Font font = Font.font("Arial", FontWeight.BOLD, 12);
 
         //data fields
-        Text shiftDateLabel = new Text("Date ");
+        Text shiftDateLabel = new Text("Date: ");
         shiftDateLabel.setFont(font);
         shiftDateLabel.setWrappingWidth(150);
         shiftDateLabel.setTextAlignment(TextAlignment.RIGHT);
@@ -144,12 +145,14 @@ public class StartShiftView extends View
 
         datePicker = new DatePicker(LocalDate.now());
         grid.add(datePicker, 1, 1);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1 - datePicker");
 
-        Text shiftStartLabel = new Text("Start Time ");
+        Text shiftStartLabel = new Text("Start Time: ");
         shiftStartLabel.setFont(font);
         shiftStartLabel.setWrappingWidth(150);
         shiftStartLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(shiftStartLabel, 0, 2);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.1");
 
         //Start time hour HBox
         HBox shiftStartT = new HBox(5);
@@ -159,28 +162,36 @@ public class StartShiftView extends View
         startTimeHour.setEditable(true);
         startTimeHour.setMaxWidth(35);
         shiftStartT.getChildren().add(startTimeHour);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.2");
 
         Text startHourEnd = new Text("H");
         startHourEnd.setFont(font);
         startHourEnd.setTextAlignment(TextAlignment.LEFT);
         shiftStartT.getChildren().add(startHourEnd);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.3");
 
         startTimeMinute = new TextField();
         startTimeMinute.setEditable(true);
         startTimeMinute.setMaxWidth(35);
         shiftStartT.getChildren().add(startTimeMinute);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.4");
 
         Text startMinEnd = new Text("M");
         startMinEnd.setFont(font);
         startMinEnd.setTextAlignment(TextAlignment.LEFT);
         shiftStartT.getChildren().add(startMinEnd);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.5");
+
+        grid.add(shiftStartT, 1, 2);
         //End of start HBox
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.6");
 
         Text shiftEndLabel = new Text("End Time ");
         shiftEndLabel.setFont(font);
         shiftEndLabel.setWrappingWidth(150);
         shiftEndLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(shiftEndLabel, 0, 3);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.7");
 
         //End time hour HBox
         HBox shiftEndT = new HBox(5);
@@ -190,38 +201,67 @@ public class StartShiftView extends View
         endTimeHour.setEditable(true);
         endTimeHour.setMaxWidth(35);
         shiftEndT.getChildren().add(endTimeHour);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.8");
 
         Text endHourEnd = new Text("H");
         endHourEnd.setFont(font);
         endHourEnd.setTextAlignment(TextAlignment.LEFT);
         shiftEndT.getChildren().add(endHourEnd);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.9");
 
         endTimeMinute = new TextField();
         endTimeMinute.setEditable(true);
         endTimeMinute.setMaxWidth(35);
         shiftEndT.getChildren().add(endTimeMinute);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.10");
 
         Text endMinEnd = new Text("M");
         endMinEnd.setFont(font);
         endMinEnd.setTextAlignment(TextAlignment.LEFT);
         shiftEndT.getChildren().add(endMinEnd);
-        //End of end time HBox
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.11");
 
-        Text scoutsBoxLabel = new Text("Scouts ");
+        grid.add(shiftEndT, 1, 3);
+        //End of end time HBox
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 2 - added shift time data fields");
+
+        Text startingCashLabel = new Text("Starting Cash: ");
+        startingCashLabel.setFont(font);
+        startingCashLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(startingCashLabel,0,4);
+        
+        startingCash = new TextField();
+        startingCash.setEditable(true);
+        grid.add(startingCash, 1,4);
+
+        addSessionButton = new Button("Start Session");
+        grid.add(addSessionButton,2,4);
+        addSessionButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent e)
+            {
+                clearErrorMessage();
+                myModel.stateChangeRequest("StartSession","");
+            }
+        });
+
+        Text scoutsBoxLabel = new Text("Select a Scout: ");
         scoutsBoxLabel.setFont(font);
         scoutsBoxLabel.setWrappingWidth(150);
         scoutsBoxLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(scoutsBoxLabel, 0, 4);
+        grid.add(scoutsBoxLabel, 0, 5);
 
         scoutsComboBox = new ComboBox();
-        scoutsComboBox.getItems().addAll();//scoutList
-        grid.add(scoutsComboBox, 1, 4);
+        scoutsComboBox.setValue(null);
+        //scoutsComboBox.getItems().addAll();//scoutList
+        grid.add(scoutsComboBox, 1, 5);
 
-        Text companionLabel = new Text("Companion ");
+        Text companionLabel = new Text("Companion Name: ");
         companionLabel.setFont(font);
         companionLabel.setWrappingWidth(150);
         companionLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(companionLabel, 0, 5);
+        grid.add(companionLabel, 0, 6);
 
         //Companion HBox
         HBox companionInfo = new HBox(5);
@@ -232,7 +272,7 @@ public class StartShiftView extends View
         companionName.setMaxWidth(100);
         companionInfo.getChildren().add(companionName);
 
-        Text hourLabel = new Text("Hours ");
+        Text hourLabel = new Text("Hours: ");
         hourLabel.setFont(font);
         hourLabel.setTextAlignment(TextAlignment.LEFT);
         companionInfo.getChildren().add(hourLabel);
@@ -241,15 +281,20 @@ public class StartShiftView extends View
         companionHours.setEditable(true);
         companionHours.setMaxWidth(35);
         companionInfo.getChildren().add(companionHours);
-        //end of companion hbox
 
-        Text scoutStartLabel = new Text("Scout Start ");
+        grid.add(companionInfo, 1, 6);
+        //end of companion hbox
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 3 - added companion hours fields");
+
+        HBox cashAndStartBox = new HBox(5);
+        cashAndStartBox.setAlignment(Pos.CENTER_LEFT);
+        Text scoutStartLabel = new Text("Scout Start Time: ");
         scoutStartLabel.setFont(font);
         scoutStartLabel.setWrappingWidth(150);
         scoutStartLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(scoutStartLabel, 0, 6);
+        grid.add(scoutStartLabel, 0, 7);
 
-        //Companion Start time hour HBox
+        //Scout Start time hour HBox
         HBox scoutShiftStart = new HBox(5);
         scoutShiftStart.setAlignment(Pos.CENTER_LEFT);
 
@@ -272,15 +317,17 @@ public class StartShiftView extends View
         scoutStartMinEndLabel.setFont(font);
         scoutStartMinEndLabel.setTextAlignment(TextAlignment.LEFT);
         scoutShiftStart.getChildren().add(scoutStartMinEndLabel);
+
+        grid.add(scoutShiftStart, 1, 7);
         //End of start HBox
 
-        Text scoutEndLabel = new Text("End Time ");
+        Text scoutEndLabel = new Text("Scout End Time: ");
         scoutEndLabel.setFont(font);
         scoutEndLabel.setWrappingWidth(150);
         scoutEndLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(scoutEndLabel, 0, 7);
+        grid.add(scoutEndLabel, 0, 8);
 
-        //End time hour HBox
+        //Scout End time hour HBox
         HBox scoutEndT = new HBox(5);
         scoutEndT.setAlignment(Pos.CENTER_LEFT);
 
@@ -289,7 +336,7 @@ public class StartShiftView extends View
         scoutEndTimeHour.setMaxWidth(35);
         scoutEndT.getChildren().add(scoutEndTimeHour);
 
-        Text scoutEndHourEndLabel = new Text("H");
+        Text scoutEndHourEndLabel = new Text(" H ");
         scoutEndHourEndLabel.setFont(font);
         scoutEndHourEndLabel.setTextAlignment(TextAlignment.LEFT);
         scoutEndT.getChildren().add(scoutEndHourEndLabel);
@@ -299,27 +346,33 @@ public class StartShiftView extends View
         scoutEndTimeMinute.setMaxWidth(35);
         scoutEndT.getChildren().add(scoutEndTimeMinute);
 
-        Text scoutEndMinEnd = new Text("M");
+        Text scoutEndMinEnd = new Text(" M ");
         scoutEndMinEnd.setFont(font);
         scoutEndMinEnd.setTextAlignment(TextAlignment.LEFT);
         scoutEndT.getChildren().add(scoutEndMinEnd);
-        //End of end time HBox
-        Button addButton = new Button("add");
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 4 - added scout shift time fields");
 
+        Button addButton = new Button("Add Scout to Shift");
+
+        // Add event handler to add button
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
 
+                //populate table with scout from combobox
+
             }
         });
+        scoutEndT.getChildren().add(addButton);
 
-
+        grid.add(scoutEndT, 1, 8);
+        //End of end time HBox
 
 
         // Cancel and submit buttons
-        Button cancelButton = new Button("Cancel");
-        Button StartShiftButton = new Button("StartShift");
+        cancelButton = new Button("Cancel");
+        startShiftButton = new Button("StartShift");
 
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>()
@@ -332,11 +385,11 @@ public class StartShiftView extends View
             }
         });
 
-        StartShiftButton.setOnAction(new EventHandler<ActionEvent>() {
+        startShiftButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-
+                processAction(e);
             }
         });
 
@@ -344,33 +397,196 @@ public class StartShiftView extends View
         buttonContainer.setAlignment(Pos.CENTER);
 
         buttonContainer.getChildren().add(cancelButton);
-        buttonContainer.getChildren().add(StartShiftButton);
+        buttonContainer.getChildren().add(startShiftButton);
+
+
 
         vbox.getChildren().add(grid);
+
+        addTableColumns();
+        vbox.getChildren().add(table);  
         vbox.getChildren().add(buttonContainer);
+        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 5 - added navigation buttons");
 
         return vbox;
     }
 
+    //-------------------------------------------------------------------------------------------------
+    private void populateFields()
+    {
+        populateScoutComboBox();
 
-    private void populateFields(){
+    }
 
-        //pass 2 null names and get list of all scouts in database?
+    //-------------------------------------------------------------------------------------------------
+    /** Populates combo box containing the scouts
+     */
+    private void populateScoutComboBox()
+    {
+        /* Rewriting in StartShiftTransaction : searchForAvailableScouts() */
+
         String fn = "";
         String ln = "";
+        String id = "";
 
-        scoutList = scoutCollection.findActiveScoutsWithNameLike(fn, ln);
-        //idea to populate combobox:
-        //Loop through scoutList and get last name, first name, and troopID
-        for(int i = 0; i > scoutList.size(); i++) {
-            scoutList.elementAt(i);
+        // Makes a request to the model to change the state
+        myModel.stateChangeRequest("SearchForAvailableScouts", null);
+
+        // Gets the available scouts by passing in the string to the model
+        scoutList = (Vector)myModel.getState("GetAvailableScouts");
+
+        // For each scout in the list, add them to combo box
+        for(int i = 0; i < scoutList.size(); i++)
+        {
+            // Get the current scout in the list
+            Scout currentScout = (Scout)scoutList.elementAt(i);
+
+            // Get ln from the scout list
+            ln = currentScout.getLastName();
+
+            // Get fn from the scout list
+            fn = currentScout.getFirstName();
+
+            // Get troop id from the scout list
+            id = currentScout.getTroopID();
+
+            // Format the string -> Last Name, First Name (Troop ID)
+            String formattedScout = ln + ", " + fn + " (" + id + ")";
+
+            // Add the formatted string to combo box
+            scoutsComboBox.getItems().add(formattedScout);
         }
-        //add first name, last name, and troopID to their own arraylist
-        // create another loop to format and create another arraylist of correctly formatted strings
-        //create loop that adds correctly formatted strings to combobox
+
+    }
+
+    //-------------------------------------------------------------------------------------------------
+    /** Populates the table at the bottom of the view
+     */
+    private void addTableColumns() {
+        TableColumn lastNameCol = new TableColumn("Last Name");
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("LastName"));
+        TableColumn firstNameCol = new TableColumn("First Name");
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
+        TableColumn middleNameCol = new TableColumn("Middle Name");
+        TableColumn troopIDCol = new TableColumn("Troop ID");
+        troopIDCol.setCellValueFactory(new PropertyValueFactory<>("TroopID"));
 
 
+        table.setMinHeight(GlobalData.TABLE_MIN_HEIGHT);
+        table.setMaxHeight(GlobalData.TABLE_MAX_HEIGHT);
 
+        Text placeholder = new Text("No Scouts added to Shift yet");
+        table.setPlaceholder(placeholder);
+
+        table.getColumns().addAll( firstNameCol, lastNameCol, troopIDCol);
+
+    }
+
+    //-------------------------------------------------------------------------------------------------
+    /** Processes the given event
+     *
+     * @param evt   event to process
+     */
+    public void processAction(Event evt)
+    {
+        // Gets the index of the selected scout --will move this to appropriate place later
+        // int selectedScoutIndex = scoutsComboBox.getSelectionModel().getSelectedIndex();
+        // scoutList.get(selectedScoutIndex);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     *  Handling validation for all fields. If validation passes, create a Shift object with a Properties object
+     *  that we pass into the Shift(Properties shiftInfo) constructor. Then, that Shift object would be added to the
+     *  list and that list will be shown on the table.
+     */
+//    public void validateStartShift()
+//    {
+//        // Validate everything here or do separate validation methods?
+
+//        String startHour = startTimeHour.getText();
+//        String startMin = startTimeMinute.getText();
+//        String endHour =  endTimeHour.getText();
+//        String endMin = endTimeMinute.getText();
+//        String compName = companionName.getText();
+//        String compHours = companionHours.getText();
+//        String TextField scoutStartTimeHour;
+//        protected TextField scoutStartTimeMinute;
+//        protected TextField scoutEndTimeHour;
+//        protected TextField scoutEndTimeMinute;
+//    }
+
+    //-----------------------------------------------------------------------
+    /** Validates the companion name. Things to check for - length, numbers/special characters in name, blanks, null?
+     *
+     * @param companionName
+     */
+    private void validateCompanionName(String companionName)
+    {
+        // Check if name is null or only has whitespaces
+        if (companionName == null || companionName.trim().length() == 0)
+        {
+            displayMessage("Companion name can not be empty!");
+        }
+        // Companion name should not be more than 50 characters
+        else if (companionName.length() > 50)
+        {
+            displayErrorMessage("Companion name must be less than 50 characters!");
+        }
+        // Check if name has numbers and special characters
+        else if ()
+        {
+            
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /** Validates the scout hours. Things to check for - length, char in time, blanks, null?
+     *
+     * @param scoutStartTime, scoutEndTime
+     */
+    private void validateScoutTimes(String scoutStartTime, String scoutEndTime)
+    {
+
+    }
+
+    //-----------------------------------------------------------------------
+    private void validateCompanionHours(String companionHours)
+    {
+
+    }
+
+    //-----------------------------------------------------------------------
+    /** Stores the data from the text fields and sends the desired operation to the model
+     * 
+     */
+    protected void getOperation()
+    {
+        Properties p = gatherUserEnteredData();
+        //myModel.stateChangeRequest("InsertTreeData", p);
+    }
+
+    //-----------------------------------------------------------------------
+    /** Retrieves the data from the text fields
+     *
+     * @return props     Properties object containing the data retrieved
+     */
+    protected Properties gatherUserEnteredData()
+    {
+        LocalDateTime ldt = LocalDateTime.now();
+        String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        int selectedScoutIndex = scoutsComboBox.getSelectionModel().getSelectedIndex();
+        Scout selectedScout = (Scout) scoutList.get(selectedScoutIndex);
+
+        Properties props = new Properties();
+        props.setProperty("CompanionName", (String) companionName.getText());
+        props.setProperty("StartTime", scoutStartTimeHour.getText() + scoutStartTimeMinute.getText());
+        props.setProperty("EndTime", scoutEndTimeHour.getText() + scoutEndTimeMinute.getText());
+        props.setProperty("CompanionHours", companionHours.getText());
+        return props;
+
+        // The props object returned above will probably be used as an argument in Transaction(Properties proprs) constructor
     }
 
     // ----------------------------------------------------------------------
@@ -427,8 +643,7 @@ public class StartShiftView extends View
     /* Clears error message
      *
      */
-    public void clearErrorMessage()
-    {
+    public void clearErrorMessage() {
         statusLog.clearErrorMessage();
     }
 

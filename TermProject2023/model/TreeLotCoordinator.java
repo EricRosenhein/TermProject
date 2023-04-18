@@ -28,6 +28,7 @@ public class TreeLotCoordinator implements IView, IModel
     private Map<String, Scene> myViews;
     private Stage myStage;
     private String transactionErrorMessage = "";
+    private Boolean openSessionFlag;
 
     // ----------------------------------------------------------------
     public TreeLotCoordinator()
@@ -42,9 +43,11 @@ public class TreeLotCoordinator implements IView, IModel
         {
             new Event(Event.getLeafLevelClassName(this), "TreeLotCoordinator", "could not instantiate Registry", Event.ERROR);
         }
-
         // STEP 3.2: Be sure to set the dependencies correctly
         setDependencies();
+
+        // Try to find an open sesison
+        setOpenSessionFlag();
 
         // Set up the initial view
         createAndShowTLCView();
@@ -61,6 +64,7 @@ public class TreeLotCoordinator implements IView, IModel
         dependencies.setProperty("UpdateTreeType", "Transaction Error");
         dependencies.setProperty("RemoveScout", "Transaction Error");
         dependencies.setProperty("RemoveTree", "Transaction Error");
+        dependencies.setProperty("FindOpenSession", "OpenSessionFlag");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -72,6 +76,10 @@ public class TreeLotCoordinator implements IView, IModel
         if (key.equals("TransactionError"))
         {
             return transactionErrorMessage;
+        }
+        else if (key.equals("OpenSessionFlag"))
+        {
+            return openSessionFlag;
         }
         else
             return "";
@@ -90,7 +98,8 @@ public class TreeLotCoordinator implements IView, IModel
             createAndShowTLCView();
         }
         else if (key.equals("RegisterScout") || key.equals("AddTree") || key.equals("AddTreeType") || key.equals("UpdateScout") ||
-		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree"))
+		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree") ||
+        key.equals("StartShift") || key.equals("EndShift") || key.equals("SellTree"))
         {
             String transType = key;
             doTransaction(transType);
@@ -99,6 +108,11 @@ public class TreeLotCoordinator implements IView, IModel
         myRegistry.updateSubscribers(key, this);
     }
 
+    private void setOpenSessionFlag ()
+    {
+        Session current = new Session();
+
+    }
 
     // ----------------------------------------------------------------
     private void createAndShowTLCView()
