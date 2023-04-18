@@ -66,7 +66,7 @@ public class StartShiftView extends View
     protected MessageView statusLog;
 
     //------------------------------------------------------------
-    public StartAShiftView(IModel shift)
+    public StartShiftView(IModel shift)
     {
         super(shift, "StartAShiftiew");
         // DEBUG System.out.println("In ScoutView constructor");
@@ -214,7 +214,7 @@ public class StartShiftView extends View
         grid.add(scoutsBoxLabel, 0, 4);
 
         scoutsComboBox = new ComboBox();
-        scoutsComboBox.getItems().addAll(//scoutsList);
+        scoutsComboBox.getItems().addAll();//scoutList
         grid.add(scoutsComboBox, 1, 4);
 
         Text companionLabel = new Text("Companion ");
@@ -241,70 +241,80 @@ public class StartShiftView extends View
         companionHours.setEditable(true);
         companionHours.setMaxWidth(35);
         companionInfo.getChildren().add(companionHours);
+        //end of companion hbox
 
-        Text shiftStartLabel = new Text("Start Time ");
-        shiftStartLabel.setFont(font);
-        shiftStartLabel.setWrappingWidth(150);
-        shiftStartLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(shiftStartLabel, 0, 6);
+        Text scoutStartLabel = new Text("Scout Start ");
+        scoutStartLabel.setFont(font);
+        scoutStartLabel.setWrappingWidth(150);
+        scoutStartLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(scoutStartLabel, 0, 6);
 
         //Companion Start time hour HBox
-        HBox conpanionShiftStart = new HBox(5);
-        shiftStartT.setAlignment(Pos.CENTER_LEFT);
+        HBox scoutShiftStart = new HBox(5);
+        scoutShiftStart.setAlignment(Pos.CENTER_LEFT);
 
-        companionStartTimeHour = new TextField();
-        companionStartTimeHour.setEditable(true);
-        companionStartTimeHour.setMaxWidth(35);
-        shiftStartT.getChildren().add(companionStartTimeHour);
+        scoutStartTimeHour = new TextField();
+        scoutStartTimeHour.setEditable(true);
+        scoutStartTimeHour.setMaxWidth(35);
+        scoutShiftStart.getChildren().add(scoutStartTimeHour);
 
-        Text companionStartHourEnd = new Text("H");
-        companionStartHourEnd.setFont(font);
-        companionStartHourEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftStartT.getChildren().add(companionStartHourEnd);
+        Text scoutStartHourEndLabel = new Text("H");
+        scoutStartHourEndLabel.setFont(font);
+        scoutStartHourEndLabel.setTextAlignment(TextAlignment.LEFT);
+        scoutShiftStart.getChildren().add(scoutStartHourEndLabel);
 
-        companionStartTimeMinute = new TextField();
-        companionStartTimeMinute.setEditable(true);
-        companionStartTimeMinute.setMaxWidth(35);
-        shiftStartT.getChildren().add(companionStartTimeMinute);
+        scoutStartTimeMinute = new TextField();
+        scoutStartTimeMinute.setEditable(true);
+        scoutStartTimeMinute.setMaxWidth(35);
+        scoutShiftStart.getChildren().add(scoutStartTimeMinute);
 
-        Text startMinEnd = new Text("M");
-        startMinEnd.setFont(font);
-        startMinEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftStartT.getChildren().add(startMinEnd);
+        Text scoutStartMinEndLabel = new Text("M");
+        scoutStartMinEndLabel.setFont(font);
+        scoutStartMinEndLabel.setTextAlignment(TextAlignment.LEFT);
+        scoutShiftStart.getChildren().add(scoutStartMinEndLabel);
         //End of start HBox
 
-        Text shiftEndLabel = new Text("End Time ");
-        shiftEndLabel.setFont(font);
-        shiftEndLabel.setWrappingWidth(150);
-        shiftEndLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(shiftEndLabel, 0, 7);
+        Text scoutEndLabel = new Text("End Time ");
+        scoutEndLabel.setFont(font);
+        scoutEndLabel.setWrappingWidth(150);
+        scoutEndLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(scoutEndLabel, 0, 7);
 
         //End time hour HBox
-        HBox shiftEndT = new HBox(5);
-        shiftEndT.setAlignment(Pos.CENTER_LEFT);
+        HBox scoutEndT = new HBox(5);
+        scoutEndT.setAlignment(Pos.CENTER_LEFT);
 
-        companionEndTimeHour = new TextField();
-        companionEndTimeHour.setEditable(true);
-        companionEndTimeHour.setMaxWidth(35);
-        shiftEndT.getChildren().add(companionEndTimeHour);
+        scoutEndTimeHour = new TextField();
+        scoutEndTimeHour.setEditable(true);
+        scoutEndTimeHour.setMaxWidth(35);
+        scoutEndT.getChildren().add(scoutEndTimeHour);
 
-        Text endHourEnd = new Text("H");
-        endHourEnd.setFont(font);
-        endHourEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftEndT.getChildren().add(endHourEnd);
+        Text scoutEndHourEndLabel = new Text("H");
+        scoutEndHourEndLabel.setFont(font);
+        scoutEndHourEndLabel.setTextAlignment(TextAlignment.LEFT);
+        scoutEndT.getChildren().add(scoutEndHourEndLabel);
 
-        companionEndTimeHour = new TextField();
-        companionEndTimeHour.setEditable(true);
-        companionEndTimeHour.setMaxWidth(35);
-        shiftEndT.getChildren().add(companionEndTimeHour);
+        scoutEndTimeMinute = new TextField();
+        scoutEndTimeMinute.setEditable(true);
+        scoutEndTimeMinute.setMaxWidth(35);
+        scoutEndT.getChildren().add(scoutEndTimeMinute);
 
-        Text endMinEnd = new Text("M");
-        endMinEnd.setFont(font);
-        endMinEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftEndT.getChildren().add(endMinEnd);
+        Text scoutEndMinEnd = new Text("M");
+        scoutEndMinEnd.setFont(font);
+        scoutEndMinEnd.setTextAlignment(TextAlignment.LEFT);
+        scoutEndT.getChildren().add(scoutEndMinEnd);
         //End of end time HBox
+        Button addButton = new Button("add");
 
-        // Scout staffing shift?
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+            }
+        });
+
+
 
 
         // Cancel and submit buttons
@@ -352,6 +362,9 @@ public class StartShiftView extends View
         scoutList = scoutCollection.findActiveScoutsWithNameLike(fn, ln);
         //idea to populate combobox:
         //Loop through scoutList and get last name, first name, and troopID
+        for(int i = 0; i > scoutList.size(); i++) {
+            scoutList.elementAt(i);
+        }
         //add first name, last name, and troopID to their own arraylist
         // create another loop to format and create another arraylist of correctly formatted strings
         //create loop that adds correctly formatted strings to combobox
