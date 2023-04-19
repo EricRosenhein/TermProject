@@ -127,7 +127,8 @@ public class StartShiftView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text(" Start a shift then add each Scout working to the shift. ");
+        Text prompt = new Text(" Start a shift then add each Scout working to the shift.\n " +
+                "Note: Please enter all times in military time format (HH: (MM)");
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
@@ -137,7 +138,7 @@ public class StartShiftView extends View
         Font font = Font.font("Arial", FontWeight.BOLD, 12);
 
         //data fields
-        Text shiftDateLabel = new Text("Date: ");
+        Text shiftDateLabel = new Text("Start Date: ");
         shiftDateLabel.setFont(font);
         shiftDateLabel.setWrappingWidth(150);
         shiftDateLabel.setTextAlignment(TextAlignment.RIGHT);
@@ -154,37 +155,37 @@ public class StartShiftView extends View
         grid.add(shiftStartLabel, 0, 2);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.1");
 
-        //Start time hour HBox
+
+
+        //Start time HBox
         HBox shiftStartT = new HBox(5);
         shiftStartT.setAlignment(Pos.CENTER_LEFT);
 
+        // hours
         startTimeHour = new TextField();
         startTimeHour.setEditable(true);
-        startTimeHour.setMaxWidth(35);
+        startTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         shiftStartT.getChildren().add(startTimeHour);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.2");
 
-        Text startHourEnd = new Text("H");
+        Text startHourEnd = new Text(":");
         startHourEnd.setFont(font);
-        startHourEnd.setTextAlignment(TextAlignment.LEFT);
+        startHourEnd.setTextAlignment(TextAlignment.CENTER);
         shiftStartT.getChildren().add(startHourEnd);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.3");
 
+        // mins
         startTimeMinute = new TextField();
         startTimeMinute.setEditable(true);
-        startTimeMinute.setMaxWidth(35);
+        startTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         shiftStartT.getChildren().add(startTimeMinute);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.4");
 
-        Text startMinEnd = new Text("M");
-        startMinEnd.setFont(font);
-        startMinEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftStartT.getChildren().add(startMinEnd);
-        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.5");
-
+        // add to grid
         grid.add(shiftStartT, 1, 2);
         //End of start HBox
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.6");
+
 
         Text shiftEndLabel = new Text("End Time: ");
         shiftEndLabel.setFont(font);
@@ -193,34 +194,32 @@ public class StartShiftView extends View
         grid.add(shiftEndLabel, 0, 3);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.7");
 
-        //End time hour HBox
+
+        //End time HBox
         HBox shiftEndT = new HBox(5);
         shiftEndT.setAlignment(Pos.CENTER_LEFT);
 
+        // hour
         endTimeHour = new TextField();
         endTimeHour.setEditable(true);
-        endTimeHour.setMaxWidth(35);
+        endTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         shiftEndT.getChildren().add(endTimeHour);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.8");
 
-        Text endHourEnd = new Text("H");
+        Text endHourEnd = new Text(":");
         endHourEnd.setFont(font);
         endHourEnd.setTextAlignment(TextAlignment.LEFT);
         shiftEndT.getChildren().add(endHourEnd);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.9");
 
+        // min
         endTimeMinute = new TextField();
         endTimeMinute.setEditable(true);
-        endTimeMinute.setMaxWidth(35);
+        endTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         shiftEndT.getChildren().add(endTimeMinute);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.10");
 
-        Text endMinEnd = new Text("M");
-        endMinEnd.setFont(font);
-        endMinEnd.setTextAlignment(TextAlignment.LEFT);
-        shiftEndT.getChildren().add(endMinEnd);
-        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.11");
-
+        // add to grid
         grid.add(shiftEndT, 1, 3);
         //End of end time HBox
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 2 - added shift time data fields");
@@ -242,7 +241,7 @@ public class StartShiftView extends View
             public void handle(ActionEvent e)
             {
                 clearErrorMessage();
-                myModel.stateChangeRequest("StartSession","");
+                validateSession();
             }
         });
 
@@ -279,7 +278,7 @@ public class StartShiftView extends View
 
         companionHours = new TextField();
         companionHours.setEditable(true);
-        companionHours.setMaxWidth(35);
+        companionHours.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         companionInfo.getChildren().add(companionHours);
 
         grid.add(companionInfo, 1, 6);
@@ -300,7 +299,7 @@ public class StartShiftView extends View
 
         scoutStartTimeHour = new TextField();
         scoutStartTimeHour.setEditable(true);
-        scoutStartTimeHour.setMaxWidth(35);
+        scoutStartTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutShiftStart.getChildren().add(scoutStartTimeHour);
 
         Text scoutStartHourEndLabel = new Text("H");
@@ -310,7 +309,7 @@ public class StartShiftView extends View
 
         scoutStartTimeMinute = new TextField();
         scoutStartTimeMinute.setEditable(true);
-        scoutStartTimeMinute.setMaxWidth(35);
+        scoutStartTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutShiftStart.getChildren().add(scoutStartTimeMinute);
 
         Text scoutStartMinEndLabel = new Text("M");
@@ -333,7 +332,7 @@ public class StartShiftView extends View
 
         scoutEndTimeHour = new TextField();
         scoutEndTimeHour.setEditable(true);
-        scoutEndTimeHour.setMaxWidth(35);
+        scoutEndTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutEndT.getChildren().add(scoutEndTimeHour);
 
         Text scoutEndHourEndLabel = new Text(" H ");
@@ -343,7 +342,7 @@ public class StartShiftView extends View
 
         scoutEndTimeMinute = new TextField();
         scoutEndTimeMinute.setEditable(true);
-        scoutEndTimeMinute.setMaxWidth(35);
+        scoutEndTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutEndT.getChildren().add(scoutEndTimeMinute);
 
         Text scoutEndMinEnd = new Text(" M ");
@@ -360,6 +359,8 @@ public class StartShiftView extends View
             public void handle(ActionEvent e) {
                 clearErrorMessage();
 
+                validateShiftEntry();
+
                 //populate table with scout from combobox
 
             }
@@ -371,8 +372,7 @@ public class StartShiftView extends View
 
 
         // Cancel and submit buttons
-        cancelButton = new Button("Cancel");
-        startShiftButton = new Button("StartShift");
+        cancelButton = new Button("Return");
 
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>()
@@ -385,19 +385,10 @@ public class StartShiftView extends View
             }
         });
 
-        startShiftButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-                processAction(e);
-            }
-        });
-
         HBox buttonContainer = new HBox(10);
         buttonContainer.setAlignment(Pos.CENTER);
 
         buttonContainer.getChildren().add(cancelButton);
-        buttonContainer.getChildren().add(startShiftButton);
 
 
 
@@ -486,111 +477,134 @@ public class StartShiftView extends View
 
     }
 
-    //-------------------------------------------------------------------------------------------------
-    /** Processes the given event
-     *
-     * @param evt   event to process
-     */
-    public void processAction(Event evt)
+    // ------------------------------------------------------------------------------------------------
+    private Boolean checkTime(String tH, String tM)
     {
-        // Gets the index of the selected scout --will move this to appropriate place later
-        // int selectedScoutIndex = scoutsComboBox.getSelectionModel().getSelectedIndex();
-        // scoutList.get(selectedScoutIndex);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     *  Handling validation for all fields. If validation passes, create a Shift object with a Properties object
-     *  that we pass into the Shift(Properties shiftInfo) constructor. Then, that Shift object would be added to the
-     *  list and that list will be shown on the table.
-     */
-//    public void validateStartShift()
-//    {
-//        // Validate everything here or do separate validation methods?
-
-//        String startHour = startTimeHour.getText();
-//        String startMin = startTimeMinute.getText();
-//        String endHour =  endTimeHour.getText();
-//        String endMin = endTimeMinute.getText();
-//        String compName = companionName.getText();
-//        String compHours = companionHours.getText();
-//        String TextField scoutStartTimeHour;
-//        protected TextField scoutStartTimeMinute;
-//        protected TextField scoutEndTimeHour;
-//        protected TextField scoutEndTimeMinute;
-//    }
-
-    //-----------------------------------------------------------------------
-    /** Validates the companion name. Things to check for - length, numbers/special characters in name, blanks, null?
-     *
-     * @param companionName
-     */
-    private void validateCompanionName(String companionName)
-    {
-        // Check if name is null or only has whitespaces
-        if (companionName == null || companionName.trim().length() == 0)
+        if ((tH.length() == GlobalData.MAX_TIME_LENGTH) || (tM.length() == GlobalData.MAX_TIME_LENGTH))
+            return false;
+        else
         {
-            displayMessage("Companion name can not be empty!");
-        }
-        // Companion name should not be more than 50 characters
-        else if (companionName.length() > 50)
-        {
-            displayErrorMessage("Companion name must be less than 50 characters!");
-        }
-        // Check if name has numbers and special characters
-        else if ()
-        {
-            
+            try {
+                int hour = Integer.parseInt(tH);
+                int min = Integer.parseInt(tM);
+                if ( hour < 0 || hour > 23 || min < 0 || hour > 59 )
+                    return false;
+                else
+                    return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         }
     }
 
+    // ---------------------------------------------------------------------------------------
+    public boolean validateCashValue(String cashVal)
+    {
+        if (cashVal.length() > GlobalData.MAX_STARTING_CASH_LENGTH)
+            return false;
+        else
+        {
+            try
+            {
+                double cashValue = Double.parseDouble(cashVal);
+                return true;
+            }
+            catch (NumberFormatException excep)
+            {
+                return false;
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+    public void validateSession()
+    {
+        // gather user entered data
+        String sHour = startTimeHour.getText();
+        String sMin = startTimeMinute.getText();
+        String sTime = sHour + ":" + sMin;
+
+        String eHour = endTimeHour.getText();
+        String eMin = endTimeMinute.getText();
+        String eTime = eHour + ":" + eMin;
+
+        String sCash = startingCash.getText();
+
+        // validatoin of all entry fields
+        if( (sHour == null) || (sHour.length() == 0) || (sMin == null) || (sMin.length() == 0) ||
+                (eHour == null) || (eHour.length() == 0) || (eMin == null) || (eMin.length() == 0) ||
+                (sCash == null) || (sCash.length() == 0))
+        {
+            displayErrorMessage("ERROR: Please complete the entire form.");
+        }
+        else if ((checkTime(sHour,sMin) == false) || (checkTime(eHour,eMin) == false))
+        {
+            displayErrorMessage("ERROR: Times must be entered in military time format.");
+        }
+        else if (validateCashValue(sCash) == false)
+        {
+            displayErrorMessage("ERROR: Staring Cash value too long, or not numeric!");
+        }
+
+        //Populate properties object and call to start a session
+        Properties p = new Properties();
+        p.setProperty("StartTime", sTime);
+        p.setProperty("EndTime", eTime);
+        p.setProperty("StartingCash", sCash);
+        myModel.stateChangeRequest("StartSession",p);
+    }
+
     //-----------------------------------------------------------------------
-    /** Validates the scout hours. Things to check for - length, char in time, blanks, null?
+     /**
      *
-     * @param scoutStartTime, scoutEndTime
+     * @param
      */
-    private void validateScoutTimes(String scoutStartTime, String scoutEndTime)
+    private void validateShiftEntry()
     {
-
-    }
-
-    //-----------------------------------------------------------------------
-    private void validateCompanionHours(String companionHours)
-    {
-
-    }
-
-    //-----------------------------------------------------------------------
-    /** Stores the data from the text fields and sends the desired operation to the model
-     * 
-     */
-    protected void getOperation()
-    {
-        Properties p = gatherUserEnteredData();
-        //myModel.stateChangeRequest("InsertTreeData", p);
-    }
-
-    //-----------------------------------------------------------------------
-    /** Retrieves the data from the text fields
-     *
-     * @return props     Properties object containing the data retrieved
-     */
-    protected Properties gatherUserEnteredData()
-    {
+        //Gathering data from GUI
         LocalDateTime ldt = LocalDateTime.now();
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         int selectedScoutIndex = scoutsComboBox.getSelectionModel().getSelectedIndex();
         Scout selectedScout = (Scout) scoutList.get(selectedScoutIndex);
 
-        Properties props = new Properties();
-        props.setProperty("CompanionName", (String) companionName.getText());
-        props.setProperty("StartTime", scoutStartTimeHour.getText() + scoutStartTimeMinute.getText());
-        props.setProperty("EndTime", scoutEndTimeHour.getText() + scoutEndTimeMinute.getText());
-        props.setProperty("CompanionHours", companionHours.getText());
-        return props;
+        String cn = companionName.getText();
+        String scoutSTimeHour = scoutStartTimeHour.getText();
+        String scoutSTimeMin = scoutStartTimeMinute.getText();
+        String scoutSTime = scoutSTimeHour + ":" + scoutSTimeMin;
 
-        // The props object returned above will probably be used as an argument in Transaction(Properties proprs) constructor
+        String scoutETimeHour = scoutEndTimeHour.getText();
+        String scoutETimeMin = scoutEndTimeMinute.getText();
+        String scoutETime = scoutSTimeHour + ":" + scoutSTimeMin;
+
+        String ch = companionHours.getText();
+
+        //Validation
+
+        if((cn == null) || (cn.length() == 0) ||
+                (scoutSTimeHour == null) || (scoutSTimeHour.length() == 0) ||
+                (scoutSTimeMin == null) || (scoutSTimeMin.length() == 0) ||
+                (scoutETimeHour == null) || (scoutETimeHour.length() == 0) ||
+                (scoutETimeMin == null) || (scoutETimeMin.length() == 0) ||
+                (ch == null) || (ch.length() == 0)){
+            displayErrorMessage("ERROR: Please fill in all fields");
+        }
+        else if ((checkTime(scoutSTimeHour,scoutSTimeMin) == false) ||
+                (checkTime(scoutETimeHour,scoutETimeMin) == false))
+        {
+            displayErrorMessage("ERROR: Times must be entered in military time format.");
+        }
+        else {
+            //Setting properties object and updating in database
+            Properties props = new Properties();
+            props
+            props.setProperty("CompanionName", (String) companionName.getText());
+            props.setProperty("StartTime", scoutStartTimeHour.getText() + scoutStartTimeMinute.getText());
+            props.setProperty("EndTime", scoutEndTimeHour.getText() + scoutEndTimeMinute.getText());
+            props.setProperty("CompanionHours", companionHours.getText());
+            myModel.stateChangeRequest("AddScoutToShift",props);
+        }
+
     }
 
     // ----------------------------------------------------------------------

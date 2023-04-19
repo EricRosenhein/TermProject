@@ -16,7 +16,8 @@ public class StartShiftTransaction extends Transaction
 {
     protected Session currentSession;
     protected ScoutCollection scoutCollection = new ScoutCollection();
-    protected Vector scoutList;
+    protected Vector<Scout> fullScoutList;
+    protected Vector<Scout> selectedScoutList;
 
     protected String shiftStatusMessage = "";
     // Constructor
@@ -24,6 +25,7 @@ public class StartShiftTransaction extends Transaction
     public StartShiftTransaction()
     {
         super();
+        selectedScoutList = new Vector();
     }
 
     //----------------------------------------------------------------------
@@ -55,11 +57,12 @@ public class StartShiftTransaction extends Transaction
         }
         else if(key.equals("GetAvailableScouts"))
         {
-            return scoutList;
+            return fullScoutList;
         }
-        else if(key.equals("GetSelectedScout"))
+        else if(key.equals("GetSelectedScouts"))
         {
-            // return the scout who was selected
+            // return the scouts who were selected
+            return selectedScoutList;
         }
 
         return null;
@@ -98,34 +101,36 @@ public class StartShiftTransaction extends Transaction
     // -------------------------------------------------------------
     private void startSession()
     {
-        boolean openSessionFlag = false;
-        try
-        {
-            Session session = new Session();
-            openSessionFlag = session.findOpenSession();
-        }
-        // THINK HARDER ABOUT THIS
-        catch(InvalidPrimaryKeyException e)
-        {
-            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
-            openSessionFlag = false;
-        }
-        return openSessionFlag;
+//        boolean openSessionFlag = false;
+//        try
+//        {
+//            Session session = new Session();
+//            openSessionFlag = session.findOpenSession();
+//        }
+//        // THINK HARDER ABOUT THIS
+//        catch(InvalidPrimaryKeyException e)
+//        {
+//            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
+//            openSessionFlag = false;
+//        }
+//        return openSessionFlag;
     }
 
     //------------------------------------------------------
-    void searchForAvailableScouts()
+    protected void searchForAvailableScouts()
     {
-        scoutList = scoutCollection.findActiveScoutsWithNameLike("", "");
+        //Find all active scouts method
+
+        fullScoutList = scoutCollection.findActiveScoutsWithNameLike("", "");
     }
 
     //------------------------------------------------------
-    void searchForSelectedScout()
+    void searchForSelectedScout(String scoutID)
     {
-        String fn = "";
-        String ln = "";
 
-        scoutList = scoutCollection.findActiveScoutsWithNameLike(fn, ln);
+        Scout chosenScout = fullScoutList.retrieve(scoutID); // retrieve method needed in ScoutCollection using scoutID
+        selectedScoutList.addSelectedScout(chosenScout); // have a public method in ScoutCollection that just calls the private addScout method
+
     }
 
 

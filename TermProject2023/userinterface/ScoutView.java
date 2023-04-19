@@ -446,14 +446,6 @@ public abstract class ScoutView extends View
             }
         }
     }
-
-    // -----------------------------------------------------------------------------
-    // Override in subclasses
-    protected void getOperation()
-    {
-        Properties p = gatherUserEnteredData();
-        myModel.stateChangeRequest("", p);
-    }
     
     // -----------------------------------------------------------------------------
     protected Properties gatherUserEnteredData()
@@ -476,8 +468,14 @@ public abstract class ScoutView extends View
         props.setProperty("DateStatusUpdated", now);
         return props;
     }
-    
-    
+
+    protected void getOperation()
+    {
+        Properties p = gatherUserEnteredData();
+        myModel.stateChangeRequest("", p);
+    }
+
+
     /**
      *  Validation method to check if TroopId is ony integers
      */
@@ -493,6 +491,23 @@ public abstract class ScoutView extends View
         {
             // DEBUG System.out.print(e.getMessage());
             return false;
+        }
+    }
+
+    public Boolean validateCostValue(String costVal)
+    {
+        if (costVal.length() > GlobalData.MAX_TREE_TYPE_COST_LENGTH)
+            return false;
+        else {
+            try {
+                double costValue = Double.parseDouble(costVal);
+                return true;
+            }
+            catch (NumberFormatException excep)
+            {
+                return false;
+            }
+
         }
     }
 
