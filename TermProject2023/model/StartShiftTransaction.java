@@ -14,6 +14,9 @@ import model.ScoutCollection;
 
 public class StartShiftTransaction extends Transaction
 {
+    protected Session currentSession;
+    protected ScoutCollection scoutCollection = new ScoutCollection();
+    protected Vector scoutList;
 
     protected String shiftStatusMessage = "";
     // Constructor
@@ -95,7 +98,19 @@ public class StartShiftTransaction extends Transaction
     // -------------------------------------------------------------
     private void startSession()
     {
-
+        boolean openSessionFlag = false;
+        try
+        {
+            Session session = new Session();
+            openSessionFlag = session.findOpenSession();
+        }
+        // THINK HARDER ABOUT THIS
+        catch(InvalidPrimaryKeyException e)
+        {
+            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
+            openSessionFlag = false;
+        }
+        return openSessionFlag;
     }
 
     //------------------------------------------------------
