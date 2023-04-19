@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import exception.InvalidPrimaryKeyException;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -27,8 +28,9 @@ public class TreeLotCoordinator implements IView, IModel
     // GUI Components
     private Map<String, Scene> myViews;
     private Stage myStage;
-    private String transactionErrorMessage = "";
     private Boolean openSessionFlag;
+    private String sessionStatusMessage = "";
+    private String transactionErrorMessage = "";
 
     // ----------------------------------------------------------------
     public TreeLotCoordinator()
@@ -46,8 +48,8 @@ public class TreeLotCoordinator implements IView, IModel
         // STEP 3.2: Be sure to set the dependencies correctly
         setDependencies();
 
-        // Try to find an open sesison
-        setOpenSessionFlag();
+        // Try to find an open session
+        openSessionFlag = getOpenSessionFlag();
 
         // Set up the initial view
         createAndShowTLCView();
@@ -64,7 +66,7 @@ public class TreeLotCoordinator implements IView, IModel
         dependencies.setProperty("UpdateTreeType", "Transaction Error");
         dependencies.setProperty("RemoveScout", "Transaction Error");
         dependencies.setProperty("RemoveTree", "Transaction Error");
-        dependencies.setProperty("FindOpenSession", "OpenSessionFlag");
+        dependencies.setProperty("FindOpenSession", "SessionStatusMessage");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -77,15 +79,17 @@ public class TreeLotCoordinator implements IView, IModel
         {
             return transactionErrorMessage;
         }
-        else if (key.equals("OpenSessionFlag"))
+        else if (key.equals("FindOpenSession"))
         {
             return openSessionFlag;
         }
+        else if (key.equals("SessionStatusMessage"))
+        {
+            return sessionStatusMessage;
+        }
         else
-            return "";
-
+        return null;
     }
-
 
     // ----------------------------------------------------------------
     // Changes the current state we are in depending on the current transaction
@@ -108,10 +112,21 @@ public class TreeLotCoordinator implements IView, IModel
         myRegistry.updateSubscribers(key, this);
     }
 
-    private void setOpenSessionFlag ()
+    private Boolean getOpenSessionFlag ()
     {
-        Session current = new Session();
-
+        boolean openSessionFlag = false;
+        try
+        {
+            Session session = new Session();
+            openSessionFlag = session.findOpenSession();
+        }
+        // THINK HARDER ABOUT THIS
+        catch(InvalidPrimaryKeyException e)
+        {
+            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
+            openSessionFlag = false;
+        }
+        return openSessionFlag;
     }
 
     // ----------------------------------------------------------------

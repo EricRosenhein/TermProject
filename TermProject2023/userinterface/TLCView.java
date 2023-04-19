@@ -53,6 +53,7 @@ public class TLCView extends View
 
         getChildren().add(container);
 
+        populateFields();
     }
 
     //----------------------------------------------------------------------------
@@ -108,18 +109,18 @@ public class TLCView extends View
         updateTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeTypeButton, 0, 7);
 
-        RadioButton startShift = new RadioButton("Start Shift");
+        startShift = new RadioButton("Start Shift");
         startShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(startShift, 0, 8);
 
         //inactive by default
-        RadioButton endShift = new RadioButton("End Shift");
+        endShift = new RadioButton("End Shift");
         endShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(endShift, 0, 9);
         endShift.setDisable(true);
 
         //inactive by default
-        RadioButton sellTree = new RadioButton("Sell Tree");
+        sellTree = new RadioButton("Sell Tree");
         sellTree.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(sellTree, 0, 10);
         sellTree.setDisable(true);
@@ -198,11 +199,11 @@ public class TLCView extends View
                     }
                     else if(selected == endShift)
                     {
-                        //myModel.stateChangeRequest("UpdateTreeType", "");
+                        //myModel.stateChangeRequest("EndShift", "");
                     }
                     else if(selected == sellTree)
                     {
-                        //myModel.stateChangeRequest("UpdateTreeType", "");
+                        //myModel.stateChangeRequest("SellTree", "");
                     }
                 }
                 else
@@ -220,11 +221,36 @@ public class TLCView extends View
 
         return grid;
     }
+    // ----------------------------------------------------------------------
+    private boolean findOpenSessionFlag()
+    {
+        //Session model getstate
+        openSessionFlag = (Boolean)myModel.getState("FindOpenSession");
+        return openSessionFlag;
+    }
+
 
     // ----------------------------------------------------------------------
     //@Override
     public void updateState(String key, Object value)
     {
+    }
+
+    //-----------------------------------------------------------------------
+    public void populateFields()
+    {
+        //Check for an open session
+        openSessionFlag = findOpenSessionFlag();
+        if (openSessionFlag == true) {
+            startShift.setDisable(true);
+            endShift.setDisable(false);
+            sellTree.setDisable(false);
+        }
+        else {
+            startShift.setDisable(false);
+            endShift.setDisable(true);
+            sellTree.setDisable(true);
+        }
     }
 
     // ----------------------------------------------------------------------

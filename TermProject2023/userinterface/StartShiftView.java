@@ -56,7 +56,7 @@ public class StartShiftView extends View
     protected TextField scoutEndTimeHour;
     protected TextField scoutEndTimeMinute;
 
-    private TableView<Scout> table = new TableView<>();
+    private TableView<Scout> scoutsTable = new TableView<>();
 
     protected Button addSessionButton;
     protected Button addScoutToShiftButton;
@@ -127,7 +127,7 @@ public class StartShiftView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text(" Start A Shift ");
+        Text prompt = new Text(" Start a shift then add each Scout working to the shift. ");
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
@@ -186,7 +186,7 @@ public class StartShiftView extends View
         //End of start HBox
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 1.6");
 
-        Text shiftEndLabel = new Text("End Time ");
+        Text shiftEndLabel = new Text("End Time: ");
         shiftEndLabel.setFont(font);
         shiftEndLabel.setWrappingWidth(150);
         shiftEndLabel.setTextAlignment(TextAlignment.RIGHT);
@@ -225,7 +225,7 @@ public class StartShiftView extends View
         //End of end time HBox
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 2 - added shift time data fields");
 
-        Text startingCashLabel = new Text("Starting Cash: ");
+        Text startingCashLabel = new Text(" Starting Cash: ");
         startingCashLabel.setFont(font);
         startingCashLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(startingCashLabel,0,4);
@@ -234,7 +234,7 @@ public class StartShiftView extends View
         startingCash.setEditable(true);
         grid.add(startingCash, 1,4);
 
-        addSessionButton = new Button("Start Session");
+        addSessionButton = new Button("Start Shift");
         grid.add(addSessionButton,2,4);
         addSessionButton.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -404,7 +404,7 @@ public class StartShiftView extends View
         vbox.getChildren().add(grid);
 
         addTableColumns();
-        vbox.getChildren().add(table);  
+        vbox.getChildren().add(scoutsTable);
         vbox.getChildren().add(buttonContainer);
         // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 5 - added navigation buttons");
 
@@ -470,15 +470,19 @@ public class StartShiftView extends View
         TableColumn middleNameCol = new TableColumn("Middle Name");
         TableColumn troopIDCol = new TableColumn("Troop ID");
         troopIDCol.setCellValueFactory(new PropertyValueFactory<>("TroopID"));
+        TableColumn emailCol = new TableColumn("Email");
+        troopIDCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        TableColumn phoneNumCol = new TableColumn("Phone Number");
+        troopIDCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNumber"));
 
 
-        table.setMinHeight(GlobalData.TABLE_MIN_HEIGHT);
-        table.setMaxHeight(GlobalData.TABLE_MAX_HEIGHT);
+        scoutsTable.setMinHeight(GlobalData.TABLE_MIN_HEIGHT);
+        scoutsTable.setMaxHeight(GlobalData.TABLE_MAX_HEIGHT);
 
         Text placeholder = new Text("No Scouts added to Shift yet");
-        table.setPlaceholder(placeholder);
+        scoutsTable.setPlaceholder(placeholder);
 
-        table.getColumns().addAll( firstNameCol, lastNameCol, troopIDCol);
+        scoutsTable.getColumns().addAll( firstNameCol, lastNameCol, troopIDCol, emailCol, phoneNumCol);
 
     }
 

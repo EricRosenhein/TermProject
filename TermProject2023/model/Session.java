@@ -87,7 +87,7 @@ public class Session extends EntityBase
     // ------------------------------------------------------------------------------------------
     public Boolean findOpenSession() throws InvalidPrimaryKeyException {
         // method to find open session - "SELECT * FROM Session WHERE ((EndTime IS NULL) OR (EndTime = ''))
-        String query = "SELECT * FROM " + myTableName + " WHERE ((EndTime IS NULL) OR (EndTime = ''))";
+        String query = "SELECT * FROM " + myTableName + " WHERE ((EndingCash IS NULL) OR (EndingCash = ''))";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null) {
@@ -114,7 +114,7 @@ public class Session extends EntityBase
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
     }
-    // ----------------------------------------------------------
+    // ---------------------------------------------------------------------
     public Object getState(String key) {
         if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
@@ -122,7 +122,7 @@ public class Session extends EntityBase
         return persistentState.getProperty(key);
     }
 
-    // ----------------------------------------------------------------
+    // ----------------------------------------------------------------------
     public void stateChangeRequest(String key, Object value) {
 
         persistentState.setProperty(key, (String)value);
