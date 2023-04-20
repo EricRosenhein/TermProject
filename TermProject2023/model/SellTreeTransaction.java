@@ -91,10 +91,20 @@ public class SellTreeTransaction extends Transaction
         {
             treeToSell.persistentState.setProperty("Status", "Sold");
             treeToSell.update();
-            TransactionReceipt transactionReceipt = new TransactionReceipt(props);
-            transactionReceipt.update();
-            transactionReceiptStatusMessage = (String)transactionReceipt.getState("TransactionReceiptStatusMessage");
-            System.out.println("TransactionReceipt object made");
+
+            Session session = new Session();
+            try {
+                String openSessionId = session.getOpenSessionID();
+
+                props.setProperty("SessionID", openSessionId);
+                TransactionReceipt transactionReceipt = new TransactionReceipt(props);
+                transactionReceipt.update();
+                transactionReceiptStatusMessage = (String) transactionReceipt.getState("TransactionReceiptStatusMessage");
+                System.out.println("TransactionReceipt object made");
+            } catch(InvalidPrimaryKeyException e) {
+                transactionReceiptStatusMessage = "ERROR: No session with ID: " + session;
+            }
+            }
         }
 
         // Try to create a Transaction object so we can initialize its table in database
@@ -111,7 +121,7 @@ public class SellTreeTransaction extends Transaction
 //        transactionReceipt.update();
 //        transactionReceiptStatusMessage = (String)transactionReceipt.getState("TransactionReceiptStatusMessage");
 //        System.out.println("TransactionReceipt object made");
-    }
+//    }
 
 
     //-----------------------------------------------------------

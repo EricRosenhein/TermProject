@@ -108,6 +108,31 @@ public class Session extends EntityBase
         }
     }
 
+    // ------------------------------------------------------------------------------------------
+    public String getOpenSessionID() throws InvalidPrimaryKeyException
+    {
+        String query = "SELECT * FROM " + myTableName + " WHERE ((EndTime IS NULL) OR (EndTime = ''))";
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        if (allDataRetrieved != null) {
+            int size = allDataRetrieved.size();
+            if (size > 1) {
+                throw new InvalidPrimaryKeyException("ERROR: Multiple open Sessions found.");
+            } else if (size == 1) {
+
+                populatePersistentState(allDataRetrieved);
+                String openSessionID = persistentState.getProperty("ID");
+                return openSessionID;
+            } else // size is zero
+            {
+                throw new InvalidPrimaryKeyException("ERROR: No open Sessions found.");
+            }
+        }
+        else //null
+        {
+            throw new InvalidPrimaryKeyException("ERROR: No open Sessions found.");
+        }
+    }
 
     //----------------------------------------------------------------------
     private void setDependencies() {
