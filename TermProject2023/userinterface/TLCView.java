@@ -10,19 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-import javafx.stage.Stage;
 
 /** This is the main Transaction Choice View for the Boy Scout Troop 209 Tree Sales Application */
 //==================================================================================
@@ -234,6 +230,7 @@ public class TLCView extends View
     //@Override
     public void updateState(String key, Object value)
     {
+
     }
 
     //-----------------------------------------------------------------------
@@ -241,6 +238,7 @@ public class TLCView extends View
     {
         //Check for an open session
         openSessionFlag = findOpenSessionFlag();
+        // DEBUG System.out.println("Checking for open session - flag value: " + openSessionFlag);
         if (openSessionFlag == true) {
             startShift.setDisable(true);
             endShift.setDisable(false);

@@ -169,3 +169,8 @@
 [4/19/23, 4:23 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: Children: duplicate children added: parent = Grid hgap=10.0, vgap=10.0, alignment=CENTER>
 [4/19/23, 4:23 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: Children: duplicate children added: parent = Grid hgap=10.0, vgap=10.0, alignment=CENTER>
 [4/19/23, 4:23 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: Children: duplicate children added: parent = Grid hgap=10.0, vgap=10.0, alignment=CENTER>
+[4/20/23, 1:38 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: Children: duplicate children added: parent = Grid hgap=10.0, vgap=10.0, alignment=CENTER>
+[4/20/23, 1:38 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.IllegalArgumentException: Children: duplicate children added: parent = Grid hgap=10.0, vgap=10.0, alignment=CENTER>
+[4/20/23, 3:08 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56100) Field 'StartDate' doesn't have a default value>
+[4/20/23, 3:10 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56117) Field 'StartDate' doesn't have a default value>
+[4/20/23, 3:15 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56120) Field 'EndingCash' doesn't have a default value>

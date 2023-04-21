@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 import java.util.Properties;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -59,13 +62,12 @@ public class StartShiftView extends View
     private TableView<Scout> scoutsTable = new TableView<>();
 
     protected Button addSessionButton;
-    protected Button addScoutToShiftButton;
-    protected Button startShiftButton;
+    protected Button addScoutButton;
     protected Button cancelButton;
 
     protected ScoutCollection scoutCollection = new ScoutCollection();
     protected Vector scoutList;
-
+    protected Scout selectedScout;
 
     // For showing error message
     protected MessageView statusLog;
@@ -97,7 +99,8 @@ public class StartShiftView extends View
 
         populateFields();
 
-        myModel.subscribe("ShiftUpdateStatusMessage", this);
+        myModel.subscribe("SessionStatusMessage", this);
+        myModel.subscribe("ShiftStatusMessage", this);
     }
 
     // ----------------------------------------------------------------------
@@ -128,7 +131,7 @@ public class StartShiftView extends View
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Text prompt = new Text(" Start a shift then add each Scout working to the shift.\n " +
-                "Note: Please enter all times in military time format (HH: (MM)");
+                "Note: Please enter all times in 24 hour time format (HH:MM)");
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
@@ -226,15 +229,18 @@ public class StartShiftView extends View
 
         Text startingCashLabel = new Text(" Starting Cash: ");
         startingCashLabel.setFont(font);
+        startingCashLabel.setWrappingWidth(150);
         startingCashLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(startingCashLabel,0,4);
-        
+
+        HBox cashBox = new HBox(5);
         startingCash = new TextField();
         startingCash.setEditable(true);
-        grid.add(startingCash, 1,4);
+        startingCash.setMaxWidth(100);
+        cashBox.getChildren().add(startingCash);
 
         addSessionButton = new Button("Start Shift");
-        grid.add(addSessionButton,2,4);
+        cashBox.getChildren().add(addSessionButton);
         addSessionButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -244,6 +250,8 @@ public class StartShiftView extends View
                 validateSession();
             }
         });
+        grid.add(cashBox, 1,4);
+
 
         Text scoutsBoxLabel = new Text("Select a Scout: ");
         scoutsBoxLabel.setFont(font);
@@ -268,7 +276,7 @@ public class StartShiftView extends View
 
         companionName = new TextField();
         companionName.setEditable(true);
-        companionName.setMaxWidth(100);
+        companionName.setMaxWidth(150);
         companionInfo.getChildren().add(companionName);
 
         Text hourLabel = new Text("Hours: ");
@@ -302,7 +310,7 @@ public class StartShiftView extends View
         scoutStartTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutShiftStart.getChildren().add(scoutStartTimeHour);
 
-        Text scoutStartHourEndLabel = new Text("H");
+        Text scoutStartHourEndLabel = new Text(":");
         scoutStartHourEndLabel.setFont(font);
         scoutStartHourEndLabel.setTextAlignment(TextAlignment.LEFT);
         scoutShiftStart.getChildren().add(scoutStartHourEndLabel);
@@ -311,11 +319,6 @@ public class StartShiftView extends View
         scoutStartTimeMinute.setEditable(true);
         scoutStartTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutShiftStart.getChildren().add(scoutStartTimeMinute);
-
-        Text scoutStartMinEndLabel = new Text("M");
-        scoutStartMinEndLabel.setFont(font);
-        scoutStartMinEndLabel.setTextAlignment(TextAlignment.LEFT);
-        scoutShiftStart.getChildren().add(scoutStartMinEndLabel);
 
         grid.add(scoutShiftStart, 1, 7);
         //End of start HBox
@@ -335,7 +338,7 @@ public class StartShiftView extends View
         scoutEndTimeHour.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutEndT.getChildren().add(scoutEndTimeHour);
 
-        Text scoutEndHourEndLabel = new Text(" H ");
+        Text scoutEndHourEndLabel = new Text(":");
         scoutEndHourEndLabel.setFont(font);
         scoutEndHourEndLabel.setTextAlignment(TextAlignment.LEFT);
         scoutEndT.getChildren().add(scoutEndHourEndLabel);
@@ -345,16 +348,11 @@ public class StartShiftView extends View
         scoutEndTimeMinute.setMaxWidth(GlobalData.MAX_TIME_TEXTFIELD_LENGTH);
         scoutEndT.getChildren().add(scoutEndTimeMinute);
 
-        Text scoutEndMinEnd = new Text(" M ");
-        scoutEndMinEnd.setFont(font);
-        scoutEndMinEnd.setTextAlignment(TextAlignment.LEFT);
-        scoutEndT.getChildren().add(scoutEndMinEnd);
-        // DEBUG System.out.println("StartShiftView: createFormContents(): Eric was here 4 - added scout shift time fields");
 
-        Button addButton = new Button("Add Scout to Shift");
+        addScoutButton = new Button("Add Scout to Shift");
 
         // Add event handler to add button
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
+        addScoutButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
@@ -365,7 +363,7 @@ public class StartShiftView extends View
 
             }
         });
-        scoutEndT.getChildren().add(addButton);
+        scoutEndT.getChildren().add(addScoutButton);
 
         grid.add(scoutEndT, 1, 8);
         //End of end time HBox
@@ -390,8 +388,6 @@ public class StartShiftView extends View
 
         buttonContainer.getChildren().add(cancelButton);
 
-
-
         vbox.getChildren().add(grid);
 
         addTableColumns();
@@ -406,7 +402,27 @@ public class StartShiftView extends View
     private void populateFields()
     {
         populateScoutComboBox();
+        addScoutButton.setDisable(true);
+        cancelButton.setDisable(true);
+    }
 
+    // -----------------------------------------------------------------------------
+    private void copyTimes()
+    {
+        String startHour = startTimeHour.getText();
+        String startMin = startTimeMinute.getText();
+        String endHour = endTimeHour.getText();
+        String endMin = endTimeMinute.getText();
+        scoutStartTimeHour.setText(startHour);
+        scoutStartTimeMinute.setText(startMin);
+        scoutEndTimeHour.setText(endHour);
+        scoutEndTimeMinute.setText(endMin);
+
+        int sHour = Integer.parseInt(startHour);
+        int eHour = Integer.parseInt(endHour);
+        int cHours = eHour - sHour;
+        String compHours = Integer.toString(cHours);
+        companionHours.setText(compHours);
     }
 
     //-------------------------------------------------------------------------------------------------
@@ -458,7 +474,6 @@ public class StartShiftView extends View
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("LastName"));
         TableColumn firstNameCol = new TableColumn("First Name");
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("FirstName"));
-        TableColumn middleNameCol = new TableColumn("Middle Name");
         TableColumn troopIDCol = new TableColumn("Troop ID");
         troopIDCol.setCellValueFactory(new PropertyValueFactory<>("TroopID"));
         TableColumn emailCol = new TableColumn("Email");
@@ -480,14 +495,14 @@ public class StartShiftView extends View
     // ------------------------------------------------------------------------------------------------
     private Boolean checkTime(String tH, String tM)
     {
-        if ((tH.length() == GlobalData.MAX_TIME_LENGTH) || (tM.length() == GlobalData.MAX_TIME_LENGTH))
+        if ((tH.length() != GlobalData.MAX_TIME_LENGTH) || (tM.length() != GlobalData.MAX_TIME_LENGTH))
             return false;
         else
         {
             try {
                 int hour = Integer.parseInt(tH);
                 int min = Integer.parseInt(tM);
-                if ( hour < 0 || hour > 23 || min < 0 || hour > 59 )
+                if ( hour < 0 || hour > 23 || min < 0 || min > 59 )
                     return false;
                 else
                     return true;
@@ -507,7 +522,10 @@ public class StartShiftView extends View
             try
             {
                 double cashValue = Double.parseDouble(cashVal);
-                return true;
+                if (cashValue > 0.0)
+                    return true;
+                else
+                    return false;
             }
             catch (NumberFormatException excep)
             {
@@ -519,6 +537,10 @@ public class StartShiftView extends View
     // ------------------------------------------------------------------------------------------------
     public void validateSession()
     {
+        LocalDate dt = datePicker.getValue();
+        //LocalDateTime selectedDate = dt.atStartOfDay();  // Can be used to set boundaries on session start date
+        String chosenDate = dt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
         // gather user entered data
         String sHour = startTimeHour.getText();
         String sMin = startTimeMinute.getText();
@@ -530,7 +552,7 @@ public class StartShiftView extends View
 
         String sCash = startingCash.getText();
 
-        // validatoin of all entry fields
+        // validation of all entry fields
         if( (sHour == null) || (sHour.length() == 0) || (sMin == null) || (sMin.length() == 0) ||
                 (eHour == null) || (eHour.length() == 0) || (eMin == null) || (eMin.length() == 0) ||
                 (sCash == null) || (sCash.length() == 0))
@@ -539,19 +561,22 @@ public class StartShiftView extends View
         }
         else if ((checkTime(sHour,sMin) == false) || (checkTime(eHour,eMin) == false))
         {
-            displayErrorMessage("ERROR: Times must be entered in military time format.");
+            displayErrorMessage("ERROR: Times must be entered in 24 hour time format.");
         }
         else if (validateCashValue(sCash) == false)
         {
             displayErrorMessage("ERROR: Staring Cash value too long, or not numeric!");
         }
+        else {
 
-        //Populate properties object and call to start a session
-        Properties p = new Properties();
-        p.setProperty("StartTime", sTime);
-        p.setProperty("EndTime", eTime);
-        p.setProperty("StartingCash", sCash);
-        myModel.stateChangeRequest("StartSession",p);
+            //Populate properties object and call to start a session
+            Properties p = new Properties();
+            p.setProperty("StartDate", chosenDate);
+            p.setProperty("StartTime", sTime);
+            p.setProperty("EndTime", eTime);
+            p.setProperty("StartingCash", sCash);
+            myModel.stateChangeRequest("StartSession", p);
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -566,7 +591,7 @@ public class StartShiftView extends View
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         int selectedScoutIndex = scoutsComboBox.getSelectionModel().getSelectedIndex();
-        Scout selectedScout = (Scout) scoutList.get(selectedScoutIndex);
+        selectedScout = (Scout) scoutList.get(selectedScoutIndex);
 
         String cn = companionName.getText();
         String scoutSTimeHour = scoutStartTimeHour.getText();
@@ -575,10 +600,9 @@ public class StartShiftView extends View
 
         String scoutETimeHour = scoutEndTimeHour.getText();
         String scoutETimeMin = scoutEndTimeMinute.getText();
-        String scoutETime = scoutSTimeHour + ":" + scoutSTimeMin;
+        String scoutETime = scoutETimeHour + ":" + scoutETimeMin;
 
         String ch = companionHours.getText();
-
         //Validation
 
         if((cn == null) || (cn.length() == 0) ||
@@ -592,16 +616,21 @@ public class StartShiftView extends View
         else if ((checkTime(scoutSTimeHour,scoutSTimeMin) == false) ||
                 (checkTime(scoutETimeHour,scoutETimeMin) == false))
         {
-            displayErrorMessage("ERROR: Times must be entered in military time format.");
+            displayErrorMessage("ERROR: Times must be entered in 24-hour format.");
+        }
+        else if ((cn.length() > 25))
+        {
+            displayErrorMessage("ERROR: Names must be under 25 characters.");
+
         }
         else {
             //Setting properties object and updating in database
             Properties props = new Properties();
-            props
-            props.setProperty("CompanionName", (String) companionName.getText());
-            props.setProperty("StartTime", scoutStartTimeHour.getText() + scoutStartTimeMinute.getText());
-            props.setProperty("EndTime", scoutEndTimeHour.getText() + scoutEndTimeMinute.getText());
-            props.setProperty("CompanionHours", companionHours.getText());
+            props.setProperty("ScoutID", (String)selectedScout.getState("ID"));
+            props.setProperty("CompanionName", cn);
+            props.setProperty("StartTime", scoutSTime);
+            props.setProperty("EndTime", scoutETime);
+            props.setProperty("CompanionHours", ch);
             myModel.stateChangeRequest("AddScoutToShift",props);
         }
 
@@ -614,14 +643,38 @@ public class StartShiftView extends View
      */
     public void updateState(String key, Object value)
     {
-        if (key.equals("ShiftUpdateStatusMessage") == true)
+        if (key.equals("SessionStatusMessage") == true)
         {
             String msg = (String)value;
             if (msg.startsWith("ERR") == true)
                 displayErrorMessage(msg);
-            else
+            else {
                 displayMessage(msg);
+                addSessionButton.setDisable(true);
+                addScoutButton.setDisable(false);
+                copyTimes();
+            }
         }
+        else
+        if (key.equals("ShiftStatusMessage") == true)
+        {
+            String msg = (String)value;
+            if (msg.startsWith("ERR") == true)
+                displayErrorMessage(msg);
+            else {
+                displayMessage(msg);
+                cancelButton.setDisable(false);
+            }
+            getEntryTableModelValues();
+        }
+    }
+
+    // ---------------------------------------------------------------------
+    private void getEntryTableModelValues()
+    {
+        Vector<Scout> selectedScoutList = (Vector<Scout>)myModel.getState("GetSelectedScouts");
+        ObservableList<Scout> tableEntry = FXCollections.observableList(selectedScoutList);
+        scoutsTable.setItems(tableEntry);
     }
 
     // ----------------------------------------------------------------------

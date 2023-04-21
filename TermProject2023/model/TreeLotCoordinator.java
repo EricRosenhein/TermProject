@@ -81,6 +81,7 @@ public class TreeLotCoordinator implements IView, IModel
         }
         else if (key.equals("FindOpenSession"))
         {
+            openSessionFlag = getOpenSessionFlag();
             return openSessionFlag;
         }
         else if (key.equals("SessionStatusMessage"))
@@ -132,17 +133,8 @@ public class TreeLotCoordinator implements IView, IModel
     // ----------------------------------------------------------------
     private void createAndShowTLCView()
     {
-        Scene currentScene = (Scene)myViews.get("TLCView");
-
-        if (currentScene == null)
-        {
-            View newView = ViewFactory.createView("TLCView", this);
-
-            currentScene = new Scene(newView);
-
-            myViews.put("TLCView", currentScene);
-        }
-
+        View newView = ViewFactory.createView("TLCView", this);
+        Scene currentScene = new Scene(newView);
         swapToView(currentScene);
     }
 

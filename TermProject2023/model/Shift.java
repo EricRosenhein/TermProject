@@ -18,7 +18,7 @@ public class Shift extends EntityBase
     private String endTime;
     private int companionHours;
 
-    private String shiftStatusMessage = "";
+    private String updateStatusMessage = "";
     private static final String myTableName = "Shift";
     protected Properties dependencies;
 
@@ -75,8 +75,8 @@ public class Shift extends EntityBase
      * @return object   the value mapped to the key
      */
     public Object getState(String key) {
-        if (key.equals("ShiftStatusMessage") == true)
-            return shiftStatusMessage;
+        if (key.equals("UpdateStatusMessage") == true)
+            return updateStatusMessage;
 
         return persistentState.getProperty(key);
     }
@@ -118,22 +118,28 @@ public class Shift extends EntityBase
                 whereClause.setProperty("ID",
                         persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                shiftStatusMessage = "Shift data for Shift: "
+               /* updateStatusMessage = "Shift data for shift"
+                        + persistentState.getProperty("SessionID")
+                        + " updated successfully in database!"; */
+                updateStatusMessage = "Scout shift data successfully updated in database!";
+                /*
+                updateStatusMessage = "Scout added to shift: "
                         + persistentState.getProperty("ID") + ", "
                         + persistentState.getProperty("SessionID") + ", "
                         + persistentState.getProperty("ScoutID")
                         + " updated successfully in database!";
+                 */
+
             } else {
                 Integer transactionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("ID", "" + transactionId);
-                shiftStatusMessage = "Shift data for new Shift: "
-                        + persistentState.getProperty("ID") + ", "
-                        + persistentState.getProperty("SessionID") + ", "
-                        + persistentState.getProperty("ScoutID")
-                        + " installed successfully in database!";
+                /* updateStatusMessage = "Shift data for new Shift: "
+                        + persistentState.getProperty("SessionID")
+                        + " installed successfully in database!"; */
+                updateStatusMessage = "Shift data for new Scout successfully added to database!";
             }
         } catch (SQLException ex) {
-            shiftStatusMessage = "ERROR: Error registering Shift data in database!";
+            updateStatusMessage = "ERROR: Error registering Shift data in database!";
         }
     }
 

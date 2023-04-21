@@ -105,8 +105,6 @@ public class Scout extends EntityBase {
         stateChangeRequest(key, value);
     }
 
-
-
     // -----------------------------------------------------------------------------------
     public void update() {
         updateStateInDatabase();

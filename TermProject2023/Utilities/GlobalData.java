@@ -10,7 +10,7 @@ public class GlobalData {
     public static final int OLD_SCOUT_AGE = 18;
     public static final int TABLE_MIN_HEIGHT = 50;
     public static  final int TABLE_MAX_HEIGHT = 200;
-    public static final int MAX_TIME_TEXTFIELD_LENGTH = 25;
+    public static final int MAX_TIME_TEXTFIELD_LENGTH = 35;
     public static final int MAX_TIME_LENGTH = 2;
     public static final int MAX_STARTING_CASH_LENGTH = 25;
 }

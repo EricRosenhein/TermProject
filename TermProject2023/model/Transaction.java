@@ -67,7 +67,7 @@ abstract public class Transaction implements IView, IModel
 
 		Scene newScene = createView();
 
-		System.out.println("model/Transaction : doYourJob(): " + newScene);
+		// DEBUG System.out.println("model/Transaction : doYourJob(): " + newScene);
 
 
 		swapToView(newScene);		
@@ -114,7 +114,7 @@ abstract public class Transaction implements IView, IModel
 
 		if (newScene == null)
 		{
-			System.out.println("Transaction : swapToView() - Missing view for display");
+			// DEBUG System.out.println("Transaction : swapToView() - Missing view for display");
 			new Event(Event.getLeafLevelClassName(this), "swapToView",
 				"Missing view for display ", Event.ERROR);
 

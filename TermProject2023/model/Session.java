@@ -22,7 +22,7 @@ public class Session extends EntityBase
     private String updateStatusMessage = "";
     // check for open session everyTime the program boots to update initial gui appropriately
     // empty constructor
-    // method to find open session - "SELECT * FROM Session WHERE ((EndTime IS NULL) OR (EndTime = ''))
+    // method to find open session - "SELECT * FROM Session WHERE ((EndingCash IS NULL) OR (EndingCash = ''))
     public Session(){
         super(myTableName);
         setDependencies();
@@ -32,8 +32,6 @@ public class Session extends EntityBase
     //---------------------------------------------------------------------
     public Session(Properties sessionInfo){
         super(myTableName);
-
-        //DEBUG System.out.println("userinterface/Scout: Scout(Properties scoutInfo): Start of method");
 
         setDependencies();
         persistentState = new Properties();
@@ -108,6 +106,31 @@ public class Session extends EntityBase
         }
     }
 
+    // ---------------------------------------------------------------------
+    public String getOpenSessionID() throws InvalidPrimaryKeyException
+    {
+        String query = "SELECT * FROM " + myTableName + " WHERE ((EndingCash IS NULL) OR (EndingCash = ''))";
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        if (allDataRetrieved != null) {
+            int size = allDataRetrieved.size();
+            if (size > 1) {
+                throw new InvalidPrimaryKeyException("ERROR: Multiple open Sessions found.");
+            } else if (size == 1) {
+
+                populatePersistentState(allDataRetrieved);
+                String openSessionID = persistentState.getProperty("ID");
+                return openSessionID;
+            } else // size is zero
+            {
+                throw new InvalidPrimaryKeyException("ERROR: No open Sessions found.");
+            }
+        }
+        else {
+            throw new InvalidPrimaryKeyException("ERROR: No open Sessions found.");
+        }
+    }
+
 
     //----------------------------------------------------------------------
     private void setDependencies() {
@@ -147,17 +170,19 @@ public class Session extends EntityBase
                 whereClause.setProperty("ID",
                         persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Session: "
-                        + persistentState.getProperty("ID")     // May have to change these messages
-                        + " started successfully!";
+                updateStatusMessage = "Session "
+                        + persistentState.getProperty("ID")
+                        + " updated successfully!";
             } else {
                 Integer sessionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("ID", "" + sessionId);
-                updateStatusMessage = "Session: "
-                        + persistentState.getProperty("ID")     // May have to change these messages
+                updateStatusMessage = "Session "
+                        + persistentState.getProperty("ID")
                         + " started successfully!";
             }
         } catch (SQLException ex) {
+            //System.out.println(ex);
+            //ex.printStackTrace();
             updateStatusMessage = "ERROR: Error starting a session!";
         }
     }
