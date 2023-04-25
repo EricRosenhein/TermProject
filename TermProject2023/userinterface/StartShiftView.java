@@ -637,9 +637,9 @@ public class StartShiftView extends View
     }
 
     // ----------------------------------------------------------------------
-    /**
+    /** Updates the state of the current view
      * @param key
-     * @param value
+     * @param value     value to be mapped to the given key
      */
     public void updateState(String key, Object value)
     {
