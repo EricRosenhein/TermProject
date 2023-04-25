@@ -477,6 +477,7 @@ public class StartShiftView extends View
         TableColumn troopIDCol = new TableColumn("Troop ID");
         troopIDCol.setCellValueFactory(new PropertyValueFactory<>("TroopID"));
         TableColumn emailCol = new TableColumn("Email");
+
         emailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
         TableColumn phoneNumCol = new TableColumn("Phone Number");
         phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNumber"));
@@ -637,9 +638,11 @@ public class StartShiftView extends View
     }
 
     // ----------------------------------------------------------------------
+
     /** Updates the state of the current view
      * @param key
      * @param value     value to be mapped to the given key
+
      */
     public void updateState(String key, Object value)
     {
