@@ -69,10 +69,10 @@ public class ViewFactory
 
 			return new StartShiftView(model);
 		}
-//		else if (viewName.equals("EndShiftView"))
-//		{
-//			return new EndShiftView(model);
-//		}
+		else if (viewName.equals("EndShiftView"))
+		{
+			return new EndShiftView(model);
+		}
 		else if (viewName.equals("SellTreeView"))
 		{
 			return new SellTreeView(model);
