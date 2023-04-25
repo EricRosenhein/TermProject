@@ -1,11 +1,7 @@
 package userinterface;
 
 import Utilities.GlobalData;
-import event.Event;
 import impresario.IModel;
-import userinterface.View;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,6 +23,10 @@ public class TLCView extends View
     private static final int MIN_RADIO_BUTTON_WIDTH = GlobalData.MIN_RADIO_BUTTON_WIDTH;
     private VBox container;
     private MessageView statusLog;
+    private Boolean openSessionFlag;
+    private RadioButton startShift;
+    private RadioButton endShift;
+    private RadioButton sellTree;
 
     // ----------------------------------------------------------------------
     public TLCView(IModel transactionMenu)
@@ -147,6 +147,8 @@ public class TLCView extends View
             public void handle(ActionEvent e)
             {
                 // DEBUG System.out.println("\nYou clicked the Submit button!\n");
+
+
 
                 // Check which radio button the user chose
                 if (toggleGroup.getSelectedToggle() != null)
