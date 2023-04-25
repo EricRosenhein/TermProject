@@ -73,10 +73,10 @@ public class ViewFactory
 //		{
 //			return new EndShiftView(model);
 //		}
-//		else if (viewName.equals("SellTreeView"))
-//		{
-//			return new SellTreeView(model);
-//		}
+		else if (viewName.equals("SellTreeView"))
+		{
+			return new SellTreeView(model);
+		}
 		else
 			return null;
 	}
