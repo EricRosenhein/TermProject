@@ -18,8 +18,42 @@ public class Session extends EntityBase
     private static final String myTableName = "Session";
     protected Properties dependencies;
 
-    //----------------------------------------------------------------------
     private String updateStatusMessage = "";
+    
+    // --------------------------------------------------------------------------
+     public Session(String sessionId) throws InvalidPrimaryKeyException {
+
+        super(myTableName);
+        setDependencies();
+
+        String query = "SELECT * FROM " + myTableName + " WHERE (SessionId = " + sessionId + ")";
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        if (allDataRetrieved != null){
+            int size = allDataRetrieved.size();
+            if (size != 1){
+                throw new InvalidPrimaryKeyException("Multiple Sessions matching session id : "+ sessionId + " found.");
+            } else{
+                Properties retrievedSessionData = allDataRetrieved.elementAt(0);
+                persistentState = new Properties();
+                Enumeration allKeys = retrievedSessionData.propertyNames();
+                while (allKeys.hasMoreElements() == true){
+                    String nextKey = (String)allKeys.nextElement();
+                    String nextValue = retrievedSessionData.getProperty(nextKey);
+
+                    if (nextValue != null){
+                        persistentState.setProperty(nextKey, nextValue);
+                    }
+                }
+            }
+        }
+        // If no scout found for troopId, throw exception
+        else{
+            throw new InvalidPrimaryKeyException("ERROR: No Session matching session id : "+ sessionId +" found.");
+        }
+    }
+    
+    //----------------------------------------------------------------------
     // check for open session everyTime the program boots to update initial gui appropriately
     // empty constructor
     // method to find open session - "SELECT * FROM Session WHERE ((EndingCash IS NULL) OR (EndingCash = ''))
