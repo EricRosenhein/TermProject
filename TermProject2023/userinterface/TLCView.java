@@ -197,11 +197,11 @@ public class TLCView extends View
                     }
                     else if(selected == endShift)
                     {
-                        //myModel.stateChangeRequest("EndShift", "");
+                        myModel.stateChangeRequest("EndShift", "");
                     }
                     else if(selected == sellTree)
                     {
-                        //myModel.stateChangeRequest("SellTree", "");
+                        myModel.stateChangeRequest("SellTree", "");
                     }
                 }
                 else
