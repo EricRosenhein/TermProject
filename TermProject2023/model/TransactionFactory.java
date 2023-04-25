@@ -67,16 +67,16 @@ public class TransactionFactory
 		{
 			returnValue = new StartShiftTransaction();
 		}
-//		else
-//		if (transactionType.equals("EndShift") == true)
-//		{
-//			returnValue = new EndShiftTransaction();
-//		}
-//		else
-//		if (transactionType.equals("SellTree") == true)
-//		{
-//			returnValue = new SellTreeTransaction();
-//		}
+		else
+		if (transactionType.equals("EndShift") == true)
+		{
+			returnValue = new EndShiftTransaction();
+		}
+		else
+		if (transactionType.equals("SellTree") == true)
+		{
+			returnValue = new SellTreeTransaction();
+		}
 
 		// DEBUG System.out.println("Return value is: " + returnValue.toString());
 
