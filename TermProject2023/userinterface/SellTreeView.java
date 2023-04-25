@@ -521,7 +521,6 @@ public class SellTreeView extends View
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Properties props = new Properties();
-        props.setProperty("SessionID", "1");
         props.setProperty("TransactionType", (String) transactionTypeComboBox.getValue());
         props.setProperty("Barcode", barcode.getText());
         props.setProperty("TransactionAmount", cost.getText());
