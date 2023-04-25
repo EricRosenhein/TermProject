@@ -30,6 +30,18 @@ public class ScoutCollection extends EntityBase implements IView{
         scoutList = new Vector<>(); // new Vector<Scout>();
     }
 
+    //------------------------------------------------------------------------------------------------
+    public void setScoutList(Vector<Scout> list)
+    {
+        scoutList = list;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    public void addSelectedScout(Scout s)
+    {
+        scoutList.add(s);
+    }
+
     // -----------------------------------------------------------------------------------------------
     public Vector findScoutsWithNameLike(String firstName, String lastName)
     {
@@ -119,6 +131,26 @@ public class ScoutCollection extends EntityBase implements IView{
         if (key.equals("ScoutCollection"))
             return scoutList;
         return null;
+    }
+
+    // ----------------------------------------------------------------
+    public Scout retrieve(String scoutID)
+    {
+        Scout retVal = null;
+        if (scoutList != null)
+        {
+            for (int cnt = 0; cnt < scoutList.size(); cnt++)
+            {
+                Scout nextScout = (Scout)scoutList.get(cnt);
+                String nextScoutID = (String)nextScout.getState("ID");
+                if (nextScoutID.equals(scoutID) == true)
+                {
+                    retVal = nextScout;
+                    break;
+                }
+            }
+        }
+        return retVal;
     }
 
     // ----------------------------------------------------------------

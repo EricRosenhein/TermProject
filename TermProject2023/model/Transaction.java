@@ -5,16 +5,13 @@ import java.util.HashMap;
 // system imports
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 // project imports
-import exception.InvalidPrimaryKeyException;
 import event.Event;
 import impresario.*;
 import userinterface.MainStageContainer;
-import userinterface.View;
 import userinterface.WindowPosition;
 
 
@@ -66,10 +63,13 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{		
-		// DEBUG System.out.println("In Transaction : doYourJob()");
+		// DEBUG System.out.println("model/Transaction : doYourJob(): getting here!");
 
 		Scene newScene = createView();
-		
+
+		// DEBUG System.out.println("model/Transaction : doYourJob(): " + newScene);
+
+
 		swapToView(newScene);		
 	}
 
@@ -114,7 +114,7 @@ abstract public class Transaction implements IView, IModel
 
 		if (newScene == null)
 		{
-			System.out.println("Transaction : swapToView() - Missing view for display");
+			// DEBUG System.out.println("Transaction : swapToView() - Missing view for display");
 			new Event(Event.getLeafLevelClassName(this), "swapToView",
 				"Missing view for display ", Event.ERROR);
 

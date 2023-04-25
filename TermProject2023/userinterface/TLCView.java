@@ -10,19 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-import javafx.stage.Stage;
 
 /** This is the main Transaction Choice View for the Boy Scout Troop 209 Tree Sales Application */
 //==================================================================================
@@ -53,6 +49,7 @@ public class TLCView extends View
 
         getChildren().add(container);
 
+        populateFields();
     }
 
     //----------------------------------------------------------------------------
@@ -108,6 +105,23 @@ public class TLCView extends View
         updateTreeTypeButton.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
         grid.add(updateTreeTypeButton, 0, 7);
 
+        startShift = new RadioButton("Start Shift");
+        startShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(startShift, 0, 8);
+
+        //inactive by default
+        endShift = new RadioButton("End Shift");
+        endShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(endShift, 0, 9);
+        endShift.setDisable(true);
+
+        //inactive by default
+        sellTree = new RadioButton("Sell Tree");
+        sellTree.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(sellTree, 0, 10);
+        sellTree.setDisable(true);
+       // sellTree.;
+
         // Toggles the radio buttons so only one button can be selected at a time
         ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -119,10 +133,12 @@ public class TLCView extends View
         removeTreeButton.setToggleGroup(toggleGroup);
         addTreeTypeButton.setToggleGroup(toggleGroup);
         updateTreeTypeButton.setToggleGroup(toggleGroup);
+        startShift.setToggleGroup(toggleGroup);
+        endShift.setToggleGroup(toggleGroup);
+        sellTree.setToggleGroup(toggleGroup);
 
         // submit button
         Button submitButton = new Button("Submit");
-
 
         // Handle event when user clicks the submit button
         submitButton.setOnAction(new EventHandler<ActionEvent>()
@@ -173,6 +189,18 @@ public class TLCView extends View
                     {
                         myModel.stateChangeRequest("UpdateTreeType", "");
                     }
+                    else if(selected == startShift)
+                    {
+                        myModel.stateChangeRequest("StartShift", "");
+                    }
+                    else if(selected == endShift)
+                    {
+                        //myModel.stateChangeRequest("EndShift", "");
+                    }
+                    else if(selected == sellTree)
+                    {
+                        //myModel.stateChangeRequest("SellTree", "");
+                    }
                 }
                 else
                 {
@@ -185,15 +213,42 @@ public class TLCView extends View
         HBox buttonContainer = new HBox(10);
         buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
         buttonContainer.getChildren().add(submitButton);
-        grid.add(buttonContainer, 0, 9);
+        grid.add(buttonContainer, 0, 11);
 
         return grid;
     }
+    // ----------------------------------------------------------------------
+    private boolean findOpenSessionFlag()
+    {
+        //Session model getstate
+        openSessionFlag = (Boolean)myModel.getState("FindOpenSession");
+        return openSessionFlag;
+    }
+
 
     // ----------------------------------------------------------------------
     //@Override
     public void updateState(String key, Object value)
     {
+
+    }
+
+    //-----------------------------------------------------------------------
+    public void populateFields()
+    {
+        //Check for an open session
+        openSessionFlag = findOpenSessionFlag();
+        // DEBUG System.out.println("Checking for open session - flag value: " + openSessionFlag);
+        if (openSessionFlag == true) {
+            startShift.setDisable(true);
+            endShift.setDisable(false);
+            sellTree.setDisable(false);
+        }
+        else {
+            startShift.setDisable(false);
+            endShift.setDisable(true);
+            sellTree.setDisable(true);
+        }
     }
 
     // ----------------------------------------------------------------------

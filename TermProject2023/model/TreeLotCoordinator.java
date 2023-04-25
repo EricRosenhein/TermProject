@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import exception.InvalidPrimaryKeyException;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -27,6 +28,8 @@ public class TreeLotCoordinator implements IView, IModel
     // GUI Components
     private Map<String, Scene> myViews;
     private Stage myStage;
+    private Boolean openSessionFlag;
+    private String sessionStatusMessage = "";
     private String transactionErrorMessage = "";
 
     // ----------------------------------------------------------------
@@ -42,9 +45,11 @@ public class TreeLotCoordinator implements IView, IModel
         {
             new Event(Event.getLeafLevelClassName(this), "TreeLotCoordinator", "could not instantiate Registry", Event.ERROR);
         }
-
         // STEP 3.2: Be sure to set the dependencies correctly
         setDependencies();
+
+        // Try to find an open session
+        openSessionFlag = getOpenSessionFlag();
 
         // Set up the initial view
         createAndShowTLCView();
@@ -61,6 +66,7 @@ public class TreeLotCoordinator implements IView, IModel
         dependencies.setProperty("UpdateTreeType", "Transaction Error");
         dependencies.setProperty("RemoveScout", "Transaction Error");
         dependencies.setProperty("RemoveTree", "Transaction Error");
+        dependencies.setProperty("FindOpenSession", "SessionStatusMessage");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -73,11 +79,18 @@ public class TreeLotCoordinator implements IView, IModel
         {
             return transactionErrorMessage;
         }
+        else if (key.equals("FindOpenSession"))
+        {
+            openSessionFlag = getOpenSessionFlag();
+            return openSessionFlag;
+        }
+        else if (key.equals("SessionStatusMessage"))
+        {
+            return sessionStatusMessage;
+        }
         else
-            return "";
-
+        return null;
     }
-
 
     // ----------------------------------------------------------------
     // Changes the current state we are in depending on the current transaction
@@ -90,7 +103,8 @@ public class TreeLotCoordinator implements IView, IModel
             createAndShowTLCView();
         }
         else if (key.equals("RegisterScout") || key.equals("AddTree") || key.equals("AddTreeType") || key.equals("UpdateScout") ||
-		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree"))
+		key.equals("UpdateTree") || key.equals("UpdateTreeType") || key.equals("RemoveScout") || key.equals("RemoveTree") ||
+        key.equals("StartShift") || key.equals("EndShift") || key.equals("SellTree"))
         {
             String transType = key;
             doTransaction(transType);
@@ -99,21 +113,28 @@ public class TreeLotCoordinator implements IView, IModel
         myRegistry.updateSubscribers(key, this);
     }
 
+    private Boolean getOpenSessionFlag ()
+    {
+        boolean openSessionFlag = false;
+        try
+        {
+            Session session = new Session();
+            openSessionFlag = session.findOpenSession();
+        }
+        // THINK HARDER ABOUT THIS
+        catch(InvalidPrimaryKeyException e)
+        {
+            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
+            openSessionFlag = false;
+        }
+        return openSessionFlag;
+    }
 
     // ----------------------------------------------------------------
     private void createAndShowTLCView()
     {
-        Scene currentScene = (Scene)myViews.get("TLCView");
-
-        if (currentScene == null)
-        {
-            View newView = ViewFactory.createView("TLCView", this);
-
-            currentScene = new Scene(newView);
-
-            myViews.put("TLCView", currentScene);
-        }
-
+        View newView = ViewFactory.createView("TLCView", this);
+        Scene currentScene = new Scene(newView);
         swapToView(currentScene);
     }
 

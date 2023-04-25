@@ -63,6 +63,20 @@ public class ViewFactory
 		{
 			return new ConfirmDeleteTreeView(model);
 		}
+		else if (viewName.equals("StartShiftView"))
+		{
+			// DEBUG System.out.println("userinterface/ViewFactory : createView(): Creating StartShiftView");
+
+			return new StartShiftView(model);
+		}
+//		else if (viewName.equals("EndShiftView"))
+//		{
+//			return new EndShiftView(model);
+//		}
+//		else if (viewName.equals("SellTreeView"))
+//		{
+//			return new SellTreeView(model);
+//		}
 		else
 			return null;
 	}

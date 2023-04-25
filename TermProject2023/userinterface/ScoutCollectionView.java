@@ -177,10 +177,13 @@ public class ScoutCollectionView extends View
 
         Vector scoutList = (Vector) myModel.getState("GetScoutList");
 
+        Text placeholder = new Text("No Scouts found matching search");
+        table.setPlaceholder(placeholder);
+
         // for loop to remove all inactive scouts from the Scout list so they are retrieved, but not displayed
         // loop through vector and remove all records with status of inactive in state "Status"
         ObservableList<Scout> observableList = FXCollections.observableList(scoutList);
-        List<Scout> list = Collections.list(scoutList.elements());
+        //List<Scout> list = Collections.list(scoutList.elements());
 
         table.getColumns().addAll( firstNameCol, lastNameCol, middleNameCol,
                 dateOfBirthCol, phoneNumberCol, emailCol, troopIDCol, statusCol, dateStatusUpdatedCol);
