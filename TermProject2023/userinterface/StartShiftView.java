@@ -477,9 +477,10 @@ public class StartShiftView extends View
         TableColumn troopIDCol = new TableColumn("Troop ID");
         troopIDCol.setCellValueFactory(new PropertyValueFactory<>("TroopID"));
         TableColumn emailCol = new TableColumn("Email");
-        troopIDCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
         TableColumn phoneNumCol = new TableColumn("Phone Number");
-        troopIDCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNumber"));
+        phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNumber"));
 
 
         scoutsTable.setMinHeight(GlobalData.TABLE_MIN_HEIGHT);
@@ -637,9 +638,11 @@ public class StartShiftView extends View
     }
 
     // ----------------------------------------------------------------------
-    /**
+
+    /** Updates the state of the current view
      * @param key
-     * @param value
+     * @param value     value to be mapped to the given key
+
      */
     public void updateState(String key, Object value)
     {
