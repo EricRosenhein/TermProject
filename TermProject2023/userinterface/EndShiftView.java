@@ -83,7 +83,7 @@ public class EndShiftView extends View
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales: \nEnd A Shift ");
+        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales Tree Sales: \nEnd A Shift ");
         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.BURLYWOOD);
@@ -117,63 +117,28 @@ public class EndShiftView extends View
         // Set the font
         Font font = Font.font("Arial", FontWeight.BOLD, 12);
 
-        //data fields
-        Text transactionTypeLabel = new Text("Transaction Type: ");
-        transactionTypeLabel.setFont(font);
-        transactionTypeLabel.setWrappingWidth(150);
-        transactionTypeLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(transactionTypeLabel, 0, 1);
 
-        transactionTypeComboBox = new ComboBox<>();
-        transactionTypeComboBox.getItems().addAll("Cash", "Check");
-        grid.add(transactionTypeComboBox, 1, 1);
+        //String endingCashValue = (String)myModel.getState("GetTotalCashSales");
+        //Text endCash = new Text("Total Cash Sales: " + endingCashValue);
+        endCashDisplay = new Text("");
+        endCashDisplay.setWrappingWidth(400);
+        endCashDisplay.setTextAlignment(TextAlignment.CENTER);
+        endCashDisplay.setFill(Color.BLACK);
+        grid.add(endCashDisplay,0,1,2,1);
 
-        Text transactionAmountLabel = new Text("Transaction Amount: ");
-        transactionAmountLabel.setFont(font);
-        transactionAmountLabel.setWrappingWidth(150);
-        transactionAmountLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(transactionAmountLabel, 0, 2);
+        //String endingCheckValue = (String)myModel.getState("GetTotalCheckSales");
+        //Text endCheck = new Text("Total Check Sales: " + endingCheckValue);
+        endCheckDisplay = new Text("");
+        endCheckDisplay.setWrappingWidth(400);
+        endCheckDisplay.setTextAlignment(TextAlignment.CENTER);
+        endCheckDisplay.setFill(Color.BLACK);
+        grid.add(endCheckDisplay, 0, 2,2,1);
 
-        transactionAmount = new TextField();
-        transactionAmount.setEditable(true);
-        grid.add(transactionAmount, 1, 2);
-
-        Text totalCashSalesLabel = new Text("Total Cash Sales: ");
-        totalCashSalesLabel.setFont(font);
-        totalCashSalesLabel.setWrappingWidth(150);
-        totalCashSalesLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(totalCashSalesLabel, 0, 3);
-
-        totalCashSales = new TextField();
-        totalCashSales.setEditable(true);
-        grid.add(totalCashSales, 1, 3);
-
-        Text totalCheckSalesLabel = new Text("Total Check Sales: ");
-        totalCheckSalesLabel.setFont(font);
-        totalCheckSalesLabel.setWrappingWidth(150);
-        totalCheckSalesLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(totalCheckSalesLabel, 0, 4);
-
-        totalCheckSales = new TextField();
-        totalCheckSales.setEditable(true);
-        grid.add(totalCheckSales, 1, 4);
-
-        // Maybe move this up?
-        Text startingCashLabel = new Text("Starting Cash: ");
-        startingCashLabel.setFont(font);
-        startingCashLabel.setWrappingWidth(150);
-        startingCashLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(startingCashLabel, 0, 5);
-
-        startingCash = new TextField();
-        startingCash.setEditable(true);
-        grid.add(startingCash, 1, 5);
-
-        Text endingCashLabel = new Text("Ending Cash: ");
-        endingCashLabel.setFont(font);
-        endingCashLabel.setWrappingWidth(150);
-        endingCashLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(endingCashLabel, 0, 6);
+        Text endTimeLabel = new Text("End Time:");
+        endTimeLabel.setFont(font);
+        endTimeLabel.setWrappingWidth(150);
+        endTimeLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(endTimeLabel,0,3);
 
         endTime = new TextField();
         endTime.setEditable(true);
@@ -213,6 +178,8 @@ public class EndShiftView extends View
             {
 
                 // Do action
+                clearErrorMessage();
+                processAction(e);
             }
         });
 
@@ -248,14 +215,34 @@ public class EndShiftView extends View
     }
 
     // ----------------------------------------------------------
-    /** Checks whether the transaction type is Cash or Check
-     *
-     * @param transactionType
-     */
-    protected void validateTranscationType(String transactionType)
+//    /** Checks whether the transaction type is Cash or Check
+//     *
+//     * @param transactionType
+//     */
+//    protected void validateTranscationType(String transactionType)
+//    {
+//
+//    }
+    // ----------------------------------------------------------
+    public void processAction(Event ev)
     {
+        int shiftNotesLength = shiftNotes.getLength();
 
+        // DEBUG System.out.println("userinterface/EndShiftView: processAction: shiftNotes: " + shiftNotes);
+
+        if (shiftNotesLength > 200)
+        {
+            displayErrorMessage("ERROR: Shift Notes has a limit of 200 characters!");
+        }
+        else
+        {
+            Properties props = new Properties();
+            props.setProperty("Notes", shiftNotes.getText());
+            props.setProperty("EndTime", endTime.getText());
+            myModel.stateChangeRequest("EndShift", props);
+        }
     }
+
 
     // ----------------------------------------------------------------------
     /* Creates the status log that we use to display messages to the user

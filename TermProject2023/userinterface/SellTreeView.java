@@ -547,8 +547,8 @@ public class SellTreeView extends View
         props.setProperty("TransactionAmount", c);
         props.setProperty("CustomerName", fullCustomerName);
         props.setProperty("CustomerPhone", phoneNumber);
-        props.setProperty("CustomerEmail", email.getText());
-        props.setProperty("PaymentMethod", (String)paymentMethodComboBox.getValue());
+        props.setProperty("CustomerEmail", e);
+        props.setProperty("PaymentMethod", pm);
         props.setProperty("TransactionDate", now);
         props.setProperty("TransactionTime", nowTime);
         props.setProperty("DateStatusUpdated", now);
