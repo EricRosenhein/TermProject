@@ -83,7 +83,7 @@ public class EndShiftView extends View
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales Tree Sales: \nEnd A Shift ");
+        Text titleText = new Text(" Boy Scout Troop 209 Tree Sales: \nEnd A Shift ");
         titleText.setFont(Font.font("Serif", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.BURLYWOOD);
