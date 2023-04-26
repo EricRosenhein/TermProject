@@ -20,7 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
+import javafx.scene.control.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -38,7 +38,7 @@ public class SellTreeView extends View
     // GUI Components
     protected TextField barcode;
     protected TextField cost;
-    protected TextField notes;
+    protected TextArea notes;
     protected TextField firstName;
     protected TextField middleName;
     protected TextField lastName;
@@ -46,6 +46,7 @@ public class SellTreeView extends View
     protected TextField areaCode;
     protected TextField threeDigits;
     protected TextField fourDigits;
+    protected Text treeTypeDescription;
     protected String phoneNumber;
     protected TextField email;
     protected ComboBox paymentMethodComboBox;
@@ -84,6 +85,7 @@ public class SellTreeView extends View
         populateFields();
 
         myModel.subscribe("TransactionReceiptStatusMessage", this);
+
     }
 
     // Create the title container
@@ -121,88 +123,106 @@ public class SellTreeView extends View
         // Set the font
         Font font = Font.font("Arial", FontWeight.BOLD, 12);
 
+        Text prompt = new Text(" Select \"Submit\" after completing all applicable fields to the sale. ");
+        prompt.setWrappingWidth(400);
+        prompt.setTextAlignment(TextAlignment.CENTER);
+        prompt.setFill(Color.BLACK);
+        grid.add(prompt, 0, 0, 2, 1);
+
         // Add Text fields and prompts
         Text transactionTypeLabel = new Text("Transaction Type: ");
         transactionTypeLabel.setFont(font);
         transactionTypeLabel.setWrappingWidth(150);
         transactionTypeLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(transactionTypeLabel, 0, 1);
+        grid.add(transactionTypeLabel, 0, 2);
 
         // Transaction type combo box
         transactionTypeComboBox = new ComboBox();
         transactionTypeComboBox.getItems().addAll("Tree Sale", "Wreath Sale", "Item Sale");
         // Add transaction type combo box to grid
-        grid.add(transactionTypeComboBox, 1, 1);
+        grid.add(transactionTypeComboBox, 1, 2);
 
 
         Text barcodeLabel = new Text("Tree Barcode: ");
         barcodeLabel.setFont(font);
         barcodeLabel.setWrappingWidth(150);
         barcodeLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(barcodeLabel, 0, 2);
+        grid.add(barcodeLabel, 0, 3);
 
         barcode = new TextField();
         barcode.setEditable(false);
-        grid.add(barcode, 1, 2);
+        grid.add(barcode, 1, 3);
+
+        Text treeDescLabel = new Text("Tree Description: ");
+        treeDescLabel.setFont(font);
+        treeDescLabel.setWrappingWidth(150);
+        treeDescLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(treeDescLabel, 0, 4);
+
+        treeTypeDescription = new Text();
+        treeTypeDescription.setWrappingWidth(150);
+        treeTypeDescription.setTextAlignment(TextAlignment.LEFT);
+        grid.add(treeTypeDescription,1,4);
+
 
         Text costLabel = new Text("Cost: ");
         costLabel.setFont(font);
         costLabel.setWrappingWidth(150);
         costLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(costLabel, 0, 3);
+        grid.add(costLabel, 0, 5);
 
         cost = new TextField();
         cost.setEditable(true);
-        grid.add(cost, 1, 3);
+        grid.add(cost, 1, 5);
 
 
         Text notesLabel = new Text("Notes: ");
         notesLabel.setFont(font);
         notesLabel.setWrappingWidth(150);
         notesLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(notesLabel, 0, 4);
+        grid.add(notesLabel, 0, 6);
 
-        notes = new TextField();
+        notes = new TextArea();
+        notes.setPrefSize(150, 100);
         notes.setEditable(true);
-        notes.setPrefHeight(50);
-        notes.setPrefWidth(25);
-        grid.add(notes, 1, 4);
+        notes.setWrapText(true);
+        grid.add(notes, 1, 6);
 
         Text firstNameLabel = new Text("First Name: ");
         firstNameLabel.setFont(font);
         firstNameLabel.setWrappingWidth(150);
         firstNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(firstNameLabel, 0, 5);
+        grid.add(firstNameLabel, 0, 7);
 
         firstName = new TextField();
         firstName.setEditable(true);
-        grid.add(firstName, 1, 5);
+        grid.add(firstName, 1, 7);
 
         Text middleNameLabel = new Text("Middle Name: ");
         middleNameLabel.setFont(font);
         middleNameLabel.setWrappingWidth(150);
         middleNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(middleNameLabel, 0, 6);
+        grid.add(middleNameLabel, 0, 8);
 
         middleName = new TextField();
         middleName.setEditable(true);
-        grid.add(middleName, 1, 6);
+        grid.add(middleName, 1, 8);
 
         Text lastNameLabel = new Text("Last Name: ");
         lastNameLabel.setFont(font);
         lastNameLabel.setWrappingWidth(150);
         lastNameLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(lastNameLabel, 0, 7);
+        grid.add(lastNameLabel, 0, 9);
 
         lastName = new TextField();
         lastName.setEditable(true);
-        grid.add(lastName, 1, 7);
+        grid.add(lastName, 1, 9);
 
         Text phoneNumberLabel = new Text("Phone Number: ");
         phoneNumberLabel.setFont(font);
         phoneNumberLabel.setWrappingWidth(150);
         phoneNumberLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(phoneNumberLabel, 0, 8);
+        grid.add(phoneNumberLabel, 0, 10);
 
 
         // Phone Number HBox for formatting
@@ -241,7 +261,7 @@ public class SellTreeView extends View
         phoneNum.getChildren().add(fourDigits);
 
 
-        grid.add(phoneNum, 1, 8);
+        grid.add(phoneNum, 1, 10);
 
         // End of HBox for phone number
 
@@ -249,26 +269,24 @@ public class SellTreeView extends View
         emailLabel.setFont(font);
         emailLabel.setWrappingWidth(150);
         emailLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(emailLabel, 0, 9);
+        grid.add(emailLabel, 0, 11);
 
         email = new TextField();
         email.setEditable(true);
-        grid.add(email, 1, 9);
+        grid.add(email, 1, 11);
 
         Text paymentMethodLabel = new Text("Payment Method: ");
         paymentMethodLabel.setFont(font);
         paymentMethodLabel.setWrappingWidth(150);
         paymentMethodLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(paymentMethodLabel, 0, 10);
-
+        grid.add(paymentMethodLabel, 0, 12);
 
 
         paymentMethodComboBox = new ComboBox();
         paymentMethodComboBox.getItems().addAll("Cash", "Check");
-        grid.add(paymentMethodComboBox, 1, 10);
+        grid.add(paymentMethodComboBox, 1, 12);
 
         submitButton = new Button("Submit");
-        submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -279,7 +297,6 @@ public class SellTreeView extends View
         });
 
         cancelButton = new Button("Cancel");
-        cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -313,7 +330,7 @@ public class SellTreeView extends View
     /** Populates the fields of the view
      *
      */
-    public void populateFields()
+    private void populateFields()
     {
         // Do things
         Tree treeToSell = (Tree)myModel.getState("GetTreeToSell");
@@ -322,16 +339,20 @@ public class SellTreeView extends View
         barcode.setText(b);
 
         String barPrefix = extract(barcode.getText());
+
         try
         {
             TreeType treeType = new TreeType(barPrefix);
             String c = (String)treeType.getState("Cost");
+            String desc = (String)treeType.getState("TypeDescription");
             cost.setText(c);
+            treeTypeDescription.setText(desc);
         }
         catch(InvalidPrimaryKeyException ex)
         {
             displayErrorMessage("ERROR: No tree type found with barcode prefix " + barPrefix);
         }
+
 
 
         String n = (String)treeToSell.getState("Notes");
@@ -521,9 +542,9 @@ public class SellTreeView extends View
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         Properties props = new Properties();
-        props.setProperty("TransactionType", (String) transactionTypeComboBox.getValue());
-        props.setProperty("Barcode", barcode.getText());
-        props.setProperty("TransactionAmount", cost.getText());
+        props.setProperty("TransactionType", tcb);
+        props.setProperty("Barcode", b);
+        props.setProperty("TransactionAmount", c);
         props.setProperty("CustomerName", fullCustomerName);
         props.setProperty("CustomerPhone", phoneNumber);
         props.setProperty("CustomerEmail", email.getText());

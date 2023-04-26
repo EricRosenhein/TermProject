@@ -116,10 +116,7 @@ public class TransactionReceipt extends EntityBase
                 whereClause.setProperty("ID",
                         persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                transactionReceiptStatusMessage = "TransactionReceipt data for TransactionReceipt: "
-                        + persistentState.getProperty("ID") + ", "
-                        + persistentState.getProperty("SessionID")
-                        + " updated successfully in database!";
+                transactionReceiptStatusMessage = "Data for selected transaction updated successfully in database!";
             } else {
                 Integer transactionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("ID", "" + transactionId);

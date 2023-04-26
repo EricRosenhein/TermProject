@@ -144,7 +144,7 @@ public class TreeLotCoordinator implements IView, IModel
     {
         if (newScene == null)
         {
-            System.out.println("TreeLotCoordinator : swapToView() - Missing view to display!");
+            // DEBUG System.out.println("TreeLotCoordinator : swapToView() - Missing view to display!");
             new Event(Event.getLeafLevelClassName(this), "swaptoView", "Missing view to display", Event.ERROR);
             return;
         }

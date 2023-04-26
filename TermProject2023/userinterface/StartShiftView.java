@@ -514,7 +514,28 @@ public class StartShiftView extends View
     }
 
     // ---------------------------------------------------------------------------------------
-    public boolean validateCashValue(String cashVal)
+    private boolean checkHours(String hourVal)
+    {
+        if (hourVal.length() > GlobalData.MAX_TIME_LENGTH)
+            return false;
+        else
+        {
+            try
+            {
+                int hourValue = Integer.parseInt(hourVal);
+                if (hourValue > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (NumberFormatException excep)
+            {
+                return false;
+            }
+        }
+    }
+    // ---------------------------------------------------------------------------------------
+    private boolean validateCashValue(String cashVal)
     {
         if (cashVal.length() > GlobalData.MAX_STARTING_CASH_LENGTH)
             return false;
@@ -612,17 +633,20 @@ public class StartShiftView extends View
                 (scoutETimeHour == null) || (scoutETimeHour.length() == 0) ||
                 (scoutETimeMin == null) || (scoutETimeMin.length() == 0) ||
                 (ch == null) || (ch.length() == 0)){
-            displayErrorMessage("ERROR: Please fill in all fields");
+            displayErrorMessage("ERROR: Please complete the entire form.");
         }
         else if ((checkTime(scoutSTimeHour,scoutSTimeMin) == false) ||
                 (checkTime(scoutETimeHour,scoutETimeMin) == false))
         {
             displayErrorMessage("ERROR: Times must be entered in 24-hour format.");
         }
-        else if ((cn.length() > 25))
+        else if ((cn.length() > GlobalData.MAX_NAME_LENGTH))
         {
             displayErrorMessage("ERROR: Names must be under 25 characters.");
-
+        }
+        else if ((checkHours(ch) == false))
+        {
+            displayErrorMessage("ERROR: Staring Cash value too long, or not numeric!");
         }
         else {
             //Setting properties object and updating in database
@@ -667,6 +691,8 @@ public class StartShiftView extends View
             else {
                 displayMessage(msg);
                 cancelButton.setDisable(false);
+                copyTimes();
+                companionName.clear();
             }
             getEntryTableModelValues();
         }

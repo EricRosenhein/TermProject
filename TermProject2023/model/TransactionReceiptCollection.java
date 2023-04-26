@@ -16,7 +16,7 @@ import java.util.Vector;
 // ==============================================================
 public class TransactionReceiptCollection extends EntityBase implements IView
 {
-    private static final String myTableName = "TransactionReceipt";
+    private static final String myTableName = "Transaction";
 
     private Vector<TransactionReceipt> transactionReceiptList;
 
@@ -65,21 +65,26 @@ public class TransactionReceiptCollection extends EntityBase implements IView
 
     @Override
     public void updateState(String key, Object value) {
-
+        stateChangeRequest(key, value);
     }
 
     @Override
     public Object getState(String key) {
+        if (key.equals("TransactionReceiptList") == true)
+            return transactionReceiptList;
         return null;
     }
 
     @Override
     public void stateChangeRequest(String key, Object value) {
 
+        myRegistry.updateSubscribers(key, this);
     }
 
     @Override
     protected void initializeSchema(String tableName) {
-
+        if (mySchema == null) {
+            mySchema = getSchemaInfo(tableName);
+        }
     }
 }

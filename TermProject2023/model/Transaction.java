@@ -63,11 +63,11 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{		
-		// DEBUG System.out.println("model/Transaction : doYourJob(): getting here!");
+		// DEBUG System.out.println("model/" + this.getClass().getName() + " : doYourJob(): getting here!");
 
 		Scene newScene = createView();
 
-		// DEBUG System.out.println("model/Transaction : doYourJob(): " + newScene);
+		// DEBUG System.out.println("model/" + this.getClass().getName() + " : doYourJob(): " + newScene);
 
 
 		swapToView(newScene);		

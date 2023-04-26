@@ -174,3 +174,80 @@
 [4/20/23, 3:08 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56100) Field 'StartDate' doesn't have a default value>
 [4/20/23, 3:10 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56117) Field 'StartDate' doesn't have a default value>
 [4/20/23, 3:15 PM]|Session|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=56120) Field 'EndingCash' doesn't have a default value>
+[4/25/23, 1:33 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:33 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:33 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:33 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:39 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:41 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:42 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:43 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:44 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:45 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:46 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 1:46 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 2:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 2:53 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70114) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 2:53 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Integer cannot be cast to java.base/java.lang.String>
+[4/25/23, 3:00 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70155) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 3:00 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 3:07 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70179) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 3:07 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 3:09 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70194) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 3:09 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/25/23, 3:10 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70195) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 4:43 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70484) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 4:44 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70485) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 4:45 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70486) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 4:46 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70487) Unknown column 'SessionId' in 'where clause'>
+[4/25/23, 5:01 PM]|Session|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: (conn=70565) Unknown column 'SessionId' in 'where clause'>
+[4/26/23, 1:57 PM]|Shift|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1054: (conn=72449) Unknown column '3H' in 'field list'>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:11 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:21 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:21 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:21 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:21 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:21 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:22 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:22 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:22 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:24 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:25 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:26 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:34 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:35 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:35 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:35 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:35 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:35 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:36 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:36 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:37 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:41 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:51 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:52 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/26/23, 4:54 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>

@@ -110,17 +110,19 @@ public class TLCView extends View
         grid.add(startShift, 0, 8);
 
         //inactive by default
-        endShift = new RadioButton("End Shift");
-        endShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
-        grid.add(endShift, 0, 9);
-        endShift.setDisable(true);
-
-        //inactive by default
         sellTree = new RadioButton("Sell Tree");
         sellTree.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
-        grid.add(sellTree, 0, 10);
+        grid.add(sellTree, 0, 9);
         sellTree.setDisable(true);
-       // sellTree.;
+        // sellTree.;
+
+        //inactive by default
+        endShift = new RadioButton("End Shift");
+        endShift.setMinWidth(MIN_RADIO_BUTTON_WIDTH);
+        grid.add(endShift, 0, 10);
+        endShift.setDisable(true);
+
+
 
         // Toggles the radio buttons so only one button can be selected at a time
         ToggleGroup toggleGroup = new ToggleGroup();

@@ -110,7 +110,6 @@ public class TreeTypeSearchView extends View
         grid.add(BarcodePrefixField, 1, 1);
 
         submitButton = new Button("Search");
-        submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -123,7 +122,6 @@ public class TreeTypeSearchView extends View
         HBox btnCont = new HBox(10);
         btnCont.setAlignment(Pos.CENTER);
         cancelButton = new Button("Back");
-        cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override

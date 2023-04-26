@@ -25,16 +25,16 @@ import model.Session;
 public class EndShiftView extends View
 {
     // Instance variables
-    protected TextField transactionAmount;
-    protected TextField totalCashSales;
-    protected TextField totalCheckSales;
-    protected TextField startingCash;
-    protected TextField endingCash;
-    protected TextField shiftNotes;
+    protected Text endCashDisplay;
+    protected Text endCheckDisplay;
+    protected TextField endTime;
+    protected TextArea shiftNotes;
     protected ComboBox<String> transactionTypeComboBox;
     protected Button cancelButton;
     protected Button submitButton;
+
     protected MessageView statusLog;
+
 
 
     // TransactionReceipt object, TransactionReceipt collection?
@@ -53,7 +53,11 @@ public class EndShiftView extends View
 
         container.getChildren().add(createTitle());
 
+        // DEBUG System.out.println("userinterface/EndShiftView: Constructor: About to create form contents.");
+
         container.getChildren().add(createFormContents());
+
+        // DEBUG System.out.println("userinterface/EndShiftView: Constructor: Created form contents!");
 
         container.getChildren().add(createStatusLog("       "));
 
@@ -61,10 +65,11 @@ public class EndShiftView extends View
         container.getChildren().add(new Text("                           "));
 
         getChildren().add(container);
-
+        //DEBUG System.out.println("userinterface/" + this.getClass().getName() + ": about to populate fields");
         populateFields();
+        //DEBUG System.out.println("userinterface/" + this.getClass().getName() + ": finished populate fields");
 
-        myModel.subscribe("ShiftUpdateStatusMessage", this);
+        myModel.subscribe("SessionStatusMessage", this);
     }
 
     // ----------------------------------------------------------------------
@@ -103,7 +108,7 @@ public class EndShiftView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text(" End Shift ");
+        Text prompt = new Text(" Select \"Confirm\" to confirm the totals displayed after entering any notes for the shift. ");
         prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
@@ -170,24 +175,26 @@ public class EndShiftView extends View
         endingCashLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(endingCashLabel, 0, 6);
 
-        endingCash = new TextField();
-        endingCash.setEditable(true);
-        grid.add(endingCash, 1, 6);
+        endTime = new TextField();
+        endTime.setEditable(true);
+        grid.add(endTime,1,3);
 
-        Text shiftNotesLabel = new Text("Notes: ");
-        shiftNotesLabel.setFont(font);
-        shiftNotesLabel.setWrappingWidth(150);
-        shiftNotesLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(shiftNotesLabel, 0, 7);
+        // Make this text field better -SW 04/20/2023, start cursor at top left
+        Text notesLabel = new Text("Notes: ");
+        notesLabel.setFont(font);
+        notesLabel.setWrappingWidth(150);
+        notesLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(notesLabel, 0, 4);
 
-        // Make this text field better -SW 04/20/2023
-        shiftNotes = new TextField();
+        shiftNotes = new TextArea();
+        shiftNotes.setPrefSize(150, 100);
         shiftNotes.setEditable(true);
-        grid.add(shiftNotes, 1, 7);
+        shiftNotes.setWrapText(true);
+        grid.add(shiftNotes,1,4);
 
         // Cancel and submit buttons
         cancelButton = new Button("Cancel");
-        submitButton = new Button("Submit");
+        submitButton = new Button("Confirm");
 
         // Handle events for regular buttons
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -195,7 +202,7 @@ public class EndShiftView extends View
             public void handle(ActionEvent e)
             {
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelTransaction", "");
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
 
@@ -223,13 +230,21 @@ public class EndShiftView extends View
     }
 
     //-------------------------------------------------------------------------------------------------
-
     /**
      * Populates fields of the form
      */
     private void populateFields()
     {
+        String endTimeValue = (String)myModel.getState("GetEndTime");
+        String ec = (String)myModel.getState("GetEndingCash");
+        String tc = (String)myModel.getState("GetTotalCheckSales");
 
+        System.out.println(ec);
+        System.out.println(tc);
+
+        endCashDisplay.setText("Ending Cash Value: $" + (String)myModel.getState("GetEndingCash"));
+        endCheckDisplay.setText("Total Check Transactions Value: $" + (String)myModel.getState("GetTotalCheckSales"));
+        endTime.setText(endTimeValue);
     }
 
     // ----------------------------------------------------------
@@ -288,6 +303,13 @@ public class EndShiftView extends View
     @Override
     public void updateState(String key, Object value)
     {
-        // Do stuff
+        if (key.equals("SessionStatusMessage") == true)
+        {
+            String msg = (String)value;
+            if (msg.startsWith("ERR") == true)
+                displayErrorMessage(msg);
+            else
+                displayMessage(msg);
+        }
     }
 }

@@ -7,6 +7,7 @@ import userinterface.ViewFactory;
 
 import java.util.Properties;
 import java.util.Vector;
+import java.text.DecimalFormat;
 
 public class EndShiftTransaction extends Transaction
 {
@@ -14,7 +15,7 @@ public class EndShiftTransaction extends Transaction
     protected TransactionReceiptCollection transactionReceiptCollection;
     Vector<TransactionReceipt> transactionReceipts;
 
-    protected String shiftStatusMessage = "";
+ //   protected String shiftStatusMessage = ""; // un-needed bs object
     protected String sessionStatusMessage = "";
 
     // Constructor
@@ -42,8 +43,8 @@ public class EndShiftTransaction extends Transaction
         {
             return null;
         }
-        else if (key.equals("ShiftStatusMessage") == true) {
-            return shiftStatusMessage;
+        else if (key.equals("SessionStatusMessage") == true) {
+            return sessionStatusMessage;
         }
 
         return null;
@@ -66,32 +67,37 @@ public class EndShiftTransaction extends Transaction
         myRegistry.updateSubscribers(key, this);
     }
 
-    protected void endShift()
+    //-----------------------------------------------------------
+    /** Ends the current shift and sets the values for it
+     *
+     *     notes collected from the text fields
+     */
+    protected void endShift(Properties p)
     {
-        try
-        {
-            boolean sessionFound = currentSession.findOpenSession();
+        // Set the end time for the session
+        LocalDateTime ldt = LocalDateTime.now();
+        String endTime = p.getProperty("EndTime");
+        String notes = p.getProperty("Notes");
 
-            if(sessionFound == true)
-            {
-                String openSessionID = currentSession.getOpenSessionID();
-                currentSession = new Session(openSessionID);
-                transactionReceipts = transactionReceiptCollection.findTransactionReceiptsWithSessionID(openSessionID);
+        // Set values of the session
+        currentSession.stateChangeRequest("EndingCash", ""+ endingCash);
+        currentSession.stateChangeRequest("TotalCheckTransactionsAmount", ""+ totalCheckSales);
+        currentSession.stateChangeRequest("EndTime", endTime);
+        currentSession.stateChangeRequest("Notes", notes);
 
-                calculateTotalSales(transactionReceipts);
+        // Update session in the database
+        currentSession.update();
 
-            }
-            else
-            {
-                sessionStatusMessage = "ERROR: No open Sessions found.";
-            }
-        }
-        catch (InvalidPrimaryKeyException e)
-        {
-            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
-        }
+        // Update session status message
+        sessionStatusMessage = "Shift closed successfully!";
     }
 
+
+    // ------------------------------------------------------------------------------------
+    /** Calculates the total sales
+     *
+     * @param transactionReceipts      vector consisting of transactionReceipt objects
+     */
     protected void calculateTotalSales(Vector transactionReceipts)
     {
         // Add the TransactionAmount of all Receipts to TotalCashSales or TotalCheck sales based on PaymentMethod
@@ -107,14 +113,17 @@ public class EndShiftTransaction extends Transaction
 
             if(currentTransactionReceipt.getState("PaymentMethod").equals("Cash"))
             {
-                totalCashSales += Integer.parseInt((String)currentTransactionReceipt.getState("PaymentAmount"));
+                String transactionAmt = (String)currentTransactionReceipt.getState("TransactionAmount");
+                totalCashSales += Double.parseDouble(transactionAmt);
             }
             else
             {
-                totalCheckSales += Integer.parseInt((String)currentTransactionReceipt.getState("PaymentAmount"));
+                String transactionAmt = (String)currentTransactionReceipt.getState("TransactionAmount");
+                totalCheckSales += Double.parseDouble(transactionAmt);
             }
         }
     }
+
 
     // Show the TreeSearchView first
     //------------------------------------------------------

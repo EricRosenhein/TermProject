@@ -26,13 +26,13 @@ public class Session extends EntityBase
         super(myTableName);
         setDependencies();
 
-        String query = "SELECT * FROM " + myTableName + " WHERE (SessionId = " + sessionId + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (ID = " + sessionId + ")";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null){
             int size = allDataRetrieved.size();
             if (size != 1){
-                throw new InvalidPrimaryKeyException("Multiple Sessions matching session id : "+ sessionId + " found.");
+                throw new InvalidPrimaryKeyException("Multiple Sessions for provided ID found: "+ sessionId);
             } else{
                 Properties retrievedSessionData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
@@ -204,15 +204,11 @@ public class Session extends EntityBase
                 whereClause.setProperty("ID",
                         persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Session "
-                        + persistentState.getProperty("ID")
-                        + " updated successfully!";
+                updateStatusMessage = "Session updated successfully!";
             } else {
                 Integer sessionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("ID", "" + sessionId);
-                updateStatusMessage = "Session "
-                        + persistentState.getProperty("ID")
-                        + " started successfully!";
+                updateStatusMessage = "Session started successfully!";
             }
         } catch (SQLException ex) {
             //System.out.println(ex);

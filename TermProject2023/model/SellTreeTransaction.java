@@ -2,11 +2,14 @@ package model;
 
 // system imports
 import javafx.scene.Scene;
+
+import java.time.LocalDate;
 import java.util.Properties;
 
 // project imports
 import exception.InvalidPrimaryKeyException;
 
+import userinterface.SellTreeView;
 import userinterface.View;
 import userinterface.ViewFactory;
 
@@ -18,7 +21,7 @@ public class SellTreeTransaction extends Transaction
 
     private String transactionReceiptStatusMessage = "";
     protected String treeSearchStatusMessage = "";
-    protected String treeUpdateStatusMessage = "";
+    protected String treeTypeUpdateStatusMessage = "";
 
     //----------------------------------------------------------
     protected void setDependencies()
@@ -80,29 +83,31 @@ public class SellTreeTransaction extends Transaction
      */
     protected void processTransaction(Properties props)
     {
+        // DEBUG System.out.println("model/SellTreeTransaction: processTransaction(): getting here");
         // Get the tree's status
         String treeCurrentStatus = (String)treeToSell.getState("Status");
-
+        // DEBUG System.out.println("model/SellTreeTransaction: processTransaction(): Tree status is " + treeCurrentStatus);
         // If tree status is sold, display an error to user
         if (treeCurrentStatus.equals("Sold") == true)
             transactionReceiptStatusMessage = "ERROR: Tree with barcode: " + treeToSell.getState("Barcode") + " is already sold!";
         // Else, we will delete the tree that the user wants to buy
         else
         {
-            treeToSell.persistentState.setProperty("Status", "Sold");
-            treeToSell.update();
-
             Session session = new Session();
             try {
                 String openSessionId = session.getOpenSessionID();
+                String currentDate = (String)props.get("DateStatusUpdated");
+                String notes = (String)props.get("Notes");
 
+                // insert transaction into database
                 props.setProperty("SessionID", openSessionId);
+                props.remove("Notes");
                 TransactionReceipt transactionReceipt = new TransactionReceipt(props);
                 transactionReceipt.update();
                 transactionReceiptStatusMessage = (String) transactionReceipt.getState("TransactionReceiptStatusMessage");
-                System.out.println("TransactionReceipt object made");
+
             } catch(InvalidPrimaryKeyException e) {
-                transactionReceiptStatusMessage = "ERROR: No session with ID: " + session;
+                transactionReceiptStatusMessage = "ERROR: No open session!";
             }
             }
         }
