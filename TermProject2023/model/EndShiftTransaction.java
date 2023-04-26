@@ -18,19 +18,57 @@ public class EndShiftTransaction extends Transaction
  //   protected String shiftStatusMessage = ""; // un-needed bs object
     protected String sessionStatusMessage = "";
 
+    protected double totalCashSales = 0;
+    protected double totalCheckSales = 0;
+    protected double endingCash = 0;
+    protected String endTime;
+
+    protected DecimalFormat df = new DecimalFormat("0.00");
+
+
     // Constructor
     //---------------------------------------------------------------------
     public EndShiftTransaction()
     {
         super();
+        // DEBUG System.out.println("model/EndShiftTransaction: Constructor: getting here");
+        try
+        {
+            currentSession = new Session();
+            transactionReceiptCollection = new TransactionReceiptCollection();
+            boolean sessionFound = currentSession.findOpenSession();
+            // DEBUG System.out.println("model/EndShiftTransaction: Constructor: in try! sessionFound" + sessionFound);
+            if(sessionFound == true)
+            {
+                String openSessionID = currentSession.getOpenSessionID();
+                currentSession = new Session(openSessionID);
+                transactionReceipts = transactionReceiptCollection.findTransactionReceiptsWithSessionID(openSessionID);
+
+                calculateTotalSales(transactionReceipts);
+                endTime = (String) currentSession.getState("EndTime");
+            }
+            else
+            {
+                sessionStatusMessage = "ERROR: No open Sessions found.";
+            }
+        }
+        catch (InvalidPrimaryKeyException e)
+        {
+            // DEBUG System.out.println("model/EndShiftTransaction: Constructor: in catch!");
+            sessionStatusMessage = "ERROR: Multiple open Sessions found.";
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        }
     }
 
     //----------------------------------------------------------------------
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("EndSession", "SessionStatusMessage");
-        dependencies.setProperty("EndShift", "ShiftStatusMessage");
+        dependencies.setProperty("EndShift", "SessionStatusMessage");
         dependencies.setProperty("CancelEndShift", "CancelTransaction");
 
         myRegistry.setDependencies(dependencies);
@@ -46,7 +84,19 @@ public class EndShiftTransaction extends Transaction
         else if (key.equals("SessionStatusMessage") == true) {
             return sessionStatusMessage;
         }
-
+        else if(key.equals("GetEndingCash") == true)
+        {
+            return df.format(endingCash);
+        }
+        else if (key.equals("GetTotalCheckSales") == true)
+        {
+            return df.format(totalCheckSales);
+        }
+        else if (key.equals("GetEndTime") == true)
+        {
+            return endTime;
+        }
+        else
         return null;
     }
 
@@ -61,8 +111,10 @@ public class EndShiftTransaction extends Transaction
         }
         else if(key.equals("EndShift"))
         {
-            endShift();
+            endShift((Properties)value);
         }
+
+
 
         myRegistry.updateSubscribers(key, this);
     }
@@ -103,9 +155,6 @@ public class EndShiftTransaction extends Transaction
         // Add the TransactionAmount of all Receipts to TotalCashSales or TotalCheck sales based on PaymentMethod
         // Add StartingCash from Session and add to TotalCashSales to get the EndingCash
         // Present the EndingCash and TotalCheckSales to view for confirmation
-        int totalCashSales = 0;
-        int totalCheckSales = 0;
-        int endingCash = 0;
 
         for(int i = 0; i < transactionReceipts.size(); i++)
         {
@@ -122,10 +171,12 @@ public class EndShiftTransaction extends Transaction
                 totalCheckSales += Double.parseDouble(transactionAmt);
             }
         }
+
+        double startingCash = Double.parseDouble((String)currentSession.getState("StartingCash"));
+        endingCash = totalCashSales + startingCash;
     }
 
 
-    // Show the TreeSearchView first
     //------------------------------------------------------
     protected Scene createView()
     {

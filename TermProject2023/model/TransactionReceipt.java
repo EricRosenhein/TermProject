@@ -120,9 +120,8 @@ public class TransactionReceipt extends EntityBase
             } else {
                 Integer transactionId = insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("ID", "" + transactionId);
-                transactionReceiptStatusMessage = "Transaction data for new Transaction: "
-                        + persistentState.getProperty("TransactionType")
-                        + " installed successfully in database!";
+                transactionReceiptStatusMessage = "Transaction"
+                        + " successfully installed in database!";
             }
         } catch (SQLException ex) {
             transactionReceiptStatusMessage = "ERROR: Error registering transaction data in database!";

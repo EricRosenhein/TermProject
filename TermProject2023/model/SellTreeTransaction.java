@@ -104,6 +104,12 @@ public class SellTreeTransaction extends Transaction
                 props.remove("Notes");
                 TransactionReceipt transactionReceipt = new TransactionReceipt(props);
                 transactionReceipt.update();
+
+                // update tree in database
+                treeToSell.stateChangeRequest("Status", "Sold");
+                treeToSell.stateChangeRequest("DateStatusUpdated", currentDate);
+                treeToSell.stateChangeRequest("Notes", notes);
+                treeToSell.update();
                 transactionReceiptStatusMessage = (String) transactionReceipt.getState("TransactionReceiptStatusMessage");
 
             } catch(InvalidPrimaryKeyException e) {
