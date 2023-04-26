@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import userinterface.View;
 import userinterface.ViewFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.Vector;
 import java.text.DecimalFormat;
@@ -65,6 +68,7 @@ public class EndShiftTransaction extends Transaction
     }
 
     //----------------------------------------------------------------------
+    /** Sets dependencies **/
     protected void setDependencies()
     {
         dependencies = new Properties();
@@ -75,6 +79,11 @@ public class EndShiftTransaction extends Transaction
     }
 
     //-----------------------------------------------------------
+    /** Retrieves the value/state mapped to the given key
+     *
+     * @param key       key to use for looking up its value
+     * @return
+     */
     public Object getState(String key)
     {
         if (key.equals("") == true)
@@ -101,6 +110,11 @@ public class EndShiftTransaction extends Transaction
     }
 
     //-----------------------------------------------------------
+    /** Changes the current state
+     *
+     * @param key
+     * @param value     value to be mapped to the given key
+     */
     public void stateChangeRequest(String key, Object value)
     {
         if (key.equals("DoYourJob") == true)
@@ -178,6 +192,10 @@ public class EndShiftTransaction extends Transaction
 
 
     //------------------------------------------------------
+    /** Creates the view for End Shift
+     *
+     * @return currentScene     scene consisting of the End Shift View
+     */
     protected Scene createView()
     {
         //DEBUG System.out.println("model/StartShiftTransaction : createView(): getting here");

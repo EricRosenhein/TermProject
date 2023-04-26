@@ -541,6 +541,16 @@ public class SellTreeView extends View
         LocalDateTime ldt = LocalDateTime.now();
         String nowTime = ldt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
+        String tcb = (String) transactionTypeComboBox.getValue();
+        String b = (String) barcode.getText();
+        String c = (String)cost.getText();
+        String e = (String)email.getText();
+        String pm = (String)paymentMethodComboBox.getValue();
+        String n = (String)notes.getText();
+
+        // DEBUG System.out.println("Phone number is: " + phoneNumber);
+
+
         Properties props = new Properties();
         props.setProperty("TransactionType", tcb);
         props.setProperty("Barcode", b);
@@ -552,6 +562,7 @@ public class SellTreeView extends View
         props.setProperty("TransactionDate", now);
         props.setProperty("TransactionTime", nowTime);
         props.setProperty("DateStatusUpdated", now);
+        props.setProperty("Notes", n);
         return props;
 
         // The props object returned above will probably be used as an argument in Transaction(Properties proprs) constructor

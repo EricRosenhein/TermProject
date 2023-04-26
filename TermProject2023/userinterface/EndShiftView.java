@@ -176,6 +176,7 @@ public class EndShiftView extends View
             @Override
             public void handle(ActionEvent e)
             {
+                // Check if user picked Cash or Check for transaction type
 
                 // Do action
                 clearErrorMessage();
