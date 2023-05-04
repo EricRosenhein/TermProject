@@ -213,10 +213,31 @@ public class TLCView extends View
             }
         });
 
+        //exit button
+        Button exitButton = new Button("Exit");
+
+        // Handle event when user clicks the submit button
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>()
+                                            {
+                                                @Override
+                                                public void handle(ActionEvent e)
+                                                {
+                                                    clearErrorMessage();
+                                                    myModel.stateChangeRequest("ExitProgram", "");
+                                                }
+
+
+                                            });
+
+
+
 
         HBox buttonContainer = new HBox(10);
         buttonContainer.setAlignment(Pos.BOTTOM_CENTER);
+        buttonContainer.getChildren().add(exitButton);
         buttonContainer.getChildren().add(submitButton);
+
         grid.add(buttonContainer, 0, 11);
 
         return grid;

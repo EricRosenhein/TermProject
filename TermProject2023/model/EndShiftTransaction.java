@@ -25,6 +25,7 @@ public class EndShiftTransaction extends Transaction
     protected double totalCheckSales = 0;
     protected double endingCash = 0;
     protected String endTime;
+    protected String startTime;
 
     protected DecimalFormat df = new DecimalFormat("0.00");
 
@@ -49,6 +50,7 @@ public class EndShiftTransaction extends Transaction
 
                 calculateTotalSales(transactionReceipts);
                 endTime = (String) currentSession.getState("EndTime");
+                startTime = (String) currentSession.getState("StartTime");
             }
             else
             {
@@ -104,6 +106,10 @@ public class EndShiftTransaction extends Transaction
         else if (key.equals("GetEndTime") == true)
         {
             return endTime;
+        }
+        else if (key.equals("GetStartTime") == true)
+        {
+            return startTime;
         }
         else
         return null;

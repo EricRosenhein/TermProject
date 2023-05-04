@@ -41,7 +41,7 @@ public class StartShiftTransaction extends Transaction
     //----------------------------------------------------------------------
     protected void processTransaction(Properties props)
     {
-        System.out.println("model/StartShiftTransaction: processTransaction(Properties props): getting here!");
+        //System.out.println("model/StartShiftTransaction: processTransaction(Properties props): getting here!");
     }
 
     //-----------------------------------------------------------
@@ -63,6 +63,7 @@ public class StartShiftTransaction extends Transaction
             // return the scouts who were selected
             return selectedScoutList;
         }
+
 
         return null;
     }
@@ -140,21 +141,30 @@ public class StartShiftTransaction extends Transaction
             String openSessionId = openSession.getOpenSessionID();
             sV.setProperty("SessionID", openSessionId);
 
-            Shift newShift = new Shift(sV);
-            newShift.update();
-            shiftStatusMessage = (String)newShift.getState("UpdateStatusMessage");
+            boolean scoutOnShift = checkIfScoutOnShift(openSessionId, sV.getProperty("ScoutID"));
+            if(scoutOnShift == false)
+            {
+                Shift newShift = new Shift(sV);
+                newShift.update();
+                shiftStatusMessage = (String)newShift.getState("UpdateStatusMessage");
+            }
+            else
+            {
+                String selectedScoutID = sV.getProperty("ScoutID");
+                removeScoutFromList(selectedScoutID);
+                shiftStatusMessage = "ERROR: Scout is already on Shift.";
+            }
+
             // DEBUG System.out.println(shiftStatusMessage);
 
         }
-        catch (InvalidPrimaryKeyException e)
-        {
+        catch (InvalidPrimaryKeyException e) {
             // DEBUG System.out.println(e);
             // DEBUG e.printStackTrace();
             shiftStatusMessage = "ERROR: Open Session ID not found.";
         }
-
-
     }
+
     //------------------------------------------------------
     protected void searchForAvailableScouts()
     {
@@ -173,6 +183,41 @@ public class StartShiftTransaction extends Transaction
 
     }
 
+    // ------------------------------------------------------
+    protected void removeScoutFromList(String scoutID)
+    {
+        ScoutCollection temp = new ScoutCollection();
+        temp.setScoutList(fullScoutList);
+        Scout chosenScout = temp.retrieve(scoutID); // retrieve method needed in ScoutCollection using scoutID
+        selectedScoutList.remove(chosenScout);
+    }
+
+    // ---------------------------------------------------
+    /** Checks if scout is already on shift/open session
+     *
+     * @param openSessionID     id of the session
+     * @param scoutID           id of the scout
+     * @return boolean          indicating whether the scout is currently on a shift
+     */
+    protected boolean checkIfScoutOnShift(String openSessionID, String scoutID)
+    {
+        Shift newShift = new Shift();
+
+        try
+        {
+            if (newShift.findScoutShift(openSessionID, scoutID) == true)
+            {
+                return true;
+            }
+        }
+        catch(InvalidPrimaryKeyException e)
+        {
+            shiftStatusMessage = "ERROR: Scout already added to current shift.";
+        }
+        // If scout is found in query, return true. In StartShiftView, if this returns true then display error message
+
+        return false;
+    }
 
 
     // Show the TreeSearchView first

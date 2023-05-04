@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,6 +22,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.control.*;
+
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -505,6 +508,41 @@ public class SellTreeView extends View
         String tDigits = threeDigits.getText();
         String fDigits = fourDigits.getText();
         String mail = email.getText();
+        String transType = (String)transactionTypeComboBox.getValue();
+
+        if (transType.equals("Check"))
+        {
+            if( (costVal.length() == 0) || (costVal == null) ||
+                    (fName.length() == 0) || (fName == null) ||
+                    (lName.length() == 0) || (lName == null) ||
+                    (mName.length() == 0) || (mName == null) ||
+                    (aCode.length() == 0) || (aCode == null) ||
+                    (tDigits.length() == 0) || (tDigits == null) ||
+                    (fDigits.length() == 0) || (fDigits == null) ||
+                    (mail.length() == 0) || (mail == null))
+            {
+                displayErrorMessage("ERROR: Please complete the entire form.");
+            }
+            else
+            {
+                customerValidation();
+            }
+        }
+        else
+            customerValidation();
+
+    }
+
+    private void customerValidation()
+    {
+        String costVal = cost.getText();
+        String fName = firstName.getText();
+        String mName = middleName.getText();
+        String lName = lastName.getText();
+        String aCode = areaCode.getText();
+        String tDigits = threeDigits.getText();
+        String fDigits = fourDigits.getText();
+        String mail = email.getText();
 
         if (validateCostValue(costVal) == false)
         {
@@ -578,6 +616,9 @@ public class SellTreeView extends View
         try
         {
             myModel.stateChangeRequest("InsertTransactionData", p);
+
+            // Disable the submit button once we sell a tree
+            submitButton.setDisable(true);
         }
         catch (Exception ex)
         {

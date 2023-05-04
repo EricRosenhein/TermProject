@@ -523,7 +523,7 @@ public class StartShiftView extends View
             try
             {
                 int hourValue = Integer.parseInt(hourVal);
-                if (hourValue > 0)
+                if (hourValue >= 0)
                     return true;
                 else
                     return false;
@@ -567,10 +567,14 @@ public class StartShiftView extends View
         String sHour = startTimeHour.getText();
         String sMin = startTimeMinute.getText();
         String sTime = sHour + ":" + sMin;
+        int sHourInt = Integer.parseInt(sHour);
+        int sMinInt = Integer.parseInt(sMin);
 
         String eHour = endTimeHour.getText();
         String eMin = endTimeMinute.getText();
         String eTime = eHour + ":" + eMin;
+        int eHourInt = Integer.parseInt(eHour);
+        int eMinInt = Integer.parseInt(eMin);
 
         String sCash = startingCash.getText();
 
@@ -584,6 +588,21 @@ public class StartShiftView extends View
         else if ((checkTime(sHour,sMin) == false) || (checkTime(eHour,eMin) == false))
         {
             displayErrorMessage("ERROR: Times must be entered in 24 hour time format.");
+        }
+        //QC: Check if start time is later than end time
+        else if ((sHourInt > eHourInt))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+        }
+        else if (((sHourInt == eHourInt) && (sMinInt > eMinInt)))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+
+        }
+        else if ((sHourInt == eHourInt) && (sMinInt == eMinInt))
+        {
+            displayErrorMessage("ERROR: Start time is equal to end time.");
+
         }
         else if (validateCashValue(sCash) == false)
         {
@@ -619,10 +638,14 @@ public class StartShiftView extends View
         String scoutSTimeHour = scoutStartTimeHour.getText();
         String scoutSTimeMin = scoutStartTimeMinute.getText();
         String scoutSTime = scoutSTimeHour + ":" + scoutSTimeMin;
+        int sHourInt = Integer.parseInt(scoutSTimeHour);
+        int sMinInt = Integer.parseInt(scoutSTimeMin);
 
         String scoutETimeHour = scoutEndTimeHour.getText();
         String scoutETimeMin = scoutEndTimeMinute.getText();
         String scoutETime = scoutETimeHour + ":" + scoutETimeMin;
+        int eHourInt = Integer.parseInt(scoutETimeHour);
+        int eMinInt = Integer.parseInt(scoutETimeMin);
 
         String ch = companionHours.getText();
         //Validation
@@ -640,13 +663,25 @@ public class StartShiftView extends View
         {
             displayErrorMessage("ERROR: Times must be entered in 24-hour format.");
         }
+        else if ((sHourInt > eHourInt))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+        }
+        else if (((sHourInt == eHourInt) && (sMinInt > eMinInt)))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+        }
+        else if ((sHourInt == eHourInt) && (sMinInt == eMinInt))
+        {
+            displayErrorMessage("ERROR: Start time is equal to end time.");
+        }
         else if ((cn.length() > GlobalData.MAX_NAME_LENGTH))
         {
             displayErrorMessage("ERROR: Names must be under 25 characters.");
         }
         else if ((checkHours(ch) == false))
         {
-            displayErrorMessage("ERROR: Staring Cash value too long, or not numeric!");
+            displayErrorMessage("ERROR: Companion hours must be 0 (0-59mins) or greater.");
         }
         else {
             //Setting properties object and updating in database
@@ -658,7 +693,6 @@ public class StartShiftView extends View
             props.setProperty("CompanionHours", ch);
             myModel.stateChangeRequest("AddScoutToShift",props);
         }
-
     }
 
     // ----------------------------------------------------------------------

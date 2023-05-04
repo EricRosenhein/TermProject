@@ -251,3 +251,6 @@
 [4/26/23, 4:51 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
 [4/26/23, 4:52 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
 [4/26/23, 4:54 PM]|TreeLotCoordinator|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.ClassCastException: java.base/java.lang.Double cannot be cast to java.base/java.lang.String>
+[4/27/23, 12:28 PM]|TreeLotSystem|TreeLotSystem.<init>|Error|NOTAG|null<Unable to create TreeLotSystem object>
+[5/2/23, 1:07 PM]|Shift|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=86203) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>
+[5/2/23, 1:07 PM]|Shift|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=86203) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>

@@ -2,6 +2,8 @@ package userinterface;
 
 // system imports
 import java.util.Properties;
+
+import Utilities.GlobalData;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -204,11 +206,11 @@ public class EndShiftView extends View
     private void populateFields()
     {
         String endTimeValue = (String)myModel.getState("GetEndTime");
-        String ec = (String)myModel.getState("GetEndingCash");
-        String tc = (String)myModel.getState("GetTotalCheckSales");
+        // DEBUG String ec = (String)myModel.getState("GetEndingCash");
+        // DEBUG String tc = (String)myModel.getState("GetTotalCheckSales");
 
-        System.out.println(ec);
-        System.out.println(tc);
+        // DEBUG System.out.println(ec);
+        // DEBUG System.out.println(tc);
 
         endCashDisplay.setText("Ending Cash Value: $" + (String)myModel.getState("GetEndingCash"));
         endCheckDisplay.setText("Total Check Transactions Value: $" + (String)myModel.getState("GetTotalCheckSales"));
@@ -224,9 +226,51 @@ public class EndShiftView extends View
 //    {
 //
 //    }
+
+    private Boolean checkTime(String tH, String tM)
+    {
+        if ((tH.length() != GlobalData.MAX_TIME_LENGTH) || (tM.length() != GlobalData.MAX_TIME_LENGTH))
+            return false;
+        else
+        {
+            try {
+                int hour = Integer.parseInt(tH);
+                int min = Integer.parseInt(tM);
+                if ( hour < 0 || hour > 23 || min < 0 || min > 59 )
+                    return false;
+                else
+                    return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+    }
+
+
     // ----------------------------------------------------------
     public void processAction(Event ev)
     {
+        String startTimeValue = (String)myModel.getState("GetStartTime");
+
+        String sHour = startTimeValue.substring(0,2);
+        String sMin = startTimeValue.substring(3,5);
+        int sHourInt = Integer.parseInt(sHour);
+        int sMinInt = Integer.parseInt(sMin);
+
+        // DEBUG System.out.println("userinterface/EndShiftView: sHour: " + sHour + "   sMin: " + sMin);
+
+
+        String eTime =  endTime.getText();
+
+        String eHour = eTime.substring(0,2);
+        String eMin = eTime.substring(3,5);
+        int eHourInt = Integer.parseInt(eHour);
+        int eMinInt = Integer.parseInt(eMin);
+
+        // DEBUG System.out.println("userinterface/EndShiftView: eHour: " + eHour + "   eMin: " + eMin);
+
+
+
         int shiftNotesLength = shiftNotes.getLength();
 
         // DEBUG System.out.println("userinterface/EndShiftView: processAction: shiftNotes: " + shiftNotes);
@@ -234,6 +278,29 @@ public class EndShiftView extends View
         if (shiftNotesLength > 200)
         {
             displayErrorMessage("ERROR: Shift Notes has a limit of 200 characters!");
+        }
+        if( (eTime == null) || (eTime.length() == 0))
+        {
+            displayErrorMessage("ERROR: Please enter an end time.");
+        }
+        else if ((checkTime(sHour,sMin) == false) || (checkTime(eHour,eMin) == false))
+        {
+            displayErrorMessage("ERROR: Times must be entered in 24 hour time format.");
+        }
+        //QC: Check if start time is later than end time
+        else if ((sHourInt > eHourInt))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+        }
+        else if (((sHourInt == eHourInt) && (sMinInt > eMinInt)))
+        {
+            displayErrorMessage("ERROR: Start time is later than end time.");
+
+        }
+        else if ((sHourInt == eHourInt) && (sMinInt == eMinInt))
+        {
+            displayErrorMessage("ERROR: Start time is equal to end time.");
+
         }
         else
         {
